@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { useContext, useState } from 'react'
 import CalendarContext from '../../../contexts/CalendarContext'
 import { GoalContext } from '../../../contexts/GoalContext';
-import { UpdateGoal } from './EditGoal';
+import { UpdateGoal } from './UpdateGoal';
 import { labelsArray } from './constants/labelConst';
 import { GoalModal } from './GoalModal';
 
@@ -42,7 +42,7 @@ export const EventPopUp = () => {
             goal: data.get('name').trim() !== ''? data.get('name') : isEmpty = true,
             duration: data.get('time').trim(),
             createdOn: new Date(dayTarget).valueOf(),
-            toDos: data.get('notes').trim() !== ''? data.get('notes').trim().split('\n').map(todo => {return {todo: todo, isCompleted: false}}) : isEmpty = true,
+            toDos: data.get('notes').trim() !== ''? data.get('notes').trim().split('\n').map(todo => {return {id: uuidv4(), todo: todo, isCompleted: false}}) : isEmpty = true,
             labelColor: selectedLabel.color
         }
 

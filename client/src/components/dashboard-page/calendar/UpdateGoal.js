@@ -53,7 +53,7 @@ export const UpdateGoal = ({ goalHandler, isUpdating, setSelectedLabel, selected
                     <input type="text" className={styles.addGoal} name="name" id="name" maxLength={20} placeholder="Enter goal" defaultValue={dayInfo.goal} required></input>
 
                     <label htmlFor="notes" className={styles.labels}>Make a plan</label>
-                    <textarea name="notes" className={styles.notes} id="notes" maxLength={300} placeholder="1. Please, list your notes each on new line" defaultValue={notes} onInvalid={invalidNotesHandler} onInput={validNotesHandler} required ></textarea>
+                    <textarea name="notes" className={styles.notes} id="notes" maxLength={300} placeholder="List your notes each on new line" defaultValue={notes} onInvalid={invalidNotesHandler} onInput={validNotesHandler} required ></textarea>
 
                     <div className={styles.timeWrapper}>
                         <label htmlFor="time" className={styles.labels}>Set time frame</label>

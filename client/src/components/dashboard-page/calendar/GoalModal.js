@@ -11,6 +11,10 @@ export const GoalModal = ({showUpdateHandler, showDeleteHandler}) => {
     let {popModalHandler, dayTarget} = useContext(CalendarContext);
     let {dayInfo} = useContext(GoalContext)
 
+    const closeUpdatingHandler = () => {
+        popModalHandler()
+    }
+
     return (
         <Draggable handle="#handle">
             <div className={styles.eventModal}>
@@ -25,7 +29,7 @@ export const GoalModal = ({showUpdateHandler, showDeleteHandler}) => {
                         </div>
 
                         <h3>Go to my goal's page:
-                            <Link key={dayInfo.id} to={`/goals/${dayInfo.id}`} className={styles.links}>{dayInfo.goal}</Link>
+                            <Link key={dayInfo.id} to={`/goals/${dayInfo.id}`} className={styles.links} onClick={closeUpdatingHandler}>{dayInfo.goal}</Link>
                         </h3>
                         <h3>Update Existing One</h3>
                         <button className={styles.updateBtn} onClick={showUpdateHandler}>Update</button>

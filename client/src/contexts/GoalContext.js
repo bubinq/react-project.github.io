@@ -8,13 +8,32 @@ export const GoalContext = createContext()
 function goalManger(state, action) {
     switch (action.type) {
         case 'CREATE':
-            return [...state, { ...action.payload, id: action.id}];
+            return [...state, { ...action.payload, id: action.id }];
+
+        case 'TODOCREATE':
+            return state.map(oldGoal => oldGoal.id === action.id ?
+                {
+                    ...action.payload, toDos: [...action.oldToDos,
+                    { id: action.todoId, todo: action.todo, isCompleted: false }]
+                } : oldGoal)
 
         case 'UPDATE':
             return state.map(oldGoal => oldGoal.id === action.id ? { ...action.payload, id: action.id } : oldGoal)
 
+        case 'TODOUPDATE':
+            return state.map(oldGoal => oldGoal.id === action.id ?
+                {
+                    ...action.payload, toDos: [...action.oldToDos.map(oldTodo => oldTodo.id === action.todo.id ?
+                        { ...action.todo, isCompleted: !action.todo.isCompleted } : oldTodo)]
+                } : oldGoal)
+
         case 'DELETE':
             return state.filter(oldGoal => oldGoal.id !== action.id)
+
+        case 'TODODELETE':
+            return state.map(oldGoal => oldGoal.id === action.id ?
+                { ...action.payload, toDos: [...action.oldToDos.filter(oldToDo => oldToDo.id !== action.todo.id)] } : oldGoal)
+
         default:
             return state;
     }
