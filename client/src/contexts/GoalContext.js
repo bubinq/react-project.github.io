@@ -5,7 +5,7 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 export const GoalContext = createContext()
 
 
-function goalManger(state, action) {
+function goalManager(state, action) {
     switch (action.type) {
         case 'CREATE':
             return [...state, { ...action.payload, id: action.id }];
@@ -47,14 +47,19 @@ function initStorage() {
 }
 
 export const GoalProvider = ({ children }) => {
-    const [goals, dispatch] = useReducer(goalManger, [], initStorage)
+    const [goals, dispatch] = useReducer(goalManager, [], initStorage)
     const [goalStorage, setGoalStorage] = useLocalStorage('goals', {});
     const [dayInfo, setDayInfo] = useState({});
+    const [toDos, setToDos] = useState('')
     const [hasGoals, setHasGoals] = useState(false)
 
     useEffect(() => {
         setGoalStorage(goals)
     }, [goals, setGoalStorage, dispatch])
+
+    useEffect(() => {
+        setToDos(toDos)
+    }, [toDos, setToDos, goals, dispatch])
 
     const displayDuration = (goalId) => {
 
@@ -80,13 +85,15 @@ export const GoalProvider = ({ children }) => {
             value={{
                 goals,
                 dispatch,
-                setGoalStorage,
                 goalStorage,
+                setGoalStorage,
                 displayDuration,
                 dayInfo,
                 setDayInfo,
                 hasGoals,
-                setHasGoals
+                setHasGoals,
+                toDos,
+                setToDos
             }}>{children}
         </GoalContext.Provider>
     )

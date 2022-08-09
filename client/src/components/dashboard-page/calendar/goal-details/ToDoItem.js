@@ -3,19 +3,23 @@ import { useContext, useEffect, useState } from 'react'
 import { GoalContext } from '../../../../contexts/GoalContext'
 
 const ToDoItem = ({ todo, goal }) => {
-    let { dispatch, goals } = useContext(GoalContext)
+    let { dispatch, toDos } = useContext(GoalContext)
+
 
     const [isCompleted, setIsComplete] = useState(false)
 
     useEffect(() => {
         if (todo.isCompleted) {
-            setIsComplete(!isCompleted)
-        }
-    }, [goals])
+            setIsComplete(true)
+        } else {
+            setIsComplete(false)
+        }// eslint-disable-next-line
+    }, [toDos])
 
 
     const completeHandler = () => {
-        return dispatch({
+        setIsComplete(!isCompleted)
+        dispatch({
             type: "TODOUPDATE",
             payload: goal,
             oldToDos: goal.toDos,
@@ -24,8 +28,10 @@ const ToDoItem = ({ todo, goal }) => {
         })
     }
 
-    const deleteHandler = () => {
-        return dispatch({
+    const deleteHandler = (ev) => {
+        const parent = ev.target.parentNode
+        parent.style.display = 'none'
+        dispatch({
             type: "TODODELETE",
             payload: goal,
             oldToDos: goal.toDos,
@@ -36,9 +42,11 @@ const ToDoItem = ({ todo, goal }) => {
     return (
         <li className={isCompleted ? styles.completed : styles.noteItem}>
             {todo.todo}
+
             <button className={styles.deleteBtn} onClick={deleteHandler}>Delete</button>
             <button className={styles.completeBtn} onClick={completeHandler}>Complete</button>
         </li>
+
     )
 }
 export default ToDoItem;

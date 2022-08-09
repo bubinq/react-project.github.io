@@ -1,13 +1,14 @@
-import { useContext, useEffect } from "react"
+import { useContext, useState } from "react"
 import { useParams } from "react-router-dom"
 import { GoalContext } from "../../../../contexts/GoalContext"
 import { v4 as uuidv4 } from 'uuid'
 import styles from './GoalDetails.module.css'
 import ToDoItem from "./ToDoItem"
 
-export const GoalDetails = () => {
-    let { goals, dispatch, setGoalStorage } = useContext(GoalContext)
+const GoalDetails = () => {
+    const { goals, dispatch, setToDos, toDos } = useContext(GoalContext)
     const { goalId } = useParams()
+    const [ isSorting, setIsSorting] = useState(false)
 
     const goal = goals.find(g => g.id === goalId)
 
@@ -15,7 +16,13 @@ export const GoalDetails = () => {
         ev.preventDefault()
         const data = new FormData(ev.target)
         const note = data.get('addNote').trim()
-        return dispatch({
+
+        if (note === "") {
+            ev.target.reset()
+            return
+        }
+
+        dispatch({
             type: 'TODOCREATE',
             payload: goal,
             oldToDos: goal.toDos,
@@ -23,11 +30,31 @@ export const GoalDetails = () => {
             todoId: uuidv4(),
             id: goal.id
         })
+        setIsSorting(false)
+        ev.target.reset()
     }
 
-    useEffect(() => {
-        setGoalStorage(goals)
-    }, [goals, dispatch])
+    const sortBy = (ev) => {
+        setIsSorting(true)
+        switch (ev.target.value) {
+            case "All":
+                setToDos(goal.toDos)
+                break;
+
+            case "Completed":
+                setToDos(goal.toDos.filter(todo => todo.isCompleted === true))
+                break;
+
+            case "Incompleted":
+                setToDos(goal.toDos.filter(todo => todo.isCompleted === false))
+                break;
+
+            default:
+                setToDos(goal.toDos)
+                break;
+        }
+    }
+
 
     return (
         <>
@@ -38,13 +65,13 @@ export const GoalDetails = () => {
                         <div className={styles.inputWrapper}>
                             <input type="text" name="addNote" placeholder="Add tasks here" />
                             <button className={styles.addBtn}>
-                                <i className={styles.materialIcons}></i>
+                                <i className='material-icons'>&#xe163;</i>
                             </button>
                         </div>
                         <div className={styles.dropdownWrapper}>
                             <div className={styles.dropdownInnerWrapper}>
                                 <span>Sort By</span>
-                                <select name="sort" className={styles.filtered}>
+                                <select name="sort" className={styles.filtered} onChange={sortBy}>
                                     <option value="All">All</option>
                                     <option value="Completed">Completed</option>
                                     <option value="Incompleted">Incompleted</option>
@@ -54,7 +81,10 @@ export const GoalDetails = () => {
                     </form>
                     <div className={styles.notesList}>
                         <ol className={styles.notes}>
-                            {goal.toDos.map(task => <ToDoItem key={uuidv4()} goal={goal} todo={task} />)}
+                            {isSorting ?
+                                toDos.map(task => <ToDoItem key={task.id} goal={goal} todo={task} />)
+                                : goal.toDos.map(task => <ToDoItem key={task.id} goal={goal} todo={task} />)
+                            }
                         </ol>
                     </div>
                 </div>
@@ -64,3 +94,5 @@ export const GoalDetails = () => {
         </>
     )
 }
+
+export default GoalDetails;

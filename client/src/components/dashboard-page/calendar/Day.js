@@ -8,7 +8,7 @@ import { GoalContext } from '../../../contexts/GoalContext';
 
 export const Day = ({ day, rowIndex }) => {
     let { monthIdx, dayTarget, setDayTarget, setPopModal, popModal } = useContext(CalendarContext);
-    let { goals, setHasGoals, setDayInfo, displayDuration, dayInfo } = useContext(GoalContext);
+    let { goals, setHasGoals, setDayInfo } = useContext(GoalContext);
 
 
     let today = dayjs().format('DD MM YYYY');

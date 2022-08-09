@@ -3,8 +3,8 @@ import { Home } from './components/home-page/Home';
 import { Routes, Route } from 'react-router-dom';
 import { ErrorPage } from './ErrorPage';
 import { Dashboard } from './components/dashboard-page/Dashboard';
-import { GoalDetails } from './components/dashboard-page/calendar/goal-details/GoalDetails'
 import {RouteGuard} from './guards/RouteGuard'
+import  GoalDetails  from './components/dashboard-page/calendar/goal-details/GoalDetails'
 
 function App() {
     return (
