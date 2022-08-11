@@ -4,11 +4,12 @@ import CalendarContext from '../../../contexts/CalendarContext';
 import { DayNote } from './DayNote';
 import { useContext } from 'react';
 import { GoalContext } from '../../../contexts/GoalContext';
+import { GoalDeadLine } from './GoalDeadLine';
 
 
 export const Day = ({ day, rowIndex }) => {
     let { monthIdx, dayTarget, setDayTarget, setPopModal, popModal } = useContext(CalendarContext);
-    let { goals, setHasGoals, setDayInfo } = useContext(GoalContext);
+    let { goals, setHasGoals, setDayInfo, displayDuration } = useContext(GoalContext);
 
 
     let today = dayjs().format('DD MM YYYY');
@@ -19,13 +20,6 @@ export const Day = ({ day, rowIndex }) => {
     let currentYear = dayjs().year();
 
     function getClass(day) {
-        // console.log(dayInfo)
-        // if (dayInfo != {}) {
-        //     let fancy = displayDuration(dayInfo.id)
-        //     let [end, color] = fancy
-        //     let coloreddate = dayjs(end).format('DD MM YYYY')
-        //     console.log(coloreddate, color)
-        // }
 
         if (displayedYear < currentYear) {
             let times = currentYear - displayedYear
@@ -38,12 +32,7 @@ export const Day = ({ day, rowIndex }) => {
             return styles.isToday
         } else if (selectedDay === currDay) {
             return popModal ? styles.isSelected : ''
-        }
-        // } else if (coloreddate === currDay) {
-        //     console.log('hey')
-        //     return color
-        // }
-        else {
+        } else {
             return ''
         }
     }
@@ -73,7 +62,12 @@ export const Day = ({ day, rowIndex }) => {
                 }
                 <h4 className={getClass(day)}> {day.format('DD')}</h4>
                 {goals.map(goal => dayjs(goal.createdOn).format('DD MM YYYY') === currDay ?
-                    <DayNote key={goal.id} goal={goal}></DayNote> : null)}
+                    <DayNote key={goal.id} goal={goal}></DayNote> : null)
+                }
+
+                {goals.map(goal => dayjs(displayDuration(goal.id)[0]).format('DD MM YYYY') === currDay ?
+                    <GoalDeadLine key={goal.id} goal={goal} color={displayDuration(goal.id)[1]} deadline={displayDuration(goal.id)[0]}></GoalDeadLine> : null)
+                }
             </div>
         </div>
     )

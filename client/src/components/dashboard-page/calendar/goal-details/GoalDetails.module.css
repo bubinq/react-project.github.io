@@ -39,14 +39,13 @@
 }
 
 .notes {
+    counter-reset: section;
     padding: 25px 35px;
     margin: 0.5rem;
     font-size: 1.5rem;
-    caret-color: transparent;
 }
 
 .mainForm {
-    caret-color: transparent;
     display: flex;
 }
 
@@ -87,13 +86,20 @@ input:focus {
 .filtered:focus {
     outline: 2px solid var(--font-color);
 }
+li::before {
+    counter-increment: section;                  /* Increment the value of section counter by 1 */
+    content: counter(section) '.';
+    position: absolute;
+    left: -10%;
+}
 
 .noteItem {
+    display: flex;
+    justify-content: space-between;
     background-color: white;
     margin-top: 10px;
     padding-left: 8px;
     letter-spacing: 2px;
-    transition: all 0.5s ease;
     position: relative;
 }
 
@@ -122,20 +128,22 @@ input:focus {
 }
 
 .completed {
+    display: flex;
+    justify-content: space-between;
     text-decoration: line-through;
     opacity: 0.5;
     background-color: white;
     margin-top: 10px;
     padding-left: 8px;
     letter-spacing: 2px;
-    transition: all 0.5s ease;
     position: relative;
 }
 
-.trashed {
-    animation-name: trash;
-    animation-duration: 0.8s;
+.editInput {
+    border-radius: 5px;
+    margin: 0px 8px;
 }
+
 .dropdownWapper {
     display: flex;
 }
@@ -145,27 +153,6 @@ input:focus {
     flex-direction: column;
 }
 
-@keyframes trash {
-    0% {}
-
-    100% {
-        opacity: 0;
-        transform: translateY(120%) rotateZ(20deg);
-    }
-}
-
-@keyframes popUp {
-    0% {opacity: 0;}
-    80% {
-        opacity: 0.8;
-        transform: scale(1.4);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-@keyframes spinner {
-    0%{transform: rotate(0deg);}
-    100%{transform: rotate(360deg);}
+.todoWrapper{
+    display: flex;
 }

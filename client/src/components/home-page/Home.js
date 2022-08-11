@@ -10,6 +10,7 @@ import { Form } from './Form'
 import { motion } from "framer-motion";
 import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
+import dayjs from 'dayjs';
 
 import { GoalContext } from '../../contexts/GoalContext'
 import { getAuthData, clearAuthData } from '../../services/AuthUtils';
@@ -24,7 +25,7 @@ export const Home = () => {
         nickname = authUser.email.split('@')[0]
     }
 
-    let { dispatch } = useContext(GoalContext);
+    let { goals, dispatch } = useContext(GoalContext);
 
     const [toggleModal, setToggleModal] = useState(false)
     const [hasErrors, setErrors] = useState(false)
@@ -39,20 +40,28 @@ export const Home = () => {
 
     }
 
-
     const condition = toggleModal && !hasErrors;
-
 
     const formHandler = (ev) => {
         ev.preventDefault();
         let data = Object.fromEntries(new FormData(ev.target))
         const { goal, timeFrame } = { ...data }
-        const now = new Date().valueOf()
+        const today = new Date(dayjs().format('MM DD YYYY')).valueOf()
+
+        function findNextFreeDate(date) {
+            let nextDay = 86400000
+            let isTrue = goals.find(goal => goal.createdOn === date)
+            if (isTrue) {
+                return findNextFreeDate(date + nextDay)
+            } else {
+                return date
+            }
+        }
 
         const goalData = {
             goal,
             duration: timeFrame,
-            createdOn: now,
+            createdOn: findNextFreeDate(today),
             toDos: [],
             labelColor: styles.purple
         }
@@ -115,16 +124,16 @@ export const Home = () => {
                 </motion.nav>
                 <motion.div
                     initial={{ y: '-100vh', x: '100vw', opacity: 0 }}
-                    animate={{ y: -260, x: 600, opacity: 1 }}
-                    transition={{ duration: 0.8 }}
+                    animate={{ y: '-25vh', x: '40vw', opacity: 1 }}
+                    transition={{ duration: .8 }}
                 >
                     <div className="circle two"></div>
                 </motion.div>
             </header>
             <motion.div
                 initial={{ x: "-100vw", y: "-100vh", opacity: 0 }}
-                animate={{ x: 0, y: -100, opacity: 1 }}
-                transition={{ duration: 0.8 }}
+                animate={{ x: '0vw', y: "-5vh", opacity: 1 }}
+                transition={{ duration: .8 }}
             >
                 <div className="circle one"></div>
             </motion.div>
@@ -144,7 +153,7 @@ export const Home = () => {
                 {authUser ?
                     <motion.div
                         initial={{ x: "100vw", y: "100vh", opacity: 0 }}
-                        animate={{ x: 0, y: 0, opacity: 1 }}
+                        animate={{ x: "0vw", y: "0vh", opacity: 1 }}
                         transition={{ duration: 0.8 }}
                     >
                         <div className="buble action logged">
@@ -163,8 +172,8 @@ export const Home = () => {
 
             </div>
             <motion.div
-                initial={{ y: 100, opacity: 0 }}
-                animate={{ y: -30, opacity: 1 }}
+                initial={{ y: "100vh", opacity: 0 }}
+                animate={{ y: "15vh", opacity: 1 }}
                 transition={{ duration: 0.8 }}
             >
                 <div className="circle two"></div>

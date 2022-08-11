@@ -342,3 +342,8 @@ body{
     z-index: 1;
     transition: all 0.3s ease;
 }
+
+.material-symbols-outlined {
+    margin: 0px 8px;
+    cursor: pointer;
+}

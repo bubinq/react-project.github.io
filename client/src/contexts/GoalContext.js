@@ -20,12 +20,20 @@ function goalManager(state, action) {
         case 'UPDATE':
             return state.map(oldGoal => oldGoal.id === action.id ? { ...action.payload, id: action.id } : oldGoal)
 
-        case 'TODOUPDATE':
+        case 'TODOUPDATESTATE':
             return state.map(oldGoal => oldGoal.id === action.id ?
                 {
                     ...action.payload, toDos: [...action.oldToDos.map(oldTodo => oldTodo.id === action.todo.id ?
                         { ...action.todo, isCompleted: !action.todo.isCompleted } : oldTodo)]
                 } : oldGoal)
+
+        case 'TODOUPDATETEXT':
+            return state.map(oldGoal => oldGoal.id === action.id ?
+                {
+                    ...action.payload, toDos: [...action.oldToDos.map(oldTodo => oldTodo.id === action.todo.id ?
+                        { ...action.todo, todo: action.newName } : oldTodo)]
+                }
+                : oldGoal)
 
         case 'DELETE':
             return state.filter(oldGoal => oldGoal.id !== action.id)

@@ -8,7 +8,7 @@ import ToDoItem from "./ToDoItem"
 const GoalDetails = () => {
     const { goals, dispatch, setToDos, toDos } = useContext(GoalContext)
     const { goalId } = useParams()
-    const [ isSorting, setIsSorting] = useState(false)
+    const [isFiltering, setIsFiltering] = useState(false)
 
     const goal = goals.find(g => g.id === goalId)
 
@@ -16,6 +16,13 @@ const GoalDetails = () => {
         ev.preventDefault()
         const data = new FormData(ev.target)
         const note = data.get('addNote').trim()
+
+        const sameName = goal.toDos.find(todo => todo.todo === note)
+        if (sameName) {
+            alert('A to-do item with the same name already exists!')
+            ev.target.reset()
+            return;
+        }
 
         if (note === "") {
             ev.target.reset()
@@ -30,12 +37,12 @@ const GoalDetails = () => {
             todoId: uuidv4(),
             id: goal.id
         })
-        setIsSorting(false)
+        setIsFiltering(false)
         ev.target.reset()
     }
 
-    const sortBy = (ev) => {
-        setIsSorting(true)
+    const filterBy = (ev) => {
+        setIsFiltering(true)
         switch (ev.target.value) {
             case "All":
                 setToDos(goal.toDos)
@@ -55,6 +62,10 @@ const GoalDetails = () => {
         }
     }
 
+    const sortHandler = () => {
+        setIsFiltering(false);
+    }
+
 
     return (
         <>
@@ -70,8 +81,8 @@ const GoalDetails = () => {
                         </div>
                         <div className={styles.dropdownWrapper}>
                             <div className={styles.dropdownInnerWrapper}>
-                                <span>Sort By</span>
-                                <select name="sort" className={styles.filtered} onChange={sortBy}>
+                                <span>Filter By</span>
+                                <select name="filter" className={styles.filtered} onChange={filterBy}>
                                     <option value="All">All</option>
                                     <option value="Completed">Completed</option>
                                     <option value="Incompleted">Incompleted</option>
@@ -81,9 +92,9 @@ const GoalDetails = () => {
                     </form>
                     <div className={styles.notesList}>
                         <ol className={styles.notes}>
-                            {isSorting ?
-                                toDos.map(task => <ToDoItem key={task.id} goal={goal} todo={task} />)
-                                : goal.toDos.map(task => <ToDoItem key={task.id} goal={goal} todo={task} />)
+                            {isFiltering ?
+                                toDos.map(task => <ToDoItem key={task.id} goal={goal} todo={task} sortHandler={sortHandler} />)
+                                : goal.toDos.map(task => <ToDoItem key={task.id} goal={goal} todo={task} sortHandler={sortHandler}/>)
                             }
                         </ol>
                     </div>

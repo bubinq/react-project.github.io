@@ -80,6 +80,7 @@
 
 .eachDay {
     display: flex;
+    position: relative;
     flex-direction: column;
     border: 1px solid rgb(153, 153, 153);
     cursor: pointer;
@@ -259,39 +260,38 @@
 
 .red {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     background-color: rgb(243, 31, 84);
-    border-radius: 5px;
 }
 
 .purple {
     display: flex;
+    justify-content: center;
     background-color: rgb(159, 94, 255);
-    border-radius: 5px;
 }
 
 .orange {
     display: flex;
+    justify-content: center;
     background-color: rgb(255, 138, 106);
-    border-radius: 5px;
 }
 
 .yellow {
     display: flex;
+    justify-content: center;
     background-color: rgb(255, 232, 139);
-    border-radius: 5px;
 }
 
 .green {
     display: flex;
+    justify-content: center;
     background-color: rgb(98, 252, 178);
-    border-radius: 5px;
 }
 
 .blue {
     display: flex;
+    justify-content: center;
     background-color: rgb(53, 134, 255);
-    border-radius: 5px;
 }
 
 
@@ -399,7 +399,6 @@
 
 .goalSpan {
     cursor: pointer;
-    font-family: cursive;
     font-weight: bold;
     font-size: 1.3rem;
     letter-spacing: 2px;
@@ -423,4 +422,23 @@
 
 .navigationLinks a:hover{
     color: rgba(0, 0, 0, 0.816);
+}
+
+.triangle {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    top: -15%;
+    border-radius: 50%;
+}
+
+.innerText {
+    font-weight: bold;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.noteHeader {
+    font-size: 1rem;
+    font-weight: bold;
 }
