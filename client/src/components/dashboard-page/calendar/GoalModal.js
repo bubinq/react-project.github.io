@@ -8,6 +8,8 @@ import { GoalContext } from '../../../contexts/GoalContext';
 
 export const GoalModal = ({showUpdateHandler, showDeleteHandler}) => {
 
+    //  Displays general information about each goal's options
+
     let {popModalHandler, dayTarget} = useContext(CalendarContext);
     let {dayInfo} = useContext(GoalContext)
 

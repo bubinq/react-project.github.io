@@ -9,7 +9,9 @@ import { Navigation } from "../../../Navigation"
 
 const GoalDetails = () => {
 
-    // Displays ToDoItems, 
+    //  Displays ToDoItems
+    //  filters by status
+    //  creates ToDos internally
 
     const { goals, dispatch, setToDos, toDos } = useContext(GoalContext)
     const { goalId } = useParams()

@@ -3,7 +3,11 @@ import { useContext, useEffect, useState } from 'react'
 import { GoalContext } from '../../../../contexts/GoalContext'
 
 const ToDoItem = ({ todo, goal, sortHandler }) => {
-    let { dispatch, toDos } = useContext(GoalContext)
+
+    //  Manages CRUD operations
+    //  Updates status
+
+    const { dispatch, toDos } = useContext(GoalContext)
 
     const [isCompleted, setIsComplete] = useState(false)
     const [isClicked, setIsClicked] = useState(false)

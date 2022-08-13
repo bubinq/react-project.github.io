@@ -4,6 +4,10 @@ import CalendarContext from "../../../contexts/CalendarContext"
 import { useContext } from "react"
 
 export const Header = () => {
+
+    //  Takes care of displaying current Month and date
+    //  Cycles through Calendar Months with back and forward arrows
+
     const { monthIdx, setMonthIdx } = useContext(CalendarContext);
 
     const decreaseMonthHandler = () => {

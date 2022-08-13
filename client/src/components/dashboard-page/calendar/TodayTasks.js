@@ -2,6 +2,10 @@ import { Link } from "react-router-dom"
 import styles from '../Dashboard.module.css'
 
 export const TodayTasks = ({ goal }) => {
+
+    //  Displays first todo of an goal that is incomplete
+
+
     const firstToDo = goal.toDos[0]
     const displayOnlyWhen = goal.isCompleted === false && firstToDo
     return (

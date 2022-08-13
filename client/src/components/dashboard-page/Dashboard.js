@@ -7,6 +7,12 @@ import dayjs from "dayjs"
 
 
 export const Dashboard = () => {
+
+    //  Much like Calendar wraps the entire dashboard page
+    //  Checks if goal is completed  => This logic can be later added to Achievements system
+    //  Asks if you want to keep or change goals with same names
+
+
     const { goals, dispatch, displayDuration } = useContext(GoalContext)
     const [showPopUp, setShowPopUp] = useState(false)
 

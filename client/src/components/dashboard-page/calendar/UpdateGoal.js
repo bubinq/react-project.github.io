@@ -9,6 +9,10 @@ import { labelsArray } from "./constants/labelConst"
 export const UpdateGoal = ({ goalHandler, isUpdating, setSelectedLabel, selectedLabel }) => {
 
 
+    //  Validates edit form
+    //  Updates selected goal
+
+
     let { dayTarget, popModalHandler } = useContext(CalendarContext)
     let { dayInfo } = useContext(GoalContext)
 

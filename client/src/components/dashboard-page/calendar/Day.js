@@ -8,6 +8,11 @@ import { GoalDeadLine } from './GoalDeadLine';
 
 
 export const Day = ({ day, rowIndex }) => {
+
+    //  Displays each day with corresponding styles
+    //  Sets last selected day
+
+
     let { monthIdx, dayTarget, setDayTarget, setPopModal, popModal } = useContext(CalendarContext);
     let { goals, setHasGoals, setDayInfo, displayDuration } = useContext(GoalContext);
 

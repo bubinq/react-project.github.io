@@ -10,6 +10,9 @@ import { GoalModal } from './GoalModal';
 
 export const EventPopUp = () => {
 
+    //  Tracks each goal data on related day
+    //  Manages Crud Operations
+
     let { popModalHandler, dayTarget } = useContext(CalendarContext)
     let { dispatch, setHasGoals, hasGoals, dayInfo } = useContext(GoalContext)
 

@@ -11,6 +11,9 @@ import { getAuthData, clearAuthData } from '../../services/AuthUtils';
 
 export const Home = () => {
 
+    //  Displays home page with animations
+    //  Sets correct Error/Welcoming messages
+
     const navigateTo = useNavigate()
 
     const [hasErrors, setErrors] = useState(false)

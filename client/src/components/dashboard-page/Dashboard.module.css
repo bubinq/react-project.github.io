@@ -505,3 +505,8 @@
     justify-content: center;
     background-color: rgb(107, 107, 107);
 }
+
+.todayTasks{
+    display: flex;
+    flex-direction: column;
+}

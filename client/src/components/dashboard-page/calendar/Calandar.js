@@ -9,6 +9,11 @@ import { EventPopUp } from "./EventPopUp";
 import { Navigation } from "../../Navigation";
 
 export const Calendar = () => {
+
+    //  Manages currentMonth views
+    //  Shows the event modal
+
+
     const { monthIdx, popModal } = useContext(CalendarContext);
     const [month, setMonth] = useState(displayMonth());
 

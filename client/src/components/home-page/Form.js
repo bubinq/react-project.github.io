@@ -13,6 +13,11 @@ import { GoalContext } from '../../contexts/GoalContext';
 
 export const Form = ({ toggleModal, toggleModalHandler, checkErrorsHandler, hasErrors }) => {
 
+
+    //  Controls displaying of correct Auth Modal when form is submitted
+    //  Prepares form info and sends it to localStorage
+
+
     const { goals, dispatch } = useContext(GoalContext);
 
     const [View, setView] = useState(() => LoginModal)

@@ -5,6 +5,8 @@ import dayjs from 'dayjs'
 
 export const GoalDeadLine = ({ goal, color, deadline }) => {
 
+    //  Keeps track of each goal's deadlines and displays them in the form of a bubble on top of end date
+
     const { setMonthIdx } = useContext(CalendarContext)
 
     const returnToGoal = (ev) => {

@@ -1,5 +1,9 @@
 import dayjs from 'dayjs'
 
+
+//  Main logic for rendering current month view
+
+
 export function displayMonth(month = dayjs().month()) {
     let year = dayjs().year()
     let firstDayOfMonth = dayjs(new Date(year, month, 1)).day();

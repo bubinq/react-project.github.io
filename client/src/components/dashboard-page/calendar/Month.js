@@ -4,6 +4,8 @@ import { v4 as uuidv4 } from 'uuid'
 
 const Month = ({ month }) => {
 
+    //  Fills the entire calendar with given month
+
     return (
         <div className={styles.month}>
             {month.map((week, idx) =>

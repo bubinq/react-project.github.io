@@ -5,7 +5,9 @@ import { Label } from "./Label"
 import { TodayTasks } from "./TodayTasks"
 
 export const SideBar = () => {
+
     const { goals } = useContext(GoalContext)
+
 
     return (
         <aside className={styles.sideBar}>
