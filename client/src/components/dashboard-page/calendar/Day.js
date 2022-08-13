@@ -62,7 +62,7 @@ export const Day = ({ day, rowIndex }) => {
                 }
                 <h4 className={getClass(day)}> {day.format('DD')}</h4>
                 {goals.map(goal => dayjs(goal.createdOn).format('DD MM YYYY') === currDay ?
-                    <DayNote key={goal.id} goal={goal}></DayNote> : null)
+                    <DayNote key={goal.id} goal={goal} deadline={displayDuration(goal.id)[0]}></DayNote> : null)
                 }
 
                 {goals.map(goal => dayjs(displayDuration(goal.id)[0]).format('DD MM YYYY') === currDay ?

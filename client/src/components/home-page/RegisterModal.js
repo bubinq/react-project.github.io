@@ -16,8 +16,8 @@ export const RegisterModal = ({ showModalHandler, switchHandler }) => {
     const [errorMessage, setErrorMessage] = useState('')
     const [isClicked, setIsClicked] = useState(false)
 
-    const showErrorWhen =  isClicked && errorMessage
-   
+    const showErrorWhen = isClicked && errorMessage
+
 
     useEffect(() => {
         return () => {
@@ -69,7 +69,7 @@ export const RegisterModal = ({ showModalHandler, switchHandler }) => {
                 <form onSubmit={registerHandler}>
                     <div className="email-wrapper">
                         <label htmlFor="email" className={isFocused.email ? "focused" : "labels"}>Email</label>
-                        <input type="email" name="email" id="email" onBlur={labelHandler} onFocus={labelHandler} required />
+                        <input type="email" name="email" id="email" onBlur={labelHandler} onFocus={labelHandler} autoComplete='off' required />
                     </div>
 
                     <div className="password-wrapper">

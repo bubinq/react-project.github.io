@@ -1,3 +1,15 @@
+# Disclaimer!!!
+
+This project does not work with fully-integrated authentication system and a server
+Instead your authentication data and goals data are stored and accessed through localStorage
+The focus of this project is purely based on the Front-End development part
+
+# Project Description
+
+This project is about Goal Planning and Organizing your everyday tasks
+You can set new goals, track your progress and manage each step of the planning and execution phase of your set goals
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

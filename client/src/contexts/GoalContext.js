@@ -20,6 +20,12 @@ function goalManager(state, action) {
         case 'UPDATE':
             return state.map(oldGoal => oldGoal.id === action.id ? { ...action.payload, id: action.id } : oldGoal)
 
+        case 'UPDATESTATUS':
+            return state.map(oldGoal => oldGoal.id === action.id ? { ...action.payload, isSaved: true } : oldGoal)
+
+        case 'UPDATECOMPLETE':
+            return state.map(oldGoal => oldGoal.id === action.id ? { ...action.payload, isCompleted: true } : oldGoal)
+
         case 'TODOUPDATESTATE':
             return state.map(oldGoal => oldGoal.id === action.id ?
                 {
@@ -63,6 +69,7 @@ export const GoalProvider = ({ children }) => {
 
     useEffect(() => {
         setGoalStorage(goals)
+        console.log(goals)
     }, [goals, setGoalStorage, dispatch])
 
     useEffect(() => {

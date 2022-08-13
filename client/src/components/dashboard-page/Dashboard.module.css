@@ -295,7 +295,6 @@
 }
 
 
-
 .notCurrentMonth {
     font-weight: 400;
     color: lightgray;
@@ -417,19 +416,20 @@
     text-transform: uppercase;
     transition: all 0.2s ease;
     caret-color: transparent;
-    margin-left: 10px;
+    margin-left: 16px;
 }
 
-.navigationLinks a:hover{
-    color: rgba(0, 0, 0, 0.816);
+.navigationLinks:hover{
+    color: rgba(247, 0, 0, 0.573);
 }
 
-.triangle {
+.deadlineBubble {
     position: absolute;
     display: flex;
     width: 100%;
-    top: -15%;
+    top: -12%;
     border-radius: 50%;
+    z-index: 1000;
 }
 
 .innerText {
@@ -441,4 +441,67 @@
 .noteHeader {
     font-size: 1rem;
     font-weight: bold;
+}
+
+.dashboardPopUp {
+    position: absolute;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    bottom: 5%;
+    left: 40%;
+    line-height: 1.4;
+    background-color: rgb(32, 33, 36);
+    border-radius: 4px;
+    min-width: 350px;
+    max-width: 450px;
+    height: 70px;
+    z-index: 1000;
+}
+
+.dashboardMsg{
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    letter-spacing: 1.4px;
+    word-spacing: 1.6px;
+    margin-left: 20px;
+}
+
+.dashboardBtnsWrapper {
+    margin: 0px 20px;
+}
+
+.dashboardBtns {
+    border: none;
+    background-color: transparent;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: rgb(102, 122, 253);
+    transition: all 0.4s ease;
+    cursor: pointer;
+    margin-left: 6px;
+}
+
+.dashboardBtns:hover {
+    background-color: rgba(181, 190, 255, 0.46);;
+}
+
+.savingChanges {
+    color: rgba(255, 246, 146, 0.841);
+    font-size: 1.1rem;
+    margin: 0 auto;
+}
+
+.firstToDo {
+    padding-left: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.completedStatus{
+    display: flex;
+    justify-content: center;
+    background-color: rgb(107, 107, 107);
 }

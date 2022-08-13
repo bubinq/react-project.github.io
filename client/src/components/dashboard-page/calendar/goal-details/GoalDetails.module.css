@@ -66,7 +66,7 @@
     padding: 6px 8px;
 }
 
-input:focus {
+.inputs:focus {
     outline: 2px solid var(--font-color);
 }
 
@@ -141,6 +141,7 @@ li::before {
 
 .editInput {
     border-radius: 5px;
+    padding: 4px;
     margin: 0px 8px;
 }
 
@@ -155,4 +156,18 @@ li::before {
 
 .todoWrapper{
     display: flex;
+}
+
+.navigationWrapper {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.editBtn {
+    position: absolute;
+    cursor: pointer;
+    left: 42%;
+    top: 25%;
+    border: none;
+    background-color: transparent;
 }

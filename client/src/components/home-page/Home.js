@@ -1,23 +1,19 @@
 import './Home.css';
-import styles from '../dashboard-page/Dashboard.module.css'
 import * as authServices from '../../services/AuthServices'
-import { v4 as uuidv4 } from 'uuid'
 import { showHideAnimate, headerAnimate } from './Constants';
-import { LoginModal } from './LoginModal';
-import { RegisterModal } from './RegisterModal';
 import { Form } from './Form'
 
 import { motion } from "framer-motion";
 import { Link, useNavigate } from 'react-router-dom';
-import { useContext, useState } from 'react';
-import dayjs from 'dayjs';
+import { useState } from 'react';
 
-import { GoalContext } from '../../contexts/GoalContext'
 import { getAuthData, clearAuthData } from '../../services/AuthUtils';
 
 export const Home = () => {
 
     const navigateTo = useNavigate()
+
+    const [hasErrors, setErrors] = useState(false)
 
     const authUser = getAuthData()
     let nickname;
@@ -25,65 +21,17 @@ export const Home = () => {
         nickname = authUser.email.split('@')[0]
     }
 
-    let { goals, dispatch } = useContext(GoalContext);
-
     const [toggleModal, setToggleModal] = useState(false)
-    const [hasErrors, setErrors] = useState(false)
-    const [View, setView] = useState(() => LoginModal)
 
-    const switchFormHandler = (isLogin) => {
-        if (isLogin) {
-            setView(() => LoginModal)
-        } else {
-            setView(() => RegisterModal)
-        }
-
+    const checkErrorsHandler = (hasError) => {
+        setErrors(hasError)
     }
 
-    const condition = toggleModal && !hasErrors;
-
-    const formHandler = (ev) => {
-        ev.preventDefault();
-        let data = Object.fromEntries(new FormData(ev.target))
-        const { goal, timeFrame } = { ...data }
-        const today = new Date(dayjs().format('MM DD YYYY')).valueOf()
-
-        function findNextFreeDate(date) {
-            let nextDay = 86400000
-            let isTrue = goals.find(goal => goal.createdOn === date)
-            if (isTrue) {
-                return findNextFreeDate(date + nextDay)
-            } else {
-                return date
-            }
-        }
-
-        const goalData = {
-            goal,
-            duration: timeFrame,
-            createdOn: findNextFreeDate(today),
-            toDos: [],
-            labelColor: styles.purple
-        }
-
-        if (!goal.trim()) {
-            setErrors(true)
-            return;
-        }
-        dispatch({
-            type: 'CREATE',
-            payload: goalData,
-            id: uuidv4()
-        })
-        setErrors(false)
-
-    }
     const toggleModalHandler = () => {
         if (!hasErrors) {
             setToggleModal(!toggleModal)
         }
     }
-
 
     const logoutHandler = (ev) => {
         ev.preventDefault()
@@ -124,7 +72,7 @@ export const Home = () => {
                 </motion.nav>
                 <motion.div
                     initial={{ y: '-100vh', x: '100vw', opacity: 0 }}
-                    animate={{ y: '-25vh', x: '40vw', opacity: 1 }}
+                    animate={{ y: '-34vh', x: '38vw', opacity: 1 }}
                     transition={{ duration: .8 }}
                 >
                     <div className="circle two"></div>
@@ -153,7 +101,7 @@ export const Home = () => {
                 {authUser ?
                     <motion.div
                         initial={{ x: "100vw", y: "100vh", opacity: 0 }}
-                        animate={{ x: "0vw", y: "0vh", opacity: 1 }}
+                        animate={{ x: 0, y: 0, opacity: 1 }}
                         transition={{ duration: 0.8 }}
                     >
                         <div className="buble action logged">
@@ -166,22 +114,19 @@ export const Home = () => {
                         </div>
                     </motion.div>
                     :
-                    <Form formHandler={formHandler} toggleModalHandler={toggleModalHandler} hasErrors={hasErrors}></Form>
+                    <Form toggleModal={toggleModal} toggleModalHandler={toggleModalHandler} checkErrorsHandler={checkErrorsHandler} hasErrors={hasErrors}></Form>
                 }
 
 
             </div>
             <motion.div
-                initial={{ y: "100vh", opacity: 0 }}
-                animate={{ y: "15vh", opacity: 1 }}
+                initial={{ y: '100vh', opacity: 0 }}
+                animate={{ y: -30, opacity: 1 }}
                 transition={{ duration: 0.8 }}
             >
                 <div className="circle two"></div>
             </motion.div>
 
-            {condition &&
-                <View showModalHandler={() => toggleModalHandler(toggleModal)} switchHandler={switchFormHandler} />
-            }
         </div>
     )
 }

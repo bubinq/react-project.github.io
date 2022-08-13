@@ -1,11 +1,16 @@
 import { useContext, useState } from "react"
 import { useParams } from "react-router-dom"
-import { GoalContext } from "../../../../contexts/GoalContext"
 import { v4 as uuidv4 } from 'uuid'
+
+import { GoalContext } from "../../../../contexts/GoalContext"
 import styles from './GoalDetails.module.css'
 import ToDoItem from "./ToDoItem"
+import { Navigation } from "../../../Navigation"
 
 const GoalDetails = () => {
+
+    // Displays ToDoItems, 
+
     const { goals, dispatch, setToDos, toDos } = useContext(GoalContext)
     const { goalId } = useParams()
     const [isFiltering, setIsFiltering] = useState(false)
@@ -70,11 +75,12 @@ const GoalDetails = () => {
     return (
         <>
             <div className={styles.bodyLayer}>
+                <Navigation></Navigation>
                 <div className={styles.wrapper}>
                     <h1 className={styles.header}>{goal.goal} - daily tasks</h1>
                     <form className={styles.mainForm} onSubmit={submitToDo}>
                         <div className={styles.inputWrapper}>
-                            <input type="text" name="addNote" placeholder="Add tasks here" />
+                            <input type="text" name="addNote" className={styles.inputs} placeholder="Add tasks here" />
                             <button className={styles.addBtn}>
                                 <i className='material-icons'>&#xe163;</i>
                             </button>
@@ -94,7 +100,7 @@ const GoalDetails = () => {
                         <ol className={styles.notes}>
                             {isFiltering ?
                                 toDos.map(task => <ToDoItem key={task.id} goal={goal} todo={task} sortHandler={sortHandler} />)
-                                : goal.toDos.map(task => <ToDoItem key={task.id} goal={goal} todo={task} sortHandler={sortHandler}/>)
+                                : goal.toDos.map(task => <ToDoItem key={task.id} goal={goal} todo={task} sortHandler={sortHandler} />)
                             }
                         </ol>
                     </div>

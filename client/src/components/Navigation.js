@@ -6,6 +6,8 @@ import * as authServices from '../services/AuthServices'
 export const Navigation = () => {
     const authUser = getAuthData()
 
+    const location = window.location.pathname.split('/')[1]
+
     const navigateTo = useNavigate()
 
 
@@ -26,7 +28,11 @@ export const Navigation = () => {
             <nav className={styles.navigation}>
                 {authUser &&
                     <ul>
+                        {location === 'goals' &&
+                            <Link to="/dashboard" className={styles.navigationLinks}>Dashboard</Link>
+                        }
                         <Link to="/dashboard" onClick={logoutHandler} className={styles.navigationLinks}>Log Out</Link>
+
                     </ul>
                 }
             </nav>

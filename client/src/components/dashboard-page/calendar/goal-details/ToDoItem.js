@@ -73,7 +73,12 @@ const ToDoItem = ({ todo, goal, sortHandler }) => {
             <div className={styles.todoWrapper}>
                 <form onSubmit={editNameHandler}>
                     {isClicked &&
-                        <input type='text' name='newText' className={styles.editInput} defaultValue={todo.todo}></input>
+                        <>
+                            <input type='text' name='newText' className={styles.editInput} defaultValue={todo.todo}></input>
+                            <button className={styles.editBtn}>
+                                <i className='material-icons'>&#xe163;</i>
+                            </button>
+                        </>
                     }
                     <span className="material-symbols-outlined" onClick={setClickHandler}>edit</span>
                 </form>

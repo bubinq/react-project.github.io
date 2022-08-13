@@ -11,7 +11,7 @@ import { GoalModal } from './GoalModal';
 export const EventPopUp = () => {
 
     let { popModalHandler, dayTarget } = useContext(CalendarContext)
-    let { dispatch, setHasGoals, hasGoals, dayInfo} = useContext(GoalContext)
+    let { dispatch, setHasGoals, hasGoals, dayInfo } = useContext(GoalContext)
 
 
     const [isUpdating, setIsUpdating] = useState(false)
@@ -43,7 +43,9 @@ export const EventPopUp = () => {
             duration: data.get('time').trim(),
             createdOn: new Date(dayTarget).valueOf(),
             toDos: data.get('notes').trim() !== ''? data.get('notes').trim().split('\n').map(todo => {return {id: uuidv4(), todo: todo, isCompleted: false}}) : isEmpty = true,
-            labelColor: selectedLabel.color
+            labelColor: selectedLabel.color,
+            isSaved: false,
+            isCompleted: false
         }
 
 
