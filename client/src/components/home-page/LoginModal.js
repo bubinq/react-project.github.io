@@ -1,9 +1,14 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { Link, useNavigate } from 'react-router-dom'
+import { GoalContext } from "../../contexts/GoalContext";
 import * as authServices from "../../services/AuthServices";
 import { ErrorMessage } from "./ErrorMessage";
+import { v4 as uuidv4 } from 'uuid'
 
-export const LoginModal = ({ showModalHandler, switchHandler }) => {
+export const LoginModal = ({ showModalHandler, switchHandler, form }) => {
+
+
+    const { dispatch } = useContext(GoalContext)
 
     const navigateTo = useNavigate()
 
@@ -45,6 +50,12 @@ export const LoginModal = ({ showModalHandler, switchHandler }) => {
 
         authServices.login(email.trim(), password.trim())
             .then(res => {
+                dispatch({
+                    type: 'CREATE',
+                    payload: form,
+                    id: uuidv4(),
+                    ownerId: res._id
+                })
                 setErrorMessage('')
                 navigateTo('/dashboard')
             }).catch(err => {

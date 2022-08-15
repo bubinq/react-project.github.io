@@ -8,7 +8,7 @@ export const GoalContext = createContext()
 function goalManager(state, action) {
     switch (action.type) {
         case 'CREATE':
-            return [...state, { ...action.payload, id: action.id }];
+            return [...state, { ...action.payload, id: action.id, onwerId: action.ownerId }];
 
         case 'TODOCREATE':
             return state.map(oldGoal => oldGoal.id === action.id ?

@@ -1,15 +1,15 @@
 import './Home.css';
-import dayjs from 'dayjs';
 import styles from '../dashboard-page/Dashboard.module.css'
-import { v4 as uuidv4 } from 'uuid'
 
+import dayjs from 'dayjs';
 import { motion } from "framer-motion";
-import { stepAnimate } from './Constants';
 import { useState, useContext } from 'react';
 
+import { stepAnimate } from './Constants';
 import { LoginModal } from './LoginModal';
 import { RegisterModal } from './RegisterModal';
 import { GoalContext } from '../../contexts/GoalContext';
+
 
 export const Form = ({ toggleModal, toggleModalHandler, checkErrorsHandler, hasErrors }) => {
 
@@ -18,10 +18,10 @@ export const Form = ({ toggleModal, toggleModalHandler, checkErrorsHandler, hasE
     //  Prepares form info and sends it to localStorage
 
 
-    const { goals, dispatch } = useContext(GoalContext);
+    const { goals } = useContext(GoalContext);
 
     const [View, setView] = useState(() => LoginModal)
-
+    const [form, setFormData] = useState({})
 
     const switchFormHandler = (isLogin) => {
         if (isLogin) {
@@ -33,13 +33,14 @@ export const Form = ({ toggleModal, toggleModalHandler, checkErrorsHandler, hasE
 
     const condition = toggleModal && !hasErrors;
 
-    const formHandler = async (ev) => {
+    const formHandler = (ev) => {
         ev.preventDefault();
-        let data = Object.fromEntries(new FormData(ev.target))
-        const { goal, timeFrame } = { ...data }
+
+        let data = new FormData(ev.target)
+        const goal = data.get('goal').trim()
+        const timeFrame = data.get('timeFrame').trim()
+
         const today = new Date(dayjs().format('MM DD YYYY')).valueOf()
-
-
 
         function findNextFreeDate(date) {
             let nextDay = 86400000
@@ -52,7 +53,7 @@ export const Form = ({ toggleModal, toggleModalHandler, checkErrorsHandler, hasE
         }
 
         const goalData = {
-            goal,
+            goal: goal,
             duration: timeFrame,
             createdOn: findNextFreeDate(today),
             toDos: [],
@@ -61,20 +62,15 @@ export const Form = ({ toggleModal, toggleModalHandler, checkErrorsHandler, hasE
             isCompleted: false
         }
 
-        if (!goal.trim()) {
+        setFormData({...goalData})
+
+        if (!goal) {
             checkErrorsHandler(true)
             return;
         }
 
-        dispatch({
-            type: 'CREATE',
-            payload: goalData,
-            id: uuidv4()
-        })
-
-
         checkErrorsHandler(false)
-
+        ev.target.reset()
     }
 
 
@@ -89,7 +85,7 @@ export const Form = ({ toggleModal, toggleModalHandler, checkErrorsHandler, hasE
                     <div className="buble goal">
                         <h3>Step 1:</h3>
                         <label htmlFor="goal">Set goal</label>
-                        <input name="goal" type="text" id="goal" placeholder="Ex. Meditate" autoComplete='off' />
+                        <input name="goal" type="text" id="goal" placeholder="Ex. Meditate" autoComplete='off' maxLength={25}/>
                     </div>
                 </motion.div>
 
@@ -124,7 +120,7 @@ export const Form = ({ toggleModal, toggleModalHandler, checkErrorsHandler, hasE
             </form>
 
             {condition &&
-                <View showModalHandler={toggleModalHandler} switchHandler={switchFormHandler} />
+                <View showModalHandler={toggleModalHandler} switchHandler={switchFormHandler} form={form} />
             }
         </>
     )

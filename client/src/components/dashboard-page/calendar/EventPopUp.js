@@ -7,6 +7,7 @@ import { GoalContext } from '../../../contexts/GoalContext';
 import { UpdateGoal } from './UpdateGoal';
 import { labelsArray } from './constants/labelConst';
 import { GoalModal } from './GoalModal';
+import { getAuthData } from '../../../services/AuthUtils';
 
 export const EventPopUp = () => {
 
@@ -16,6 +17,7 @@ export const EventPopUp = () => {
     let { popModalHandler, dayTarget } = useContext(CalendarContext)
     let { dispatch, setHasGoals, hasGoals, dayInfo } = useContext(GoalContext)
 
+    const user = getAuthData()
 
     const [isUpdating, setIsUpdating] = useState(false)
     const [selectedLabel, setSelectedLabel] = useState(labelsArray[0])
@@ -31,7 +33,8 @@ export const EventPopUp = () => {
         return dispatch({
             type: type,
             payload: options.payload,
-            id: uuidv4()
+            id: uuidv4(),
+            ownerId: user.id
         })
 
     }

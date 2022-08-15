@@ -140,6 +140,7 @@ li::before {
 }
 
 .editInput {
+    position: relative;
     border-radius: 5px;
     padding: 4px;
     margin: 0px 8px;
@@ -163,11 +164,15 @@ li::before {
     justify-content: flex-end;
 }
 
+.formParent {
+    position: relative;
+}
+
 .editBtn {
     position: absolute;
     cursor: pointer;
-    left: 42%;
-    top: 25%;
+    top: 15%;
+    right: 25%;
     border: none;
     background-color: transparent;
 }

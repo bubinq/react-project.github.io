@@ -75,7 +75,7 @@ const ToDoItem = ({ todo, goal, sortHandler }) => {
         <li className={isCompleted ? styles.completed : styles.noteItem}>
             {todo.todo}
             <div className={styles.todoWrapper}>
-                <form onSubmit={editNameHandler}>
+                <form onSubmit={editNameHandler} className={styles.formParent}>
                     {isClicked &&
                         <>
                             <input type='text' name='newText' className={styles.editInput} defaultValue={todo.todo}></input>

@@ -54,7 +54,7 @@ export const UpdateGoal = ({ goalHandler, isUpdating, setSelectedLabel, selected
                     </div>
                 </div>
                 <form onSubmit={goalHandler} className={styles.eventForm}>
-                    <input type="text" className={styles.addGoal} name="name" id="name" maxLength={20} placeholder="Enter goal" defaultValue={dayInfo.goal} required></input>
+                    <input type="text" className={styles.addGoal} name="name" id="name" maxLength={25} placeholder="Enter goal" defaultValue={dayInfo.goal} required></input>
 
                     <label htmlFor="notes" className={styles.labels}>Make a plan</label>
                     <textarea name="notes" className={styles.notes} id="notes" maxLength={300} placeholder="List your notes each on new line" defaultValue={notes} onInvalid={invalidNotesHandler} onInput={validNotesHandler} required ></textarea>
