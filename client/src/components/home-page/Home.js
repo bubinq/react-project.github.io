@@ -7,12 +7,13 @@ import { motion } from "framer-motion";
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
-import { getAuthData, clearAuthData } from '../../services/AuthUtils';
+import { getAuthData } from '../../services/AuthUtils';
 
 export const Home = () => {
 
     //  Displays home page with animations
     //  Sets correct Error/Welcoming messages
+
 
     const navigateTo = useNavigate()
 
@@ -40,8 +41,8 @@ export const Home = () => {
         ev.preventDefault()
 
         if (window.confirm('Are you sure you want to logout?')) {
-            authServices.get('/logout')
-            clearAuthData()
+            authServices.get('http://localhost:3030/users/logout')
+            localStorage.clear()
         }
         navigateTo('/')
     }

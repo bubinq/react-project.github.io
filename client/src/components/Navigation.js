@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom"
-import { getAuthData, clearAuthData } from '../services/AuthUtils'
+import { clearAuthData, getAuthData } from '../services/AuthUtils'
 import styles from './dashboard-page/Dashboard.module.css'
 import * as authServices from '../services/AuthServices'
 
@@ -15,8 +15,8 @@ export const Navigation = () => {
         ev.preventDefault()
 
         if (window.confirm('Are you sure you want to logout?')) {
-            authServices.get('/logout')
-            clearAuthData()
+            authServices.get('http://localhost:3030/users/logout')
+            localStorage.clear()
             navigateTo('/')
         } else {
             navigateTo('/dashboard')
@@ -28,6 +28,7 @@ export const Navigation = () => {
             <nav className={styles.navigation}>
                 {authUser &&
                     <ul>
+                        <Link to="/dashboard" className={styles.welcomeLink}>Welcome, {authUser.email.split('@')[0]}</Link>
                         {location === 'goals' &&
                             <Link to="/dashboard" className={styles.navigationLinks}>Dashboard</Link>
                         }

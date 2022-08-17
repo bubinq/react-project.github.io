@@ -1,13 +1,13 @@
-import { useState, useEffect, useContext } from "react"
+import { useState, useEffect } from "react"
 import { Link, useNavigate } from 'react-router-dom'
-import { GoalContext } from "../../contexts/GoalContext";
 import * as authServices from "../../services/AuthServices";
 import { ErrorMessage } from "./ErrorMessage";
-import { v4 as uuidv4 } from 'uuid'
+
+import { addDoc } from 'firebase/firestore'
+import { goalsCollectionRef } from "../../firebase-constants/goalsCollection";
+
 
 export const RegisterModal = ({ showModalHandler, switchHandler, form }) => {
-
-    const { dispatch } = useContext(GoalContext)
 
     const navigate = useNavigate();
 
@@ -51,12 +51,11 @@ export const RegisterModal = ({ showModalHandler, switchHandler, form }) => {
 
         authServices.register(email.trim(), password.trim(), passwordConfirm.trim())
             .then(res => {
-                dispatch({
-                    type: "CREATE",
-                    payload: form,
-                    id: uuidv4(),
-                    ownerId: res._id
-                })
+                if (form.goal) {
+                    (async () => {
+                        await addDoc(goalsCollectionRef, { ...form, ownerId: res._id })
+                    })();
+                }
                 setErrorMessage('')
                 navigate('/dashboard')
             }).catch(err => {

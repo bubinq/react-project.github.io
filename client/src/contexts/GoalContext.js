@@ -2,19 +2,22 @@ import dayjs from "dayjs";
 import { createContext, useEffect, useReducer, useState } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
+
 export const GoalContext = createContext()
 
 
 function goalManager(state, action) {
     switch (action.type) {
+        case 'READ':
+            return [...action.payload]
+
         case 'CREATE':
-            return [...state, { ...action.payload, id: action.id, onwerId: action.ownerId }];
+            return [...state, { ...action.payload, id: action.id }];
 
         case 'TODOCREATE':
-            return state.map(oldGoal => oldGoal.id === action.id ?
+            return state.map(oldGoal => oldGoal._id === action.id ?
                 {
-                    ...action.payload, toDos: [...action.oldToDos,
-                    { id: action.todoId, todo: action.todo, isCompleted: false }]
+                    ...oldGoal, toDos: [...oldGoal.toDos, ...action.payload]
                 } : oldGoal)
 
         case 'UPDATE':
@@ -45,7 +48,7 @@ function goalManager(state, action) {
             return state.filter(oldGoal => oldGoal.id !== action.id)
 
         case 'TODODELETE':
-            return state.map(oldGoal => oldGoal.id === action.id ?
+            return state.map(oldGoal => oldGoal._id === action.id ?
                 { ...action.payload, toDos: [...action.oldToDos.filter(oldToDo => oldToDo.id !== action.todo.id)] } : oldGoal)
 
         default:
@@ -55,26 +58,32 @@ function goalManager(state, action) {
 
 function initStorage() {
     const storage = localStorage.getItem('goals')
-    const initializer = storage ? JSON.parse(storage) : []
+    const initialize = JSON.parse(storage) || []
 
-    return initializer
+    return initialize
 }
 
 export const GoalProvider = ({ children }) => {
     const [goals, dispatch] = useReducer(goalManager, [], initStorage)
-    const [goalStorage, setGoalStorage] = useLocalStorage('goals', {});
+    const [goalStorage, setGoalStorage] = useLocalStorage('goals', [])
+    const [isLoading, setIsLoading] = useState(false)
     const [dayInfo, setDayInfo] = useState({});
     const [toDos, setToDos] = useState('')
     const [hasGoals, setHasGoals] = useState(false)
+    const [firebaseGoals, setFirebaseGoals] = useState([])
+
 
     useEffect(() => {
         setGoalStorage(goals)
-        console.log(goals)
-    }, [goals, setGoalStorage, dispatch])
+        // eslint-disable-next-line
+    }, [goals, firebaseGoals, setGoalStorage])
+
 
     useEffect(() => {
         setToDos(toDos)
     }, [toDos, setToDos, goals, dispatch])
+
+
 
     const displayDuration = (goalId) => {
 
@@ -100,15 +109,19 @@ export const GoalProvider = ({ children }) => {
             value={{
                 goals,
                 dispatch,
-                goalStorage,
-                setGoalStorage,
                 displayDuration,
+                setGoalStorage,
+                goalStorage,
                 dayInfo,
                 setDayInfo,
                 hasGoals,
                 setHasGoals,
                 toDos,
-                setToDos
+                setToDos,
+                isLoading,
+                setIsLoading,
+                firebaseGoals,
+                setFirebaseGoals
             }}>{children}
         </GoalContext.Provider>
     )

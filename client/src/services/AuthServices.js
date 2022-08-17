@@ -19,7 +19,7 @@ export async function request(method, url, data) {
         options.headers['X-Authorization'] = authUser.accessToken
     }
     try {
-        const response = await fetch(`${baseUrl}${url}`, options)
+        const response = await fetch(`${url}`, options)
 
         if (response.ok === false) {
             if (response.status === 403) {
@@ -50,7 +50,7 @@ export async function post(url, data) {
 }
 
 export async function login(email, password) {
-    const response = await post('/login', { email, password })
+    const response = await post(`${baseUrl}/login`, { email, password })
 
     const authData = {
         id: response._id,
@@ -67,7 +67,7 @@ export async function register(email, password, rePass) {
     if (password !== rePass) {
         throw new Error('Passwords must match')
     }
-    const response = await post('/register', { email, password, rePass })
+    const response = await post(`${baseUrl}/register`, { email, password, rePass })
 
     const authData = {
         id: response._id,

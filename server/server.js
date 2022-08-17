@@ -1362,7 +1362,7 @@
                 "_createdOn": 1617194295474,
             }
         },
-        donations: {}
+        goals: {}
     };
     var rules$1 = {
         users: {

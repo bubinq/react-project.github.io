@@ -419,6 +419,18 @@
     margin-left: 16px;
 }
 
+.welcomeLink {
+    text-decoration: none;
+    letter-spacing: 2px;
+    font-weight: bold;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+    caret-color: transparent;
+    margin-left: 16px;
+    color: black;
+}
+
 .navigationLinks:hover{
     color: rgba(247, 0, 0, 0.573);
 }

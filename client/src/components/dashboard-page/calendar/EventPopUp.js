@@ -1,5 +1,4 @@
 import styles from '../Dashboard.module.css'
-import { v4 as uuidv4 } from 'uuid'
 
 import { useContext, useState } from 'react'
 import CalendarContext from '../../../contexts/CalendarContext'
@@ -7,37 +6,26 @@ import { GoalContext } from '../../../contexts/GoalContext';
 import { UpdateGoal } from './UpdateGoal';
 import { labelsArray } from './constants/labelConst';
 import { GoalModal } from './GoalModal';
+import { v4 as uuidv4 } from 'uuid'
 import { getAuthData } from '../../../services/AuthUtils';
+
+import { db } from '../../../firebase-config';
+import { goalsCollectionRef } from '../../../firebase-constants/goalsCollection';
+import { addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore'
 
 export const EventPopUp = () => {
 
     //  Tracks each goal data on related day
     //  Manages Crud Operations
 
-    let { popModalHandler, dayTarget } = useContext(CalendarContext)
-    let { dispatch, setHasGoals, hasGoals, dayInfo } = useContext(GoalContext)
+    const { popModalHandler, dayTarget } = useContext(CalendarContext)
+    const { dispatch, setHasGoals, hasGoals, dayInfo } = useContext(GoalContext)
 
     const user = getAuthData()
 
     const [isUpdating, setIsUpdating] = useState(false)
     const [selectedLabel, setSelectedLabel] = useState(labelsArray[0])
 
-    function dispatchHandler(type, options) {
-        if (type !== 'CREATE') {
-            return dispatch({
-                type: type,
-                payload: options.payload,
-                id: options.id,
-            })
-        }
-        return dispatch({
-            type: type,
-            payload: options.payload,
-            id: uuidv4(),
-            ownerId: user.id
-        })
-
-    }
 
     const GoalHandler = (ev) => {
         ev.preventDefault()
@@ -45,29 +33,45 @@ export const EventPopUp = () => {
         let isEmpty = false;
         const data = new FormData(ev.target)
         const goalData = {
-            goal: data.get('name').trim() !== ''? data.get('name') : isEmpty = true,
+            goal: data.get('name').trim() !== '' ? data.get('name') : isEmpty = true,
             duration: data.get('time').trim(),
             createdOn: new Date(dayTarget).valueOf(),
-            toDos: data.get('notes').trim() !== ''? data.get('notes').trim().split('\n').map(todo => {return {id: uuidv4(), todo: todo, isCompleted: false}}) : isEmpty = true,
+            toDos: data.get('notes').trim() !== '' ? data.get('notes').trim().split('\n').map(todo => { return { id: uuidv4(), todo: todo, isCompleted: false } }) : isEmpty = true,
             labelColor: selectedLabel.color,
             isSaved: false,
-            isCompleted: false
+            isCompleted: false,
+            ownerId: user.id
         }
 
 
-        if(isEmpty) {
+        if (isEmpty) {
             ev.target.reset()
             return
         }
 
-        if(goalData.toDos.length === 1) {
-            goalData.toDos = data.get('notes').trim().split(',').map(todo => {return {todo: todo, isCompleted: false}})
+        if (goalData.toDos.length === 1) {
+            goalData.toDos = data.get('notes').trim().split(',').map(todo => { return { id: uuidv4(), todo: todo, isCompleted: false } })
         }
 
         if (dayInfo.goal === '') {
-            dispatchHandler('CREATE', { payload: goalData, id: uuidv4()})
+            (async () => {
+                const response = await addDoc(goalsCollectionRef, goalData)
+                dispatch({
+                    type: 'CREATE',
+                    payload: goalData,
+                    id: response.id
+                })
+            })();
         } else if (isUpdating) {
-            dispatchHandler('UPDATE', { payload: goalData, id: dayInfo.id})
+            (async () => {
+                const goalDoc = doc(db, "goals", dayInfo.id)
+                await updateDoc(goalDoc, goalData)
+                dispatch({
+                    type: 'UPDATE',
+                    payload: goalData,
+                    id: dayInfo.id
+                })
+            })()
         }
         popModalHandler()
 
@@ -84,7 +88,14 @@ export const EventPopUp = () => {
 
     const showDeleteHandler = () => {
         if (window.confirm('Are you sure you want to delete this goal?')) {
-            dispatchHandler('DELETE', { id: dayInfo.id })
+            (async () => {
+                const goalDoc = doc(db, "goals", dayInfo.id)
+                await deleteDoc(goalDoc)
+                dispatch({
+                    type: 'DELETE',
+                    id: dayInfo.id
+                })
+            })()
             popModalHandler()
         }
 

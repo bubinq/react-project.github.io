@@ -5,6 +5,10 @@ import { DashboardPopUp } from "./DashboardPopUp"
 import { motion } from "framer-motion"
 import dayjs from "dayjs"
 
+import { goalsCollectionRef } from "../../firebase-constants/goalsCollection"
+import { getDocs } from 'firebase/firestore'
+import { getAuthData } from "../../services/AuthUtils"
+
 
 export const Dashboard = () => {
 
@@ -13,7 +17,7 @@ export const Dashboard = () => {
     //  Asks if you want to keep or change goals with same names
 
 
-    const { goals, dispatch, displayDuration } = useContext(GoalContext)
+    const { goals, dispatch, displayDuration, isLoading, setFirebaseGoals } = useContext(GoalContext)
     const [showPopUp, setShowPopUp] = useState(false)
 
     const lastAddedGoal = goals[goals.length - 1]
@@ -60,17 +64,43 @@ export const Dashboard = () => {
         }
 
     }
+
+    useEffect(() => {
+        const getGoals = async () => {
+            const data = await getDocs(goalsCollectionRef)
+            setFirebaseGoals(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+            return data
+        }
+        getGoals()
+            .then((data) => {
+                const loadedData = data.docs.map(doc => ({ ...doc.data(), id: doc.id }))
+                const user = getAuthData()
+                const userGoals = loadedData.filter(goal => goal.ownerId === user.id)
+                return dispatch({
+                    type: 'READ',
+                    payload: userGoals
+                })
+            })
+        // eslint-disable-next-line
+    }, [])
+
     return (
-        <div>
-            <Calendar></Calendar>
-            {showPopUp &&
-                <motion.div
-                    initial={{ opacity: 0, y: -100 }}
-                    animate={{ opacity: 1, y: -30 }}
-                >
-                    <DashboardPopUp lastAddedGoal={lastAddedGoal} setShowPopUp={setShowPopUp} />
-                </motion.div>
+        <>
+            {isLoading ?
+                <h1>...Loading</h1>
+                :
+                <div>
+                    <Calendar></Calendar>
+                    {showPopUp &&
+                        <motion.div
+                            initial={{ opacity: 0, y: -100 }}
+                            animate={{ opacity: 1, y: -30 }}
+                        >
+                            <DashboardPopUp lastAddedGoal={lastAddedGoal} setShowPopUp={setShowPopUp} />
+                        </motion.div>
+                    }
+                </div>
             }
-        </div>
+        </>
     )
 }

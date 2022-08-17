@@ -3,11 +3,12 @@ import styles from '../dashboard-page/Dashboard.module.css'
 
 import dayjs from 'dayjs';
 import { motion } from "framer-motion";
-import { useState, useContext } from 'react';
+import { useContext, useState } from 'react';
 
 import { stepAnimate } from './Constants';
 import { LoginModal } from './LoginModal';
 import { RegisterModal } from './RegisterModal';
+
 import { GoalContext } from '../../contexts/GoalContext';
 
 
@@ -17,8 +18,7 @@ export const Form = ({ toggleModal, toggleModalHandler, checkErrorsHandler, hasE
     //  Controls displaying of correct Auth Modal when form is submitted
     //  Prepares form info and sends it to localStorage
 
-
-    const { goals } = useContext(GoalContext);
+    const { goals } = useContext(GoalContext)
 
     const [View, setView] = useState(() => LoginModal)
     const [form, setFormData] = useState({})
@@ -62,7 +62,7 @@ export const Form = ({ toggleModal, toggleModalHandler, checkErrorsHandler, hasE
             isCompleted: false
         }
 
-        setFormData({...goalData})
+        setFormData({ ...goalData })
 
         if (!goal) {
             checkErrorsHandler(true)
@@ -71,9 +71,8 @@ export const Form = ({ toggleModal, toggleModalHandler, checkErrorsHandler, hasE
 
         checkErrorsHandler(false)
         ev.target.reset()
+
     }
-
-
     return (
         <>
             <form onSubmit={formHandler}>
@@ -85,7 +84,7 @@ export const Form = ({ toggleModal, toggleModalHandler, checkErrorsHandler, hasE
                     <div className="buble goal">
                         <h3>Step 1:</h3>
                         <label htmlFor="goal">Set goal</label>
-                        <input name="goal" type="text" id="goal" placeholder="Ex. Meditate" autoComplete='off' maxLength={25}/>
+                        <input name="goal" type="text" id="goal" placeholder="Ex. Meditate" autoComplete='off' maxLength={25} />
                     </div>
                 </motion.div>
 

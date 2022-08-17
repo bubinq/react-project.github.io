@@ -6,6 +6,7 @@ import { GoalContext } from "../../../../contexts/GoalContext"
 import styles from './GoalDetails.module.css'
 import ToDoItem from "./ToDoItem"
 import { Navigation } from "../../../Navigation"
+import { updateGoal } from "../../../../services/GoalServices"
 
 const GoalDetails = () => {
 
@@ -36,14 +37,19 @@ const GoalDetails = () => {
             return
         }
 
-        dispatch({
-            type: 'TODOCREATE',
-            payload: goal,
-            oldToDos: goal.toDos,
-            todo: note,
-            todoId: uuidv4(),
-            id: goal.id
-        })
+        updateGoal(goal.id, goal.toDos)
+            .then(res => {
+                console.log(res)
+            })
+
+        // dispatch({
+        //     type: 'TODOCREATE',
+        //     payload: goal,
+        //     oldToDos: goal.toDos,
+        //     todo: note,
+        //     todoId: uuidv4(),
+        //     id: goal.id
+        // })
         setIsFiltering(false)
         ev.target.reset()
     }

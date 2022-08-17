@@ -14,7 +14,7 @@ export const Day = ({ day, rowIndex }) => {
 
 
     let { monthIdx, dayTarget, setDayTarget, setPopModal, popModal } = useContext(CalendarContext);
-    let { goals, setHasGoals, setDayInfo, displayDuration } = useContext(GoalContext);
+    const { goals, setHasGoals, setDayInfo, displayDuration, isLoading } = useContext(GoalContext);
 
 
     let today = dayjs().format('DD MM YYYY');
@@ -60,20 +60,29 @@ export const Day = ({ day, rowIndex }) => {
     }
 
     return (
-        <div className={styles.eachDay} onClick={() => selectDayHandler(day)}>
-            <div>
-                {rowIndex === 0 &&
-                    <h5 className={styles.firstRow}>{day.format('dd')}</h5>
-                }
-                <h4 className={getClass(day)}> {day.format('DD')}</h4>
-                {goals.map(goal => dayjs(goal.createdOn).format('DD MM YYYY') === currDay ?
-                    <DayNote key={goal.id} goal={goal} deadline={displayDuration(goal.id)[0]}></DayNote> : null)
-                }
+        <>
+            {isLoading ?
+                <h1>...Loading</h1>
+                
+                :
 
-                {goals.map(goal => dayjs(displayDuration(goal.id)[0]).format('DD MM YYYY') === currDay ?
-                    <GoalDeadLine key={goal.id} goal={goal} color={displayDuration(goal.id)[1]} deadline={displayDuration(goal.id)[0]}></GoalDeadLine> : null)
-                }
-            </div>
-        </div>
+                <div className={styles.eachDay} onClick={() => selectDayHandler(day)}>
+                    <div>
+                        {rowIndex === 0 &&
+                            <h5 className={styles.firstRow}>{day.format('dd')}</h5>
+                        }
+                        <h4 className={getClass(day)}> {day.format('DD')}</h4>
+                        {goals.map(goal => dayjs(goal.createdOn).format('DD MM YYYY') === currDay ?
+                            <DayNote key={goal.id} goal={goal} deadline={displayDuration(goal.id)[0]}></DayNote> : null)
+                        }
+
+                        {goals.map(goal => dayjs(displayDuration(goal.id)[0]).format('DD MM YYYY') === currDay ?
+                            <GoalDeadLine key={goal.id} goal={goal} color={displayDuration(goal.id)[1]} deadline={displayDuration(goal.id)[0]}></GoalDeadLine> : null)
+                        }
+                    </div>
+                </div>
+            }
+        </>
+
     )
 }
