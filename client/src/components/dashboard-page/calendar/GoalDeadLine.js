@@ -14,7 +14,7 @@ export const GoalDeadLine = ({ goal, color, deadline }) => {
         setMonthIdx(dayjs(goal.createdOn).month())
     }
     return (
-        <div className={goal.isCompleted ? `${styles.deadlineBubble} ${styles.completedStatus}` : `${styles.deadlineBubble} ${color}` } onClick = { returnToGoal } >
+        <div className={goal.isExpired ? `${styles.deadlineBubble} ${styles.completedStatus}` : `${styles.deadlineBubble} ${color}` } onClick = { returnToGoal } >
             <span className={styles.innerText}>{goal.goal} {deadline.format('DD MM')}</span>
         </div >
 

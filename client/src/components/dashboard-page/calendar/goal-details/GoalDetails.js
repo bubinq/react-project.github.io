@@ -1,12 +1,16 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { v4 as uuidv4 } from 'uuid'
 
 import { GoalContext } from "../../../../contexts/GoalContext"
 import styles from './GoalDetails.module.css'
 import ToDoItem from "./ToDoItem"
 import { Navigation } from "../../../Navigation"
-import { updateGoal } from "../../../../services/GoalServices"
+import { now, tomorrowVal } from "../constants/timeConst"
+import { CreateTodo } from "../../../../services/ToDoServices"
+
+import { addDoc } from 'firebase/firestore'
+import { dayProgressRef } from "../../../../firebase-constants/goalsCollection"
+import { uuidv4 } from "@firebase/util"
 
 const GoalDetails = () => {
 
@@ -19,6 +23,13 @@ const GoalDetails = () => {
     const [isFiltering, setIsFiltering] = useState(false)
 
     const goal = goals.find(g => g.id === goalId)
+
+    const calculatePercentage = () => {
+        const allToDos = goal.toDos.length
+        const oneUnit = 100 / allToDos
+        const unitPercentage = goal.toDos.filter(todo => todo.isCompleted === true).length * oneUnit
+        return unitPercentage
+    }
 
     const submitToDo = (ev) => {
         ev.preventDefault()
@@ -37,19 +48,23 @@ const GoalDetails = () => {
             return
         }
 
-        updateGoal(goal.id, goal.toDos)
-            .then(res => {
-                console.log(res)
-            })
+        const id = uuidv4()
 
-        // dispatch({
-        //     type: 'TODOCREATE',
-        //     payload: goal,
-        //     oldToDos: goal.toDos,
-        //     todo: note,
-        //     todoId: uuidv4(),
-        //     id: goal.id
-        // })
+        const toDoData = {
+            id: id,
+            todo: note,
+            isCompleted: false
+        }
+
+        CreateTodo(goalId, note, id)
+            .then(() => {
+                dispatch({
+                    type: 'TODOCREATE',
+                    payload: goal,
+                    toDos: toDoData,
+                    id: goalId
+                })
+            })
         setIsFiltering(false)
         ev.target.reset()
     }
@@ -75,10 +90,16 @@ const GoalDetails = () => {
         }
     }
 
-    const sortHandler = () => {
-        setIsFiltering(false);
-    }
+    useEffect(() => {
+        if (tomorrowVal - 10000 < now) {
+            const makeProgress = async () => {
+                await addDoc(dayProgressRef, { id: goalId, percentage: calculatePercentage(), completedAt: now });
 
+            }
+            makeProgress()
+        }
+        // eslint-disable-next-line
+    }, [goals])
 
     return (
         <>
@@ -107,8 +128,8 @@ const GoalDetails = () => {
                     <div className={styles.notesList}>
                         <ol className={styles.notes}>
                             {isFiltering ?
-                                toDos.map(task => <ToDoItem key={task.id} goal={goal} todo={task} sortHandler={sortHandler} />)
-                                : goal.toDos.map(task => <ToDoItem key={task.id} goal={goal} todo={task} sortHandler={sortHandler} />)
+                                toDos.map(task => <ToDoItem key={task.id} goal={goal} todo={task} setIsFiltering={setIsFiltering} />)
+                                : goal.toDos.map(task => <ToDoItem key={task.id} goal={goal} todo={task} setIsFiltering={setIsFiltering} />)
                             }
                         </ol>
                     </div>

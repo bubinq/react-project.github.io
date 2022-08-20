@@ -17,7 +17,7 @@ export const SideBar = () => {
             <aside className={styles.sideBar}>
                 <div className={styles.todayTasks}>
                     <h1>Today tasks</h1>
-                    {goals.map((goal, idx) => goal.isCompleted === false && idx < 3 ? <TodayTasks key={goal.id} goal={goal}></TodayTasks> : null)}
+                    {goals.map((goal, idx) => goal.isExpired === false && idx < 3 ? <TodayTasks key={goal.id} goal={goal}></TodayTasks> : null)}
                 </div>
                 <div className={styles.legendWrapper}>
                     <h1>All goals</h1>

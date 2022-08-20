@@ -5,10 +5,9 @@ import { DashboardPopUp } from "./DashboardPopUp"
 import { motion } from "framer-motion"
 import dayjs from "dayjs"
 
-import { goalsCollectionRef } from "../../firebase-constants/goalsCollection"
-import { getDocs } from 'firebase/firestore'
 import { getAuthData } from "../../services/AuthUtils"
 
+import { updateGoalStatus, getGoals } from "../../services/GoalServices"
 
 export const Dashboard = () => {
 
@@ -25,7 +24,7 @@ export const Dashboard = () => {
 
     useEffect(() => {
         checkLastGoalValidation()
-        checkGoalIsCompleted()
+        checkGoalIsExpired()
         // eslint-disable-next-line
     }, [goals])
 
@@ -35,18 +34,20 @@ export const Dashboard = () => {
         }, 12000)
     }
 
-    const checkGoalIsCompleted = () => {
+    const checkGoalIsExpired = () => {
         goals.map(function checkGoals(goal) {
             const deadline = displayDuration(goal.id)[0]
             const endGoal = new Date(dayjs(deadline).format('MM DD YYYY')).valueOf()
-            if (endGoal - today < 0 && !goal.isCompleted) {
-
-                return dispatch({
-                    type: 'UPDATECOMPLETE',
-                    payload: goal,
-                    id: goal.id
-                })
-
+            if (endGoal - today < 0 && !goal.isExpired) {
+                updateGoalStatus(goal.id)
+                    .then(() => {
+                        return dispatch({
+                            type: 'UPDATECOMPLETE',
+                            payload: goal,
+                            id: goal.id
+                        })
+                    })
+                return null
             }
             else {
                 return null;
@@ -66,16 +67,12 @@ export const Dashboard = () => {
     }
 
     useEffect(() => {
-        const getGoals = async () => {
-            const data = await getDocs(goalsCollectionRef)
-            setFirebaseGoals(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-            return data
-        }
         getGoals()
             .then((data) => {
                 const loadedData = data.docs.map(doc => ({ ...doc.data(), id: doc.id }))
                 const user = getAuthData()
                 const userGoals = loadedData.filter(goal => goal.ownerId === user.id)
+                setFirebaseGoals(loadedData)
                 return dispatch({
                     type: 'READ',
                     payload: userGoals

@@ -39,7 +39,7 @@ export const EventPopUp = () => {
             toDos: data.get('notes').trim() !== '' ? data.get('notes').trim().split('\n').map(todo => { return { id: uuidv4(), todo: todo, isCompleted: false } }) : isEmpty = true,
             labelColor: selectedLabel.color,
             isSaved: false,
-            isCompleted: false,
+            isExpired: false,
             ownerId: user.id
         }
 

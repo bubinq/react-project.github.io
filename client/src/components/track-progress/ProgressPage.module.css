@@ -1,0 +1,116 @@
+.progressWrapper {
+    overflow-x: hidden;
+}
+
+.progressDay {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    caret-color: transparent;
+    border: 1px solid rgb(153, 153, 153);
+}
+
+.progressDay h4,
+h5 {
+    margin: 0;
+}
+
+.main {
+    display: flex;
+    justify-content: space-around;
+}
+
+.notCurrentMonth {
+    font-weight: 400;
+    color: lightgray;
+}
+
+.headerWrapper {
+    display: flex;
+    justify-content: space-around;
+}
+
+.isToday {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    border-radius: 50%;
+    background-color: rgb(45, 156, 254);
+    width: 30px;
+    height: 30px;
+}
+
+.sideBar {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+.legendWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.trackedGoal {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    letter-spacing: 1.2px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+
+.red {
+    background-color: rgb(243, 31, 84);
+}
+
+.purple {
+    background-color: rgb(159, 94, 255);
+}
+
+.orange {
+    background-color: rgb(255, 138, 106);
+}
+
+.yellow {
+    background-color: rgb(255, 232, 139);
+}
+
+.green {
+    background-color: rgb(98, 252, 178);
+}
+
+.blue {
+    background-color: rgb(53, 134, 255);
+}
+
+.bubble {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    top: -12%;
+    border-radius: 50%;
+    font-weight: 700;
+}
+.circle {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+.figure {
+    position: absolute;
+    left: -18%;
+    top:-460%;
+    transform: rotate(270deg);
+}
+.figure circle {
+    fill: transparent;
+    stroke: green;
+    stroke-width: 6;
+    transform: translate(5px, 5px);
+}
+.middle {
+    margin-top: 10px;
+}

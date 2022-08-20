@@ -1,20 +1,27 @@
-import { request } from "./AuthServices";
+import { db } from "../firebase-config"
+import { goalsCollectionRef } from "../firebase-constants/goalsCollection"
+import { setDoc, doc, getDocs, deleteDoc } from "firebase/firestore"
 
-const baseUrl = 'http://localhost:3030/data/goals'
 
-
-export async function getAllGoals() {
-    return request('get', baseUrl)
+export const getGoals = async () => {
+    const data = await getDocs(goalsCollectionRef)
+    return data
 }
 
-export async function createGoal(data) {
-    return request('post', baseUrl, data)
+export const updateGoalStatus = async (goalId) => {
+    const currentGoal = doc(db, 'goals', goalId)
+    const data = await setDoc(currentGoal, { isExpired: true }, { merge: true })
+    return data
 }
 
-export async function updateGoal(id, data) {
-    return request('put', `${baseUrl}/${id}`, data)
+export const removeGoal = async (goalId) => {
+    const goalDoc = doc(db, "goals", goalId)
+    const data = await deleteDoc(goalDoc)
+    return data
 }
 
-export async function deleteGoal(id) {
-    return request('delete', `${baseUrl}/${id}`)
+export const saveGoal = async (goalId) => {
+    const currentGoal = doc(db, 'goals', goalId)
+    const data = await setDoc(currentGoal, { isSaved: true }, { merge: true })
+    return data
 }

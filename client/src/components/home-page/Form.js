@@ -59,7 +59,7 @@ export const Form = ({ toggleModal, toggleModalHandler, checkErrorsHandler, hasE
             toDos: [],
             labelColor: styles.purple,
             isSaved: false,
-            isCompleted: false
+            isExpired: false
         }
 
         setFormData({ ...goalData })

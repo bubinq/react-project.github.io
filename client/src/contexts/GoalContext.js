@@ -1,6 +1,12 @@
 import dayjs from "dayjs";
+import { db } from "../firebase-config";
+import { query, where, getDocs, doc } from "firebase/firestore";
+
+import { resetToDo, reset } from "../services/ToDoServices";
 import { createContext, useEffect, useReducer, useState } from "react";
+import { dayProgressRef } from "../firebase-constants/goalsCollection";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import { tomorrowVal, now } from "../components/dashboard-page/calendar/constants/timeConst";
 
 
 export const GoalContext = createContext()
@@ -11,13 +17,17 @@ function goalManager(state, action) {
         case 'READ':
             return [...action.payload]
 
+        case 'READTODO':
+            return state.map(oldGoal => oldGoal.id === action.id ?
+                { ...action.payload, toDos: [...action.toDos] } : oldGoal)
+
         case 'CREATE':
-            return [...state, { ...action.payload, id: action.id }];
+            return [...state, { ...action.payload, id: action.id }]
 
         case 'TODOCREATE':
-            return state.map(oldGoal => oldGoal._id === action.id ?
+            return state.map(oldGoal => oldGoal.id === action.id ?
                 {
-                    ...oldGoal, toDos: [...oldGoal.toDos, ...action.payload]
+                    ...action.payload, toDos: [...oldGoal.toDos, action.toDos]
                 } : oldGoal)
 
         case 'UPDATE':
@@ -27,28 +37,13 @@ function goalManager(state, action) {
             return state.map(oldGoal => oldGoal.id === action.id ? { ...action.payload, isSaved: true } : oldGoal)
 
         case 'UPDATECOMPLETE':
-            return state.map(oldGoal => oldGoal.id === action.id ? { ...action.payload, isCompleted: true } : oldGoal)
-
-        case 'TODOUPDATESTATE':
-            return state.map(oldGoal => oldGoal.id === action.id ?
-                {
-                    ...action.payload, toDos: [...action.oldToDos.map(oldTodo => oldTodo.id === action.todo.id ?
-                        { ...action.todo, isCompleted: !action.todo.isCompleted } : oldTodo)]
-                } : oldGoal)
-
-        case 'TODOUPDATETEXT':
-            return state.map(oldGoal => oldGoal.id === action.id ?
-                {
-                    ...action.payload, toDos: [...action.oldToDos.map(oldTodo => oldTodo.id === action.todo.id ?
-                        { ...action.todo, todo: action.newName } : oldTodo)]
-                }
-                : oldGoal)
+            return state.map(oldGoal => oldGoal.id === action.id ? { ...action.payload, isExpired: true } : oldGoal)
 
         case 'DELETE':
             return state.filter(oldGoal => oldGoal.id !== action.id)
 
         case 'TODODELETE':
-            return state.map(oldGoal => oldGoal._id === action.id ?
+            return state.map(oldGoal => oldGoal.id === action.id ?
                 { ...action.payload, toDos: [...action.oldToDos.filter(oldToDo => oldToDo.id !== action.todo.id)] } : oldGoal)
 
         default:
@@ -70,8 +65,9 @@ export const GoalProvider = ({ children }) => {
     const [dayInfo, setDayInfo] = useState({});
     const [toDos, setToDos] = useState('')
     const [hasGoals, setHasGoals] = useState(false)
+    const [selectedGoal, setSelecetedGoal] = useState({})
+    const [dayProgress, setDayProgress] = useState([])
     const [firebaseGoals, setFirebaseGoals] = useState([])
-
 
     useEffect(() => {
         setGoalStorage(goals)
@@ -79,11 +75,15 @@ export const GoalProvider = ({ children }) => {
     }, [goals, firebaseGoals, setGoalStorage])
 
 
-    useEffect(() => {
-        setToDos(toDos)
-    }, [toDos, setToDos, goals, dispatch])
-
-
+    const selectGoalHandler = async (goal) => {
+        setDayProgress([])
+        setSelecetedGoal(goal)
+        const q = query(dayProgressRef, where('id', "==", goal.id))
+        const responseData = await getDocs(q)
+        responseData.forEach((doc) => {
+            setDayProgress(oldProgress => [...oldProgress, doc.data()])
+        });
+    }
 
     const displayDuration = (goalId) => {
 
@@ -104,6 +104,18 @@ export const GoalProvider = ({ children }) => {
         }
     }
 
+    useEffect(() => {
+        if (tomorrowVal - 5000 < now) {
+            goals.map(goal => {
+                return goal.toDos.map(todo => {
+                    return Promise.all([resetToDo(doc(db, 'goals', goal.id), todo), reset(doc(db, 'goals', goal.id), todo)])
+                })
+            })
+        }
+    }, [goals])
+
+
+
     return (
         <GoalContext.Provider
             value={{
@@ -121,7 +133,11 @@ export const GoalProvider = ({ children }) => {
                 isLoading,
                 setIsLoading,
                 firebaseGoals,
-                setFirebaseGoals
+                setFirebaseGoals,
+                selectGoalHandler,
+                selectedGoal,
+                dayProgress,
+                setDayProgress
             }}>{children}
         </GoalContext.Provider>
     )

@@ -121,11 +121,10 @@ export const Home = () => {
                     <Form toggleModal={toggleModal} toggleModalHandler={toggleModalHandler} checkErrorsHandler={checkErrorsHandler} hasErrors={hasErrors}></Form>
                 }
 
-
             </div>
             <motion.div
                 initial={{ y: '100vh', opacity: 0 }}
-                animate={{ y: -30, opacity: 1 }}
+                animate={{ y: -5, opacity: 1 }}
                 transition={{ duration: 0.8 }}
             >
                 <div className="circle two"></div>

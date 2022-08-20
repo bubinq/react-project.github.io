@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom"
-import { clearAuthData, getAuthData } from '../services/AuthUtils'
+import { getAuthData } from '../services/AuthUtils'
 import styles from './dashboard-page/Dashboard.module.css'
 import * as authServices from '../services/AuthServices'
 
@@ -29,7 +29,10 @@ export const Navigation = () => {
                 {authUser &&
                     <ul>
                         <Link to="/dashboard" className={styles.welcomeLink}>Welcome, {authUser.email.split('@')[0]}</Link>
-                        {location === 'goals' &&
+                        {location === 'dashboard' &&
+                            <Link to="/progress" className={styles.navigationLinks}>Track Progress</Link>
+                        }
+                        {location !== 'dashboard' &&
                             <Link to="/dashboard" className={styles.navigationLinks}>Dashboard</Link>
                         }
                         <Link to="/dashboard" onClick={logoutHandler} className={styles.navigationLinks}>Log Out</Link>

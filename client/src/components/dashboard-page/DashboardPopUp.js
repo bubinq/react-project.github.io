@@ -2,6 +2,8 @@ import { useContext, useState } from 'react'
 import { GoalContext } from '../../contexts/GoalContext'
 import styles from './Dashboard.module.css'
 
+import { removeGoal, saveGoal } from '../../services/GoalServices'
+
 export const DashboardPopUp = ({ lastAddedGoal, setShowPopUp }) => {
 
     const { dispatch } = useContext(GoalContext)
@@ -9,28 +11,34 @@ export const DashboardPopUp = ({ lastAddedGoal, setShowPopUp }) => {
     const [updatedChanges, setUpdatedChanges] = useState(false)
 
     const removeGoalHandler = () => {
-        dispatch({
-            type: 'DELETE',
-            id: lastAddedGoal.id
-        })
         setUpdatedChanges(true)
-        setTimeout(() => {
-            setShowPopUp(false)
-            setUpdatedChanges(false)
-        }, 2000)
+        removeGoal(lastAddedGoal.id)
+            .then(() => {
+                dispatch({
+                    type: 'DELETE',
+                    id: lastAddedGoal.id
+                })
+                setShowPopUp(false)
+                setUpdatedChanges(false)
+            }).catch(err => {
+                alert(err.message)
+            })
     }
 
     const saveGoalHandler = () => {
-        dispatch({
-            type: 'UPDATESTATUS',
-            payload: lastAddedGoal,
-            id: lastAddedGoal.id
-        })
         setUpdatedChanges(true)
-        setTimeout(() => {
-            setShowPopUp(false)
-            setUpdatedChanges(false)
-        }, 2000)
+        saveGoal(lastAddedGoal.id)
+            .then(() => {
+                dispatch({
+                    type: 'UPDATESTATUS',
+                    payload: lastAddedGoal,
+                    id: lastAddedGoal.id
+                })
+                setShowPopUp(false)
+                setUpdatedChanges(false)
+            }).catch(err => {
+                alert(err.message)
+            })
     }
 
     return (

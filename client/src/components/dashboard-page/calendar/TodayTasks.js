@@ -7,7 +7,7 @@ export const TodayTasks = ({ goal }) => {
 
 
     const firstToDo = goal.toDos[0]
-    const displayOnlyWhen = goal.isCompleted === false && firstToDo
+    const displayOnlyWhen = goal.isExpired === false && firstToDo
     return (
         <div>
             {displayOnlyWhen &&

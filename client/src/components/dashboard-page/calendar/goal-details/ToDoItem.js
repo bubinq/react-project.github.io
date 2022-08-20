@@ -2,12 +2,18 @@ import styles from './GoalDetails.module.css'
 import { useContext, useEffect, useState } from 'react'
 import { GoalContext } from '../../../../contexts/GoalContext'
 
-const ToDoItem = ({ todo, goal, sortHandler }) => {
+import { db } from "../../../../firebase-config"
+import { doc } from 'firebase/firestore'
+import { editToDo, CompleteToDo, deleteToDo, finishCompleted, finishEdited } from '../../../../services/ToDoServices'
+
+const ToDoItem = ({ todo, goal, setIsFiltering }) => {
 
     //  Manages CRUD operations
     //  Updates status
 
     const { dispatch, toDos } = useContext(GoalContext)
+
+    const currentGoal = doc(db, 'goals', goal.id)
 
     const [isCompleted, setIsComplete] = useState(false)
     const [isClicked, setIsClicked] = useState(false)
@@ -23,29 +29,59 @@ const ToDoItem = ({ todo, goal, sortHandler }) => {
 
     const completeHandler = () => {
         setIsComplete(!isCompleted)
-        dispatch({
-            type: "TODOUPDATESTATE",
-            payload: goal,
-            oldToDos: goal.toDos,
-            todo: todo,
-            id: goal.id,
-        })
+
+        const completedTodo = {
+            id: todo.id,
+            todo: todo.todo,
+            isCompleted: !todo.isCompleted
+        }
+
+        CompleteToDo(currentGoal, todo)
+            .then(() => {
+                dispatch({
+                    type: "TODODELETE",
+                    payload: goal,
+                    oldToDos: goal.toDos,
+                    todo: todo,
+                    id: goal.id,
+                })
+            }).catch(err => {
+                console.log(err.message)
+            })
+        finishCompleted(currentGoal, todo)
+            .then(() => {
+                dispatch({
+                    type: 'TODOCREATE',
+                    payload: goal,
+                    toDos: completedTodo,
+                    id: goal.id
+                })
+            }).catch(err => {
+                console.log(err.message)
+            })
     }
 
     const deleteHandler = (ev) => {
         const parent = ev.target.parentNode
         parent.style.display = 'none'
-        dispatch({
-            type: "TODODELETE",
-            payload: goal,
-            oldToDos: goal.toDos,
-            todo: todo,
-            id: goal.id,
-        })
+
+        deleteToDo(goal.id, todo)
+            .then(() => {
+                dispatch({
+                    type: "TODODELETE",
+                    payload: goal,
+                    oldToDos: goal.toDos,
+                    todo: todo,
+                    id: goal.id,
+                })
+            })
+        setIsFiltering(false)
     }
+
     const setClickHandler = () => {
         setIsClicked(!isClicked);
     }
+
     const editNameHandler = (ev) => {
         ev.preventDefault();
         const data = new FormData(ev.target);
@@ -60,16 +96,33 @@ const ToDoItem = ({ todo, goal, sortHandler }) => {
             return;
         }
 
-        dispatch({
-            type: "TODOUPDATETEXT",
-            payload: goal,
-            oldToDos: goal.toDos,
-            todo: todo,
-            id: goal.id,
-            newName: newText
-        })
+        const updatedTodo = {
+            id: todo.id,
+            todo: newText,
+            isCompleted: false
+        }
+
+        editToDo(todo, currentGoal)
+            .then(() => {
+                dispatch({
+                    type: "TODODELETE",
+                    payload: goal,
+                    oldToDos: goal.toDos,
+                    todo: todo,
+                    id: goal.id,
+                })
+            })
+        finishEdited(currentGoal, todo, newText)
+            .then(() => {
+                dispatch({
+                    type: 'TODOCREATE',
+                    payload: goal,
+                    toDos: updatedTodo,
+                    id: goal.id
+                })
+            })
         setIsClicked(false)
-        sortHandler()
+        setIsFiltering(false)
     }
     return (
         <li className={isCompleted ? styles.completed : styles.noteItem}>
@@ -84,7 +137,10 @@ const ToDoItem = ({ todo, goal, sortHandler }) => {
                             </button>
                         </>
                     }
-                    <span className="material-symbols-outlined" onClick={setClickHandler}>edit</span>
+                    {!isCompleted &&
+                        <span className="material-symbols-outlined" onClick={setClickHandler}>edit</span>
+                    }
+
                 </form>
                 <button className={styles.completeBtn} onClick={completeHandler}>Complete</button>
                 <button className={styles.deleteBtn} onClick={deleteHandler}>Delete</button>

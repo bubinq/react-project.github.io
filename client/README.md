@@ -1,14 +1,38 @@
-# Disclaimer!!!
-
-This project does not work with fully-integrated authentication system and a server
-Instead your authentication data and goals data are stored and accessed through localStorage
-The focus of this project is purely based on the Front-End development part
-
 # Project Description
 
 This project is about Goal Planning and Organizing your everyday tasks
-You can set new goals, track your progress and manage each step of the planning and execution phase of your set goals
+You can set new goals, track your progress and manage each step towards achieving success
 
+# HomePage
+
+It is a landing page which takes user input and displays it only if he loggs in.
+You have the option to Log in straight forward or register with a brand new account
+Otherwise you can add your desired goal and set a deadline which will be saved on your calendar
+
+# Dashboard/Calendar
+
+This is the main focus of this app. Here you can manage each one of your goals.
+You can navigate through the calendar by clicking the header arrows.
+CRUD operations are only available for authenticated users
+You can view your today's tasks and you can also go to your goal's details
+
+# GoalDetails
+
+This is basically a to-do list that you can do CRUD operations on
+
+# ProgressPage
+
+Gives you track record of your task completion score
+
+# Used Tools
+
+React.js
+Firebase API/ Firebase Cloud Firestore DB
+Dayjs
+Framer-motion
+HTML
+CSS
+JS
 
 # Getting Started with Create React App
 

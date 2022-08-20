@@ -6,6 +6,7 @@ export const showHideAnimate = {
     },
     show: {
         x: 0,
+        y: -20,
         opacity: 1,
         transition: { duration: 0.9 }
     }

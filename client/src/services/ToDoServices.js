@@ -1,32 +1,43 @@
-import { request } from "./AuthServices";
+import { db } from "../firebase-config"
+import { arrayUnion, arrayRemove, updateDoc, doc } from "firebase/firestore"
 
-const baseUrl = 'http://localhost:3030/data/todos'
-
-
-export async function getAllToDos() {
-    return request('get', baseUrl)
+export const CreateTodo = async (goalId, note, id) => {
+    const currentGoal = doc(db, 'goals', goalId)
+    const result = await updateDoc(currentGoal,
+        { toDos: arrayUnion({ id: id, todo: note, isCompleted: false }) })
+    return result
 }
 
-export async function getAllToDosByIdAndOwner(id) {
-    const owner = encodeURIComponent(`user=_ownerId:users`)
-    const match = encodeURIComponent(`goalId="${id}"`)
-    return request('get', `${baseUrl}?where${match}&load${owner}`)
+export const CompleteToDo = async (currentGoal, todo) => {
+    const result = await updateDoc(currentGoal, { toDos: arrayRemove(todo) })
+    return result
 }
 
-export async function getAllToDosById(id) {
-    const match = encodeURIComponent(`goalId="${id}"`)
-    return request('get', `${baseUrl}?where${match}`)
+export const finishCompleted = async (currentGoal, todo) => {
+    const result = await updateDoc(currentGoal, { toDos: arrayUnion({ id: todo.id, todo: todo.todo, isCompleted: !todo.isCompleted }) })
+    return result
 }
 
-
-export async function createToDo(id, data) {
-    return request('post', baseUrl, {goalId: id, ...data})
+export const deleteToDo = async (goalId, todo) => {
+    const currentGoal = doc(db, 'goals', goalId)
+    const result = await updateDoc(currentGoal, { toDos: arrayRemove(todo) })
+    return result
 }
 
-export async function updateToDos(id, data) {
-    return request('put', `${baseUrl}/${id}`, data)
+export const editToDo = async (todo, currentGoal) => {
+    const result = await updateDoc(currentGoal, { toDos: arrayRemove(todo) })
+    return result
 }
 
-export async function deleteToDo(id) {
-    return request('delete', `${baseUrl}/${id}`)
+export const finishEdited = async (currentGoal, todo, newText) => {
+    const result = updateDoc(currentGoal, { toDos: arrayUnion({ id: todo.id, todo: newText, isCompleted: false }) })
+    return result
+}
+
+export const resetToDo = async (currentGoal, todo) => {
+    await updateDoc(currentGoal, { toDos: arrayRemove(todo) })
+}
+
+export const reset = async (currentGoal, todo) => {
+    await updateDoc(currentGoal, { toDos: arrayUnion({ id: todo.id, todo: todo.todo, isCompleted: false }) })
 }

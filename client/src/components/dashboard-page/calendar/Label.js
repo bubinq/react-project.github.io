@@ -8,13 +8,13 @@ export const Label = ({ goal }) => {
     const { isLoading } = useContext(GoalContext)
 
     return (
-        <>  
+        <>
             {isLoading &&
                 <h1>...Loading</h1>
             }
-            <div className={goal.labelColor}>
+            <div className={goal.isExpired ? styles.completedStatus : goal.labelColor}>
                 <span>
-                    <Link to={`/goals/${goal._id}`} className={styles.goalSpan}>{goal.goal}</Link>
+                    <Link to={`/goals/${goal.id}`} className={styles.goalSpan}>{goal.goal}</Link>
                 </span>
             </div>
         </>
