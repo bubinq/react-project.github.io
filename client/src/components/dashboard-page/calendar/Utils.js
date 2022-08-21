@@ -18,4 +18,3 @@ export function displayMonth(month = dayjs().month()) {
 
     return calendar
 }
-

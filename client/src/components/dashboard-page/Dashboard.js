@@ -16,7 +16,7 @@ export const Dashboard = () => {
     //  Asks if you want to keep or change goals with same names
 
 
-    const { goals, dispatch, displayDuration, isLoading, setFirebaseGoals } = useContext(GoalContext)
+    const { goals, dispatch, displayDuration, isLoading, setFirebaseGoals, setDayProgress, resetSelectedGoal } = useContext(GoalContext)
     const [showPopUp, setShowPopUp] = useState(false)
 
     const lastAddedGoal = goals[goals.length - 1]
@@ -25,6 +25,8 @@ export const Dashboard = () => {
     useEffect(() => {
         checkLastGoalValidation()
         checkGoalIsExpired()
+        setDayProgress([])
+        resetSelectedGoal()
         // eslint-disable-next-line
     }, [goals])
 

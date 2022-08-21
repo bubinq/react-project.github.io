@@ -20,8 +20,6 @@ export const DayProgress = ({ day, rowIndex }) => {
     let displayedYear = dayjs(day).year();
     let currentYear = dayjs().year();
 
-
-
     function getClass(day) {
 
         if (displayedYear < currentYear) {
@@ -53,9 +51,7 @@ export const DayProgress = ({ day, rowIndex }) => {
 
                             {!dayProgress ?
                                 <>
-                                    {today === currDay &&
-                                        <h1>...Loading</h1>
-                                    }
+                                    <h1>...Loading</h1>
                                 </>
                                 :
                                 <>

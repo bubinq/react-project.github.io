@@ -21,6 +21,7 @@ export const ProgressPage = () => {
     useEffect(() => {
         setDayProgress([])
         resetSelectedGoal()
+        // eslint-disable-next-line
     }, [])
     return (
         <div className={styles.progressWrapper}>
