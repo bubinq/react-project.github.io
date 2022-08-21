@@ -6,7 +6,7 @@ export const DisplayProgress = ({ day }) => {
     return (
         <div className={styles.circle}>
             <svg className={styles.figure}>
-                <circle cx='40' cy="40" r="40" strokeDashoffset={-offSet} strokeDasharray={251}></circle>
+                <circle cx='40' cy="40" r="40" strokeDashoffset={offSet} strokeDasharray={251}></circle>
             </svg>
             <span className={styles.middle}>{day.percentage}%</span>
         </div>

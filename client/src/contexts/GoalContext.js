@@ -17,10 +17,6 @@ function goalManager(state, action) {
         case 'READ':
             return [...action.payload]
 
-        case 'READTODO':
-            return state.map(oldGoal => oldGoal.id === action.id ?
-                { ...action.payload, toDos: [...action.toDos] } : oldGoal)
-
         case 'CREATE':
             return [...state, { ...action.payload, id: action.id }]
 
@@ -85,6 +81,10 @@ export const GoalProvider = ({ children }) => {
         });
     }
 
+    const resetSelectedGoal = () => {
+        setSelecetedGoal({})
+    }
+
     const displayDuration = (goalId) => {
 
         const searchedGoal = goals.find(target => target.id === goalId)
@@ -137,7 +137,8 @@ export const GoalProvider = ({ children }) => {
                 selectGoalHandler,
                 selectedGoal,
                 dayProgress,
-                setDayProgress
+                setDayProgress,
+                resetSelectedGoal
             }}>{children}
         </GoalContext.Provider>
     )

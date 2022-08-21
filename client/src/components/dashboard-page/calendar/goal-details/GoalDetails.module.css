@@ -3,12 +3,11 @@
 }
 
 .bodyLayer {
-    position: fixed;
     margin: 0;
-    width: 100vw;
     height: 100vh;
     background: linear-gradient(to right, #f3f5f5, #e3e4f6);
     font-family: cursive;
+    overflow-x: hidden;
 }
 
 .wrapper {

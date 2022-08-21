@@ -10,8 +10,8 @@ import { v4 as uuidv4 } from 'uuid'
 import { getAuthData } from '../../../services/AuthUtils';
 
 import { db } from '../../../firebase-config';
-import { goalsCollectionRef } from '../../../firebase-constants/goalsCollection';
-import { addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore'
+import { goalsCollectionRef, dayProgressRef } from '../../../firebase-constants/goalsCollection';
+import { addDoc, updateDoc, deleteDoc, doc, query, where, getDocs } from 'firebase/firestore'
 
 export const EventPopUp = () => {
 
@@ -96,6 +96,20 @@ export const EventPopUp = () => {
                     id: dayInfo.id
                 })
             })()
+                .then(() => {
+                    const removeProgress = async () => {
+                        const q = query(dayProgressRef, where('id', "==", dayInfo.id))
+                        const responseData = await getDocs(q)
+                        responseData.forEach((document) => {
+                            const removeData = async () => {
+                                const progressDoc = doc(db, 'progress', document.id)
+                                await deleteDoc(progressDoc);
+                            }
+                            removeData()
+                        });
+                    }
+                    removeProgress()
+                })
             popModalHandler()
         }
 
