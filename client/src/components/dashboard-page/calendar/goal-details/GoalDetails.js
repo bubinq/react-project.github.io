@@ -1,15 +1,12 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import { useParams } from "react-router-dom"
 
 import { GoalContext } from "../../../../contexts/GoalContext"
 import styles from './GoalDetails.module.css'
 import ToDoItem from "./ToDoItem"
 import { Navigation } from "../../../Navigation"
-import { now, tomorrowVal } from "../constants/timeConst"
 import { CreateTodo } from "../../../../services/ToDoServices"
 
-import { addDoc } from 'firebase/firestore'
-import { dayProgressRef } from "../../../../firebase-constants/goalsCollection"
 import { uuidv4 } from "@firebase/util"
 
 const GoalDetails = () => {
@@ -21,15 +18,8 @@ const GoalDetails = () => {
     const { goals, dispatch, setToDos, toDos } = useContext(GoalContext)
     const { goalId } = useParams()
     const [isFiltering, setIsFiltering] = useState(false)
-
     const goal = goals.find(g => g.id === goalId)
 
-    const calculatePercentage = () => {
-        const allToDos = goal.toDos.length
-        const oneUnit = 100 / allToDos
-        const unitPercentage = goal.toDos.filter(todo => todo.isCompleted === true).length * oneUnit
-        return unitPercentage
-    }
 
     const submitToDo = (ev) => {
         ev.preventDefault()
@@ -90,16 +80,6 @@ const GoalDetails = () => {
         }
     }
 
-    useEffect(() => {
-        if (tomorrowVal - 10000 < now) {
-            const makeProgress = async () => {
-                await addDoc(dayProgressRef, { id: goalId, percentage: calculatePercentage(), completedAt: now });
-
-            }
-            makeProgress()
-        }
-        // eslint-disable-next-line
-    }, [goals])
 
     return (
         <>

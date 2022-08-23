@@ -1,12 +1,12 @@
 import dayjs from "dayjs";
 import { db } from "../firebase-config";
-import { query, where, getDocs, doc } from "firebase/firestore";
+import { query, where, getDocs, doc, addDoc } from "firebase/firestore";
 
 import { resetToDo, reset } from "../services/ToDoServices";
 import { createContext, useEffect, useReducer, useState } from "react";
 import { dayProgressRef } from "../firebase-constants/goalsCollection";
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import { tomorrowVal, now } from "../components/dashboard-page/calendar/constants/timeConst";
+import { now, tomorrowVal } from "../components/dashboard-page/calendar/constants/timeConst";
 
 
 export const GoalContext = createContext()
@@ -63,10 +63,13 @@ export const GoalProvider = ({ children }) => {
     const [hasGoals, setHasGoals] = useState(false)
     const [selectedGoal, setSelecetedGoal] = useState({})
     const [dayProgress, setDayProgress] = useState([])
+    const [today, setToday] = useState(dayjs(now).date())
+    const [dayChanged, setDayChanged] = useState(false)
     const [firebaseGoals, setFirebaseGoals] = useState([])
 
     useEffect(() => {
         setGoalStorage(goals)
+        console.log(today)
         // eslint-disable-next-line
     }, [goals, firebaseGoals, setGoalStorage])
 
@@ -83,6 +86,15 @@ export const GoalProvider = ({ children }) => {
 
     const resetSelectedGoal = () => {
         setSelecetedGoal({})
+    }
+
+    const displayToday = () => {
+        setDayChanged(false)
+        if (today !== dayjs(now).date()) {
+            setDayChanged(true)
+            setToday(dayjs(now).date())
+        }
+
     }
 
     const displayDuration = (goalId) => {
@@ -104,15 +116,28 @@ export const GoalProvider = ({ children }) => {
         }
     }
 
+    const calculatePercentage = (goal) => {
+        const allToDos = goal.toDos.length
+        const oneUnit = 100 / allToDos
+        const unitPercentage = Math.round(goal.toDos.filter(todo => todo.isCompleted === true).length * oneUnit)
+        return unitPercentage
+    }
+
     useEffect(() => {
-        if (tomorrowVal - 5000 < now) {
+        if (dayChanged) {
+            goals.map(
+                async function makeProgress(goal) {
+                    console.log('Executed')
+                    await addDoc(dayProgressRef, { id: goal.id, percentage: calculatePercentage(goal), completedAt: now });
+                })
             goals.map(goal => {
                 return goal.toDos.map(todo => {
                     return Promise.all([resetToDo(doc(db, 'goals', goal.id), todo), reset(doc(db, 'goals', goal.id), todo)])
                 })
             })
+
         }
-    }, [goals])
+    }, [goals, dayChanged])
 
 
 
@@ -138,7 +163,8 @@ export const GoalProvider = ({ children }) => {
                 selectedGoal,
                 dayProgress,
                 setDayProgress,
-                resetSelectedGoal
+                resetSelectedGoal,
+                displayToday
             }}>{children}
         </GoalContext.Provider>
     )
