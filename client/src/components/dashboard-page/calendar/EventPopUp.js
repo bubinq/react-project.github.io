@@ -7,7 +7,7 @@ import { UpdateGoal } from './UpdateGoal';
 import { labelsArray } from './constants/labelConst';
 import { GoalModal } from './GoalModal';
 import { v4 as uuidv4 } from 'uuid'
-import { getAuthData } from '../../../services/AuthUtils';
+import { authUser } from '../../../firebase-config';
 
 import { db } from '../../../firebase-config';
 import { goalsCollectionRef, dayProgressRef } from '../../../firebase-constants/goalsCollection';
@@ -21,7 +21,7 @@ export const EventPopUp = () => {
     const { popModalHandler, dayTarget } = useContext(CalendarContext)
     const { dispatch, setHasGoals, hasGoals, dayInfo } = useContext(GoalContext)
 
-    const user = getAuthData()
+    const user = authUser.currentUser
 
     const [isUpdating, setIsUpdating] = useState(false)
     const [selectedLabel, setSelectedLabel] = useState(labelsArray[0])
@@ -40,7 +40,7 @@ export const EventPopUp = () => {
             labelColor: selectedLabel.color,
             isSaved: false,
             isExpired: false,
-            ownerId: user.id
+            ownerId: user.uid
         }
 
 

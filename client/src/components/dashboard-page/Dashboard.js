@@ -5,8 +5,7 @@ import { DashboardPopUp } from "./DashboardPopUp"
 import { motion } from "framer-motion"
 import dayjs from "dayjs"
 
-import { getAuthData } from "../../services/AuthUtils"
-
+import { authUser } from "../../firebase-config"
 import { updateGoalStatus, getGoals } from "../../services/GoalServices"
 
 export const Dashboard = () => {
@@ -72,8 +71,8 @@ export const Dashboard = () => {
         getGoals()
             .then((data) => {
                 const loadedData = data.docs.map(doc => ({ ...doc.data(), id: doc.id }))
-                const user = getAuthData()
-                const userGoals = loadedData.filter(goal => goal.ownerId === user.id)
+                const user = authUser.currentUser
+                const userGoals = loadedData.filter(goal => goal.ownerId === user.uid)
                 setFirebaseGoals(loadedData)
                 return dispatch({
                     type: 'READ',

@@ -1,12 +1,13 @@
 import { Link, useNavigate } from "react-router-dom"
-import { getAuthData } from '../services/AuthUtils'
+import { authUser } from "../firebase-config"
 import styles from './dashboard-page/Dashboard.module.css'
-import * as authServices from '../services/AuthServices'
+import { logout } from "../services/firebaseAuthServices"
 import { useContext } from "react"
 import { GoalContext } from "../contexts/GoalContext"
 
 export const Navigation = () => {
-    const authUser = getAuthData()
+
+    const user = authUser.currentUser
 
     const location = window.location.pathname.split('/')[1]
 
@@ -19,9 +20,14 @@ export const Navigation = () => {
         ev.preventDefault()
 
         if (window.confirm('Are you sure you want to logout?')) {
-            authServices.get('http://localhost:3030/users/logout')
-            localStorage.clear()
-            navigateTo('/')
+            logout()
+                .then((res) => {
+                    localStorage.clear()
+                    navigateTo('/')
+                })
+                .catch(err => {
+                    alert(err.message)
+                })
         } else {
             navigateTo('/dashboard')
         }
@@ -30,9 +36,9 @@ export const Navigation = () => {
     return (
         <header className={styles.header}>
             <nav className={styles.navigation}>
-                {authUser &&
+                {user &&
                     <ul>
-                        <Link to="/dashboard" className={styles.welcomeLink}>Welcome, {authUser.email.split('@')[0]}</Link>
+                        <Link to="/dashboard" className={styles.welcomeLink}>Welcome, {user.email.split('@')[0]}</Link>
                         {location === 'dashboard' &&
                             <Link to="/progress" className={styles.navigationLinks} onClick={displayToday}>Track Progress</Link>
                         }

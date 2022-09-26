@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { Link, useNavigate } from 'react-router-dom'
-import * as authServices from "../../services/AuthServices";
+import { signUp } from "../../services/firebaseAuthServices";
 import { ErrorMessage } from "./ErrorMessage";
 
 import { addDoc } from 'firebase/firestore'
@@ -49,11 +49,16 @@ export const RegisterModal = ({ showModalHandler, switchHandler, form }) => {
             passwordConfirm
         } = Object.fromEntries(new FormData(ev.target))
 
-        authServices.register(email.trim(), password.trim(), passwordConfirm.trim())
+        if (password !== passwordConfirm) {
+            setErrorMessage('Passwords must match')
+            return
+        }
+
+        signUp(email.trim(), password.trim())
             .then(res => {
                 if (form.goal) {
                     (async () => {
-                        await addDoc(goalsCollectionRef, { ...form, ownerId: res._id })
+                        await addDoc(goalsCollectionRef, { ...form, ownerId: res.user.uid })
                     })();
                 }
                 setErrorMessage('')

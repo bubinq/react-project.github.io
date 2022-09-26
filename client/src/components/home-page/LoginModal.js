@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { Link, useNavigate } from 'react-router-dom'
-import * as authServices from "../../services/AuthServices";
+import { login } from "../../services/firebaseAuthServices";
 import { ErrorMessage } from "./ErrorMessage";
 
 import { addDoc } from 'firebase/firestore'
@@ -46,11 +46,11 @@ export const LoginModal = ({ showModalHandler, switchHandler, form }) => {
             password
         } = Object.fromEntries(new FormData(ev.target))
 
-        authServices.login(email.trim(), password.trim())
+        login(email.trim(), password.trim())
             .then(res => {
                 if (form.goal) {
                     (async () => {
-                        await addDoc(goalsCollectionRef, { ...form, ownerId: res._id })
+                        await addDoc(goalsCollectionRef, { ...form, ownerId: res.user.uid })
                     })();
                 }
                 setErrorMessage('')

@@ -6,7 +6,7 @@ import { resetToDo, reset } from "../services/ToDoServices";
 import { createContext, useEffect, useReducer, useState } from "react";
 import { dayProgressRef } from "../firebase-constants/goalsCollection";
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import { now, tomorrowVal } from "../components/dashboard-page/calendar/constants/timeConst";
+import { now } from "../components/dashboard-page/calendar/constants/timeConst";
 
 
 export const GoalContext = createContext()
@@ -63,13 +63,13 @@ export const GoalProvider = ({ children }) => {
     const [hasGoals, setHasGoals] = useState(false)
     const [selectedGoal, setSelecetedGoal] = useState({})
     const [dayProgress, setDayProgress] = useState([])
-    const [today, setToday] = useState(dayjs(now).date())
+    const [today, setToday] = useState()
     const [dayChanged, setDayChanged] = useState(false)
     const [firebaseGoals, setFirebaseGoals] = useState([])
 
     useEffect(() => {
         setGoalStorage(goals)
-        console.log(today)
+        console.log(goals);
         // eslint-disable-next-line
     }, [goals, firebaseGoals, setGoalStorage])
 
@@ -94,6 +94,7 @@ export const GoalProvider = ({ children }) => {
             setDayChanged(true)
             setToday(dayjs(now).date())
         }
+        setDayChanged(false)
 
     }
 
@@ -127,7 +128,6 @@ export const GoalProvider = ({ children }) => {
         if (dayChanged) {
             goals.map(
                 async function makeProgress(goal) {
-                    console.log('Executed')
                     await addDoc(dayProgressRef, { id: goal.id, percentage: calculatePercentage(goal), completedAt: now });
                 })
             goals.map(goal => {

@@ -1,9 +1,9 @@
 import { Navigate, Outlet } from "react-router-dom"
-import { getAuthData } from "../services/AuthUtils"
+import { authUser } from "../firebase-config"
 
 export const RouteGuard = () => {
-    const authUser = getAuthData()
-    if (!authUser) {
+    const user = authUser.currentUser
+    if (!user) {
         return <Navigate to='/'  replace/>
     }
     return <Outlet/>;

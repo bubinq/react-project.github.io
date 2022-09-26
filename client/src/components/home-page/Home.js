@@ -1,13 +1,11 @@
 import './Home.css';
-import * as authServices from '../../services/AuthServices'
+import { logout } from '../../services/firebaseAuthServices';
 import { showHideAnimate, headerAnimate } from './Constants';
 import { Form } from './Form'
 
 import { motion } from "framer-motion";
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-
-import { getAuthData } from '../../services/AuthUtils';
 
 export const Home = () => {
 
@@ -16,13 +14,14 @@ export const Home = () => {
 
 
     const navigateTo = useNavigate()
+    const authData = localStorage.getItem('authData') || null
 
     const [hasErrors, setErrors] = useState(false)
 
-    const authUser = getAuthData()
     let nickname;
-    if (authUser) {
-        nickname = authUser.email.split('@')[0]
+    if (authData) {
+        const data = JSON.parse(authData)
+        nickname = data.email.split('@')[0]
     }
 
     const [toggleModal, setToggleModal] = useState(false)
@@ -41,10 +40,15 @@ export const Home = () => {
         ev.preventDefault()
 
         if (window.confirm('Are you sure you want to logout?')) {
-            authServices.get('http://localhost:3030/users/logout')
-            localStorage.clear()
+            logout()
+                .then((res) => {
+                    localStorage.clear()
+                    navigateTo('/')
+                })
+                .catch(err => {
+                    alert(err.message)
+                })
         }
-        navigateTo('/')
     }
 
     return (
@@ -64,7 +68,7 @@ export const Home = () => {
                     initial='hidden'
                     animate="show"
                 >
-                    {authUser ?
+                    {authData ?
                         <ul>
                             <Link to="/" onClick={logoutHandler}>Log Out</Link>
                         </ul>
@@ -102,7 +106,7 @@ export const Home = () => {
                         <h1 className="third-line">tasks more easily.</h1>
                     </div>
                 </motion.div>
-                {authUser ?
+                {authData ?
                     <motion.div
                         initial={{ x: "100vw", y: "100vh", opacity: 0 }}
                         animate={{ x: 0, y: 0, opacity: 1 }}
