@@ -21,7 +21,7 @@ export const Home = () => {
     let nickname;
     if (authData) {
         const data = JSON.parse(authData)
-        nickname = data.email.split('@')[0]
+        nickname = data?.email.split('@')[0]
     }
 
     const [toggleModal, setToggleModal] = useState(false)
