@@ -14,14 +14,13 @@ export const Home = () => {
 
 
     const navigateTo = useNavigate()
-    const authData = localStorage.getItem('authData') || null
+    const authData = JSON.parse(localStorage.getItem('authData'))
 
     const [hasErrors, setErrors] = useState(false)
 
     let nickname;
     if (authData) {
-        const data = JSON.parse(authData)
-        nickname = data?.email.split('@')[0]
+        nickname = authData?.email.split('@')[0]
     }
 
     const [toggleModal, setToggleModal] = useState(false)
@@ -68,7 +67,7 @@ export const Home = () => {
                     initial='hidden'
                     animate="show"
                 >
-                    {authData ?
+                    {authData?
                         <ul>
                             <Link to="/" onClick={logoutHandler}>Log Out</Link>
                         </ul>

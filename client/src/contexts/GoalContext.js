@@ -69,7 +69,6 @@ export const GoalProvider = ({ children }) => {
 
     useEffect(() => {
         setGoalStorage(goals)
-        console.log(goals);
         // eslint-disable-next-line
     }, [goals, firebaseGoals, setGoalStorage])
 

@@ -16,6 +16,10 @@ export const AuthProvider = ({children}) => {
         // eslint-disable-next-line
     }, [])
 
+    useEffect(() => {
+        console.log(auth);
+    }, [auth])
+
     return (
         <AuthContext.Provider 
             value={auth}
