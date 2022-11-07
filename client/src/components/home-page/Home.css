@@ -111,6 +111,13 @@ body{
     top: 95%;
 }
 
+.circle.three {
+    width: 300px;
+    height: 300px;
+    left: 50%;
+    top: 95%;
+}
+
 .buble {
     display: flex;
     flex-direction: column;
@@ -347,4 +354,92 @@ body{
 .material-symbols-outlined {
     margin: 0px 8px;
     cursor: pointer;
+}
+
+@media screen and (max-width: 574px){
+    .home {
+        position: relative;
+        width: 100%;
+        overflow-y: scroll;
+    }
+    .logo h1 {
+        margin-top: 0;
+        font-size: 3rem;
+    }
+    .homeNav {
+        top: 0%;
+    }
+    .homeNav a {
+        font-size: 1rem;
+    }
+    .circle.one {
+        top: 50px;
+        left: -15%;
+        width: 300px;
+        height: 300px;
+    }
+    .circle.two {
+        display: none;
+    }
+    .circle.three {
+        width: 200px;
+        height: 200px;
+        top: -280px;
+        left: 75%;
+    }
+    .content-wrapper {
+        display: block;
+        position: relative;
+        width: 80%;
+        margin: 0 auto;
+        z-index: 1000;
+    }
+    .content-wrapper .side-text {
+        margin-top: 30px;
+        margin-left: 0px;
+    }
+    .content-wrapper .side-text h1 {
+        font-size: 2rem;
+        text-indent: 0px;
+        text-align: center;
+        word-spacing: 1.5px;
+        margin: 6px 0px;
+    }
+    .content-wrapper form {
+        align-items: center;
+        margin-top: -20px;
+    }
+    .buble {
+        margin-top: 30px;
+    }
+    .buble.goal {
+        margin-left: 0px;
+    }
+    .buble.time {
+        margin-left: 0px;
+    }
+    .buble.action {
+        margin-left: 0px;
+        margin-bottom: 30px;
+    }
+    .modal-content {
+        max-width: 90%;
+        min-width: 90%;
+        line-height: normal;
+    }
+    .modal-content input {
+        padding: 16px 10px;
+        width: 100%;
+    }
+    .text-wrapper span {
+        font-size: 1.1rem;
+    }
+    .modal-content form {
+        display: flex;
+        align-items: center;
+        margin-top: 0px;
+    }
+    .authBtn {
+        width: 100%;
+    }
 }

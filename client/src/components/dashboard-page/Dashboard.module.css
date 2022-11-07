@@ -1,524 +1,592 @@
 .calendarWrapper {
-    width: 100vw;
-    height: 100vh;
-    overflow-x: hidden;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
 }
 
 .mainWrapper {
-    display: flex;
-    width: 100vw;
-    justify-content: space-evenly;
+  display: flex;
+  width: 100vw;
+  justify-content: space-evenly;
 }
 
 .monthWrapper {
-    display: flex;
-    justify-content: flex-end;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .mainHeader {
-    display: flex;
-    justify-content: space-around;
+  display: flex;
+  justify-content: space-around;
 }
-.month{
-    display: grid;
-    justify-content: flex-end;
-    grid-template-rows: repeat(6, 117px);
+.month {
+  display: grid;
+  justify-content: flex-end;
+  grid-template-rows: repeat(6, 117px);
 }
 
-.weekRow{
-    display: grid;
-    grid-template-columns: repeat(7, 180px);
+.weekRow {
+  display: grid;
+  grid-template-columns: repeat(7, 180px);
 }
 
 .monthHeader {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
-.sideBar{
-    display: flex;
-    flex-direction: column;
-    align-content: center;
+.sideBar {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
 }
 
-.headerArrows{
-    border: none;
-    font-size: 2rem;
-    cursor: pointer;
-    width: 25px;
-    height: 25px;
-    background-color: white;
-    transition: all 0.3s ease;
+.headerArrows {
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+  background-color: white;
+  transition: all 0.3s ease;
 }
 
-.headerArrows:hover{
-    color: brown;
-    transform: scale(1.15);
+.headerArrows:hover {
+  color: brown;
+  transform: scale(1.15);
 }
 
-.h1{
-    margin-right: 8px;
-    margin-top: 0;
-    margin-bottom: 8px;
-    font-size: 1.8rem;
-    caret-color: transparent;
+.h1 {
+  margin-right: 8px;
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1.8rem;
+  caret-color: transparent;
 }
 
-.today{
-    margin-left: 8px;
-    margin-top: 0;
-    margin-bottom: 8px;
-    font-size: 1.8rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    caret-color: transparent;
+.today {
+  margin-left: 8px;
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  caret-color: transparent;
 }
 
-.today:hover{
-    color: rgba(0, 0, 0, 0.500);
+.today:hover {
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .eachDay {
-    display: flex;
-    position: relative;
-    flex-direction: column;
-    border: 1px solid rgb(153, 153, 153);
-    cursor: pointer;
-    caret-color: transparent;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  border: 1px solid rgb(153, 153, 153);
+  cursor: pointer;
+  caret-color: transparent;
 }
 
-.eachDay h4, h5{
-    margin: 0;
+.eachDay h4,
+h5 {
+  margin: 0;
 }
 
 .overlay {
-    position: fixed;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1000;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
 }
 
 .eventModal {
-    position: absolute;
-    top: 25%;
-    left: 39%;
-    line-height: 1.4;
-    background-color: white;
-    box-shadow: 0px 16px 31px 6px rgba(0,0,0,0.64);
-    border-radius: 4px;
-    max-width: 500px;
-    min-width: 350px;
-    min-height: 350px;
-    max-height: 600px;
-    z-index: 1000;
+  position: absolute;
+  top: 25%;
+  left: 39%;
+  line-height: 1.4;
+  background-color: white;
+  box-shadow: 0px 16px 31px 6px rgba(0, 0, 0, 0.64);
+  border-radius: 4px;
+  max-width: 500px;
+  min-width: 350px;
+  min-height: 350px;
+  max-height: 600px;
+  z-index: 1000;
 }
 
 .eventForm {
-    display: flex;
-    flex-direction: column;
-    padding: 0px 38px;
+  display: flex;
+  flex-direction: column;
+  padding: 0px 38px;
 }
 
-.modalHeader{
-    padding: 0;
-    height: 50px;
-    background-color: rgb(149, 220, 255);
+.modalHeader {
+  padding: 0;
+  height: 50px;
+  background-color: rgb(149, 220, 255);
 }
 
 .eventDay {
-    text-align: center;
-    margin: 0;
-    padding-top: 10px;
+  text-align: center;
+  margin: 0;
+  padding-top: 10px;
 }
 
 .modalClose {
-    position: absolute;
-    top: 2%;
-    right: 1%;
-    width: 34px;
-    height: 34px;
-    caret-color: transparent;
+  position: absolute;
+  top: 2%;
+  right: 1%;
+  width: 34px;
+  height: 34px;
+  caret-color: transparent;
 }
 
 .modalDrag {
-    position: absolute;
-    left: 2%;
-    top: 2%
+  position: absolute;
+  left: 2%;
+  top: 2%;
 }
 
-.modalDrag button{
-    cursor: move;
-    border: none;
-    background-color: rgb(149, 220, 255);
-    font-size: 1.2rem;
+.modalDrag button {
+  cursor: move;
+  border: none;
+  background-color: rgb(149, 220, 255);
+  font-size: 1.2rem;
 }
 
 .modalClose button {
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 1.2rem;
-    border: none;
-    color: #686a6b;
-    background-color: rgb(149, 220, 255);
-    transition: all 0.3s ease;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  border: none;
+  color: #686a6b;
+  background-color: rgb(149, 220, 255);
+  transition: all 0.3s ease;
 }
 
 .modalClose button:hover {
-    background-color: rgb(114, 189, 255) ;
+  background-color: rgb(114, 189, 255);
 }
 
-.addGoal{
-    border-bottom: 1px solid #aeb0b1;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    font-size: 1.5rem;
-    outline: none;
-    margin: 20px 0px;
+.addGoal {
+  border-bottom: 1px solid #aeb0b1;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  font-size: 1.5rem;
+  outline: none;
+  margin: 20px 0px;
 }
 
-.notes{
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    outline: none;
-    margin-bottom: 20px;
-    max-width:100%;
-    min-width: fit-content;
+.notes {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  outline: none;
+  margin-bottom: 20px;
+  max-width: 100%;
+  min-width: fit-content;
 }
 
 .timeWrapper {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
 }
 
-.timeWrapper label{
-    margin-bottom: 5px;
+.timeWrapper label {
+  margin-bottom: 5px;
 }
 
-.timeWrapper select{
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    outline: none;
+.timeWrapper select {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  outline: none;
 }
 
 .labelWrapper {
-    margin-bottom: 20px;
-    margin-top: 10px;
-    display: flex;
-    justify-content: center;
-    caret-color: transparent;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  caret-color: transparent;
 }
 
 .labelWrapper span {
-    width: 30px;
-    margin-left: 10px;
-    height: 30px;
-    border-radius: 50%;
-    cursor: pointer;
+  width: 30px;
+  margin-left: 10px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 .checkBox {
-    border: none;
-    background-color: transparent;
-    font-size: 1.2rem;
-    text-align: center;
-    color: black;
-    font-weight: bold;
-    cursor: pointer;
+  border: none;
+  background-color: transparent;
+  font-size: 1.2rem;
+  text-align: center;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .submitBtn {
-    margin-bottom: 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.3rem;
-    color: white;
-    background-color: rgb(114, 189, 255);
-    cursor: pointer;
-    transition: all 0.3s ease;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.3rem;
+  color: white;
+  background-color: rgb(114, 189, 255);
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.submitBtn:hover{
-    background-color: rgba(114, 189, 255, 0.701);
+.submitBtn:hover {
+  background-color: rgba(114, 189, 255, 0.701);
 }
 
 .labels {
-    color: #3c3c3c;
-    font-size: 1.2rem;
+  color: #3c3c3c;
+  font-size: 1.2rem;
 }
 
 .red {
-    display: flex;
-    justify-content: center;
-    background-color: rgb(243, 31, 84);
+  display: flex;
+  justify-content: center;
+  background-color: rgb(243, 31, 84);
 }
 
 .purple {
-    display: flex;
-    justify-content: center;
-    background-color: rgb(159, 94, 255);
+  display: flex;
+  justify-content: center;
+  background-color: rgb(159, 94, 255);
 }
 
 .orange {
-    display: flex;
-    justify-content: center;
-    background-color: rgb(255, 138, 106);
+  display: flex;
+  justify-content: center;
+  background-color: rgb(255, 138, 106);
 }
 
 .yellow {
-    display: flex;
-    justify-content: center;
-    background-color: rgb(255, 232, 139);
+  display: flex;
+  justify-content: center;
+  background-color: rgb(255, 232, 139);
 }
 
 .green {
-    display: flex;
-    justify-content: center;
-    background-color: rgb(98, 252, 178);
+  display: flex;
+  justify-content: center;
+  background-color: rgb(98, 252, 178);
 }
 
 .blue {
-    display: flex;
-    justify-content: center;
-    background-color: rgb(53, 134, 255);
+  display: flex;
+  justify-content: center;
+  background-color: rgb(53, 134, 255);
 }
 
-
 .notCurrentMonth {
-    font-weight: 400;
-    color: lightgray;
+  font-weight: 400;
+  color: lightgray;
 }
 
 .isToday {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    border-radius: 50%;
-    background-color: rgb(45, 156, 254);
-    width: 30px;
-    height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border-radius: 50%;
+  background-color: rgb(45, 156, 254);
+  width: 30px;
+  height: 30px;
 }
 
 .isSelected {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    color: white;
-    background-color: rgb(149, 220, 255);
-    width: 30px;
-    height: 30px;
-    transition: all 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  color: white;
+  background-color: rgb(149, 220, 255);
+  width: 30px;
+  height: 30px;
+  transition: all 0.2s ease;
 }
 
-.goals{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    background-color: rgb(98, 252, 178);
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
+.goals {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-color: rgb(98, 252, 178);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
 }
 
 .legendWrapper {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
-.legendWrapper div{
-    margin-top: 15px;
+.legendWrapper div {
+  margin-top: 15px;
 }
 
 .popUpWrapper {
-    display: flex;
-    flex-direction: column;
-    padding: 4px 28px;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  padding: 4px 28px;
+  text-align: center;
 }
 
 .links {
-    text-decoration: none;
-    padding: 4px 10px;
-    font-size: 1.2rem;
+  text-decoration: none;
+  padding: 4px 10px;
+  font-size: 1.2rem;
 }
 
 .updateBtn {
-    margin: 14px auto;
-    width: 80%;
-    border-radius: 4px;
-    font-size: 1.3rem;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    background-color: white;
-    border: 2px solid rgb(53, 134, 255);
-    cursor: pointer;
-    transition: all 0.3s ease;
+  margin: 14px auto;
+  width: 80%;
+  border-radius: 4px;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  background-color: white;
+  border: 2px solid rgb(53, 134, 255);
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .updateBtn:hover {
-    background-color:rgb(53, 134, 255);
-    color: white;
+  background-color: rgb(53, 134, 255);
+  color: white;
 }
 
 .deleteBtn {
-    margin: 14px auto;
-    width: 80%;
-    border-radius: 4px;
-    font-size: 1.3rem;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    background-color: white;
-    border: 2px solid rgb(53, 134, 255);
-    cursor: pointer;
-    transition: all 0.3s ease;
+  margin: 14px auto;
+  width: 80%;
+  border-radius: 4px;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  background-color: white;
+  border: 2px solid rgb(53, 134, 255);
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.deleteBtn:hover{
-    background-color:rgb(53, 134, 255);
-    color: white; 
+.deleteBtn:hover {
+  background-color: rgb(53, 134, 255);
+  color: white;
 }
 
 .h3Spec {
-    margin: 0;
+  margin: 0;
 }
 
 .goalSpan {
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 1.3rem;
-    letter-spacing: 2px;
-    text-decoration: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+  text-decoration: none;
 }
-.header{
-    display: flex;
-    justify-content: flex-end;
+.header {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .navigationLinks {
-    text-decoration: none;
-    letter-spacing: 2px;
-    font-weight: bold;
-    font-size: 1.3rem;
-    text-transform: uppercase;
-    transition: all 0.2s ease;
-    caret-color: transparent;
-    margin-left: 16px;
+  text-decoration: none;
+  letter-spacing: 2px;
+  font-weight: bold;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  caret-color: transparent;
+  margin-left: 16px;
 }
 
 .welcomeLink {
-    text-decoration: none;
-    letter-spacing: 2px;
-    font-weight: bold;
-    font-size: 1.3rem;
-    text-transform: uppercase;
-    transition: all 0.2s ease;
-    caret-color: transparent;
-    margin-left: 16px;
-    color: black;
+  text-decoration: none;
+  letter-spacing: 2px;
+  font-weight: bold;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  caret-color: transparent;
+  margin-left: 16px;
+  color: black;
 }
 
-.navigationLinks:hover{
-    color: rgba(247, 0, 0, 0.573);
+.navigationLinks:hover {
+  color: rgba(247, 0, 0, 0.573);
 }
 
 .deadlineBubble {
-    position: absolute;
-    display: flex;
-    width: 100%;
-    top: -12%;
-    border-radius: 50%;
-    z-index: 1000;
+  position: absolute;
+  display: flex;
+  width: 100%;
+  top: -12%;
+  border-radius: 50%;
+  z-index: 1000;
 }
 
 .innerText {
-    font-weight: bold;
-    font-size: 1rem;
-    text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+  text-align: center;
 }
 
 .noteHeader {
-    font-size: 1rem;
-    font-weight: bold;
+  font-size: 1rem;
+  font-weight: bold;
 }
 
 .dashboardPopUp {
-    position: absolute;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    bottom: 5%;
-    left: 40%;
-    line-height: 1.4;
-    background-color: rgb(32, 33, 36);
-    border-radius: 4px;
-    min-width: 350px;
-    max-width: 550px;
-    height: 70px;
-    z-index: 1000;
+  position: absolute;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  bottom: 5%;
+  left: 40%;
+  line-height: 1.4;
+  background-color: rgb(32, 33, 36);
+  border-radius: 4px;
+  min-width: 350px;
+  max-width: 550px;
+  height: 70px;
+  z-index: 1000;
 }
 
-.dashboardMsg{
-    color: white;
-    font-size: 1.1rem;
-    font-weight: bold;
-    letter-spacing: 1.4px;
-    word-spacing: 1.6px;
-    margin-left: 20px;
+.dashboardMsg {
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  letter-spacing: 1.4px;
+  word-spacing: 1.6px;
+  margin-left: 20px;
 }
 
 .dashboardBtnsWrapper {
-    margin: 0px 20px;
+  margin: 0px 20px;
 }
 
 .dashboardBtns {
-    border: none;
-    background-color: transparent;
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: rgb(102, 122, 253);
-    transition: all 0.4s ease;
-    cursor: pointer;
-    margin-left: 6px;
+  border: none;
+  background-color: transparent;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: rgb(102, 122, 253);
+  transition: all 0.4s ease;
+  cursor: pointer;
+  margin-left: 6px;
 }
 
 .dashboardBtns:hover {
-    background-color: rgba(181, 190, 255, 0.46);;
+  background-color: rgba(181, 190, 255, 0.46);
 }
 
 .savingChanges {
-    color: rgba(255, 246, 146, 0.841);
-    font-size: 1.1rem;
-    margin: 0 auto;
+  color: rgba(255, 246, 146, 0.841);
+  font-size: 1.1rem;
+  margin: 0 auto;
 }
 
 .firstToDo {
-    padding-left: 15px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    text-decoration: none;
+  padding-left: 15px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-decoration: none;
 }
 
-.completedStatus{
-    display: flex;
-    justify-content: center;
-    background-color: rgb(107, 107, 107);
+.completedStatus {
+  display: flex;
+  justify-content: center;
+  background-color: rgb(107, 107, 107);
 }
 
-.todayTasks{
-    display: flex;
-    flex-direction: column;
+.todayTasks {
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 574px) {
+    .calendarWrapper {
+        overflow: scroll;
+    }
+    .mainWrapper {
+        margin-bottom: 20px;
+    }
+    .mainHeader {
+        display: block;
+    }
+    .monthHeader {
+        align-items: center;
+    }
+    .monthHeader h1{
+        font-size: 1rem;
+        margin: 0;
+    }
+    .header {
+        justify-content: center;
+    }
+    .header nav ul {
+        padding: 0px;
+        margin-bottom: 15px;
+        margin-top: 0px;
+        text-align: center;
+    }
+    .header nav {
+        display: flex;
+        justify-content: center;
+    }
+    .welcomeLink {
+        display: block;
+        letter-spacing: 0px;
+        font-size: 1rem;
+        margin-left: 0px;
+        text-align: center;
+    }
+    .navigationLinks {
+        letter-spacing: 0px;
+        font-size: 1rem;
+        margin-left: 0px;
+        margin-right: 10px;
+    }
+    .headerArrows {
+        width: auto;
+        height: auto;
+        padding: 3px;
+    }
+    .sideBar {
+        display: none;
+    }
+    .month {
+        grid-template-rows: auto;
+    }
+    .weekRow {
+        grid-template-columns: repeat(1, 320px);
+    }
+    .eachDay {
+        min-height: 60px;
+    }
+    .eventModal {
+        left: 5%;
+        min-width: 230px;
+        max-width: fit-content;
+    }
+    
 }

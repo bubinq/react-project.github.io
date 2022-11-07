@@ -130,7 +130,7 @@ export const Home = () => {
                 animate={{ y: -5, opacity: 1 }}
                 transition={{ duration: 0.8 }}
             >
-                <div className="circle two"></div>
+                <div className="circle three"></div>
             </motion.div>
 
         </div>
