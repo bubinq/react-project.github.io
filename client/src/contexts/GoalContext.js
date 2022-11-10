@@ -63,7 +63,7 @@ export const GoalProvider = ({ children }) => {
     const [hasGoals, setHasGoals] = useState(false)
     const [selectedGoal, setSelecetedGoal] = useState({})
     const [dayProgress, setDayProgress] = useState([])
-    const [today, setToday] = useState()
+    const [today, setToday] = useState(dayjs(now).date())
     const [dayChanged, setDayChanged] = useState(false)
     const [firebaseGoals, setFirebaseGoals] = useState([])
 
@@ -74,6 +74,7 @@ export const GoalProvider = ({ children }) => {
 
 
     const selectGoalHandler = async (goal) => {
+        console.log('select Goal');
         setDayProgress([])
         setSelecetedGoal(goal)
         const q = query(dayProgressRef, where('id', "==", goal.id))
@@ -88,13 +89,11 @@ export const GoalProvider = ({ children }) => {
     }
 
     const displayToday = () => {
-        setDayChanged(false)
         if (today !== dayjs(now).date()) {
+            console.log('hi');
             setDayChanged(true)
             setToday(dayjs(now).date())
         }
-        setDayChanged(false)
-
     }
 
     const displayDuration = (goalId) => {
