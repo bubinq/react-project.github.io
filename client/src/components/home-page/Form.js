@@ -1,5 +1,4 @@
 import './Home.css';
-import styles from '../dashboard-page/Dashboard.module.css'
 
 import dayjs from 'dayjs';
 import { motion } from "framer-motion";
@@ -55,11 +54,7 @@ export const Form = ({ toggleModal, toggleModalHandler, checkErrorsHandler, hasE
         const goalData = {
             goal: goal,
             duration: timeFrame,
-            createdOn: findNextFreeDate(today),
-            toDos: [],
-            labelColor: styles.purple,
-            isSaved: false,
-            isExpired: false
+            createdOn: findNextFreeDate(today)
         }
 
         setFormData({ ...goalData })

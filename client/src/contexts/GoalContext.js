@@ -5,7 +5,7 @@ import { query, where, getDocs, doc, addDoc } from "firebase/firestore";
 import { resetToDo, reset } from "../services/ToDoServices";
 import { createContext, useEffect, useReducer, useState } from "react";
 import { dayProgressRef } from "../firebase-constants/goalsCollection";
-import { useLocalStorage } from "../hooks/useLocalStorage";
+import { useSessionStorage } from "../hooks/useSessionStorage";
 import { now } from "../components/dashboard-page/calendar/constants/timeConst";
 
 
@@ -18,29 +18,29 @@ function goalManager(state, action) {
             return [...action.payload]
 
         case 'CREATE':
-            return [...state, { ...action.payload, id: action.id }]
+            return [...state, { ...action.payload, _id: action._id }]
 
         case 'TODOCREATE':
-            return state.map(oldGoal => oldGoal.id === action.id ?
+            return state.map(oldGoal => oldGoal._id === action._id ?
                 {
                     ...action.payload, toDos: [...oldGoal.toDos, action.toDos]
                 } : oldGoal)
 
         case 'UPDATE':
-            return state.map(oldGoal => oldGoal.id === action.id ? { ...action.payload, id: action.id } : oldGoal)
+            return state.map(oldGoal => oldGoal._id === action._id ? { ...action.payload, _id: action._id } : oldGoal)
 
         case 'UPDATESTATUS':
-            return state.map(oldGoal => oldGoal.id === action.id ? { ...action.payload, isSaved: true } : oldGoal)
+            return state.map(oldGoal => oldGoal._id === action._id ? { ...action.payload, isSaved: true } : oldGoal)
 
         case 'UPDATECOMPLETE':
-            return state.map(oldGoal => oldGoal.id === action.id ? { ...action.payload, isExpired: true } : oldGoal)
+            return state.map(oldGoal => oldGoal._id === action._id ? { ...action.payload, isExpired: true } : oldGoal)
 
         case 'DELETE':
-            return state.filter(oldGoal => oldGoal.id !== action.id)
+            return state.filter(oldGoal => oldGoal._id !== action._id)
 
         case 'TODODELETE':
-            return state.map(oldGoal => oldGoal.id === action.id ?
-                { ...action.payload, toDos: [...action.oldToDos.filter(oldToDo => oldToDo.id !== action.todo.id)] } : oldGoal)
+            return state.map(oldGoal => oldGoal._id === action._id ?
+                { ...action.payload, toDos: [...action.oldToDos.filter(oldToDo => oldToDo._id !== action.todo._id)] } : oldGoal)
 
         default:
             return state;
@@ -56,7 +56,7 @@ function initStorage() {
 
 export const GoalProvider = ({ children }) => {
     const [goals, dispatch] = useReducer(goalManager, [], initStorage)
-    const [goalStorage, setGoalStorage] = useLocalStorage('goals', [])
+    const [goalStorage, setGoalStorage] = useSessionStorage('goals', [])
     const [isLoading, setIsLoading] = useState(false)
     const [dayInfo, setDayInfo] = useState({});
     const [toDos, setToDos] = useState('')
@@ -65,12 +65,12 @@ export const GoalProvider = ({ children }) => {
     const [dayProgress, setDayProgress] = useState([])
     const [today, setToday] = useState(dayjs(now).date())
     const [dayChanged, setDayChanged] = useState(false)
-    const [firebaseGoals, setFirebaseGoals] = useState([])
 
     useEffect(() => {
         setGoalStorage(goals)
+        console.log(goals);
         // eslint-disable-next-line
-    }, [goals, firebaseGoals, setGoalStorage])
+    }, [goals, setGoalStorage])
 
 
     const selectGoalHandler = async (goal) => {
@@ -98,17 +98,17 @@ export const GoalProvider = ({ children }) => {
 
     const displayDuration = (goalId) => {
 
-        const searchedGoal = goals.find(target => target.id === goalId)
+        const searchedGoal = goals.find(target => target._id === goalId)
         if (searchedGoal) {
             const duration = searchedGoal.duration
             const color = searchedGoal.labelColor
 
             const goalEndPoints = {
-                "1 Week": dayjs(searchedGoal.createdOn).add(7, 'day'),
-                "1 Month": dayjs(searchedGoal.createdOn).add(1, 'M'),
-                "3 Months": dayjs(searchedGoal.createdOn).add(3, 'M'),
-                "6 Months": dayjs(searchedGoal.createdOn).add(6, 'M'),
-                "1 Year": dayjs(searchedGoal.createdOn).add(1, 'y')
+                "1 Week": dayjs(searchedGoal.createdAt).add(7, 'day'),
+                "1 Month": dayjs(searchedGoal.createdAt).add(1, 'M'),
+                "3 Months": dayjs(searchedGoal.createdAt).add(3, 'M'),
+                "6 Months": dayjs(searchedGoal.createdAt).add(6, 'M'),
+                "1 Year": dayjs(searchedGoal.createdAt).add(1, 'y')
             }
 
             return [goalEndPoints[duration], color]
@@ -155,8 +155,6 @@ export const GoalProvider = ({ children }) => {
                 setToDos,
                 isLoading,
                 setIsLoading,
-                firebaseGoals,
-                setFirebaseGoals,
                 selectGoalHandler,
                 selectedGoal,
                 dayProgress,

@@ -1,55 +1,67 @@
-import { Link, useNavigate } from "react-router-dom"
-import { authUser } from "../firebase-config"
-import styles from './dashboard-page/Dashboard.module.css'
-import { logout } from "../services/firebaseAuthServices"
-import { useContext } from "react"
-import { GoalContext } from "../contexts/GoalContext"
+import { Link, useNavigate } from "react-router-dom";
+import styles from "./dashboard-page/Dashboard.module.css";
+import { useContext } from "react";
+import { GoalContext } from "../contexts/GoalContext";
+import axios from "axios";
+import { AuthContext } from "../contexts/authContext";
 
 export const Navigation = () => {
+  const location = window.location.pathname.split("/")[1];
 
-    const user = authUser.currentUser
+  const { displayToday } = useContext(GoalContext);
+  const { auth, setAuthUser } = useContext(AuthContext);
 
-    const location = window.location.pathname.split('/')[1]
+  const navigateTo = useNavigate();
 
-    const { displayToday } = useContext(GoalContext)
+  const logoutHandler = async (ev) => {
+    ev.preventDefault();
 
-    const navigateTo = useNavigate()
-
-
-    const logoutHandler = (ev) => {
-        ev.preventDefault()
-
-        if (window.confirm('Are you sure you want to logout?')) {
-            logout()
-                .then((res) => {
-                    localStorage.clear()
-                    navigateTo('/')
-                })
-                .catch(err => {
-                    alert(err.message)
-                })
-        } else {
-            navigateTo('/dashboard')
-        }
+    if (window.confirm("Are you sure you want to logout?")) {
+      try {
+        await axios.get("/auth/logout", { withCredentials: true });
+        setAuthUser(null)
+        sessionStorage.clear();
+        navigateTo("/", { replace: true });
+      } catch (error) {
+        alert(error.response.data.message);
+      }
+    } else {
+      navigateTo("/dashboard");
     }
+  };
 
-    return (
-        <header className={styles.header}>
-            <nav className={styles.navigation}>
-                {user &&
-                    <ul>
-                        <Link to="/dashboard" className={styles.welcomeLink}>Welcome, {user.email.split('@')[0]}</Link>
-                        {location === 'dashboard' &&
-                            <Link to="/progress" className={styles.navigationLinks} onClick={displayToday}>Track Progress</Link>
-                        }
-                        {location !== 'dashboard' &&
-                            <Link to="/dashboard" className={styles.navigationLinks}>Dashboard</Link>
-                        }
-                        <Link to="/dashboard" onClick={logoutHandler} className={styles.navigationLinks}>Log Out</Link>
-
-                    </ul>
-                }
-            </nav>
-        </header>
-    )
-}
+  return (
+    <header className={styles.header}>
+      <nav className={styles.navigation}>
+        {auth && (
+          <ul>
+            <Link to="/dashboard" className={styles.welcomeLink}>
+              Welcome, {auth.email.split("@")[0]}
+            </Link>
+            {location === "dashboard" && (
+              <Link
+                to="/progress"
+                className={styles.navigationLinks}
+                onClick={displayToday}
+              >
+                Track Progress
+              </Link>
+            )}
+            {location !== "dashboard" && (
+              <Link to="/dashboard" className={styles.navigationLinks}>
+                Dashboard
+              </Link>
+            )}
+            <Link
+              to="/dashboard"
+              onClick={logoutHandler}
+              className={styles.navigationLinks}
+            >
+              Log Out
+            </Link>
+          </ul>
+        )}
+      </nav>
+    </header>
+  );
+};

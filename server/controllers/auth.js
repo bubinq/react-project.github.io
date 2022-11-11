@@ -5,18 +5,18 @@ import jwt from "jsonwebtoken";
 export const login = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
-    if (!user) throw new Error("Your e-mail is wrong!");
+    if (!user) throw new Error("Your e-mail or password is wrong!");
 
     const isPassMatching = await bcrypt.compare(
       req.body.password,
       user.password
     );
-    if (!isPassMatching) throw new Error("Your password is wrong!");
+    if (!isPassMatching) throw new Error("Your e-mail or password is wrong!");
     const { password, ...details } = user._doc;
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_KEY);
     res.cookie("accessToken", token, { httpOnly: true });
-    res.status(200).json(details);
+    res.status(200).json({success: true, details});
   } catch (error) {
     console.log(error.message);
     res.status(400).json({ message: error.message });
@@ -32,7 +32,7 @@ export const signUp = async (req, res) => {
     }
     const user = new User({ ...req.body, password: hash });
     const savedUser = await user.save();
-    res.status(201).json(savedUser);
+    res.status(201).json({success: true, savedUser});
   } catch (error) {
     if (error.code === 11000) {
       const keyVal = error.keyValue;

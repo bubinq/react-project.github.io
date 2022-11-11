@@ -8,7 +8,6 @@ export const SideBar = () => {
 
     const { goals, isLoading } = useContext(GoalContext)
 
-
     return (
         <>
             {isLoading &&
@@ -17,11 +16,11 @@ export const SideBar = () => {
             <aside className={styles.sideBar}>
                 <div className={styles.todayTasks}>
                     <h1>Today tasks</h1>
-                    {goals.map((goal, idx) => goal.isExpired === false && idx < 3 ? <TodayTasks key={goal.id} goal={goal}></TodayTasks> : null)}
+                    {goals.map((goal, idx) => goal.isExpired === false && idx < 3 ? <TodayTasks key={goal._id} goal={goal}></TodayTasks> : null)}
                 </div>
                 <div className={styles.legendWrapper}>
                     <h1>All goals</h1>
-                    {goals.map(goal => <Label key={goal.id} goal={goal}></Label>)}
+                    {goals.map(goal => <Label key={goal._id} goal={goal}></Label>)}
                 </div>
             </aside>
         </>
