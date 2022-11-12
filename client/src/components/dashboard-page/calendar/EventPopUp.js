@@ -30,7 +30,13 @@ export const EventPopUp = () => {
       duration: data.get("time").trim(),
       toDos:
         data.get("notes").trim() !== ""
-          ? data.get("notes").trim().split("\n")
+          ? data
+              .get("notes")
+              .trim()
+              .split("\n")
+              .map((todo) => {
+                return { toDo: todo };
+              })
           : (isEmpty = true),
       labelColor: selectedLabel.color,
     };
@@ -41,7 +47,13 @@ export const EventPopUp = () => {
     }
 
     if (goalData.toDos.length === 1) {
-      goalData.toDos = data.get("notes").trim().split(",");
+      goalData.toDos = data
+        .get("notes")
+        .trim()
+        .split(",")
+        .map((todo) => {
+          return { toDo: todo };
+        });
     }
 
     if (dayInfo.goal === "") {
@@ -55,31 +67,20 @@ export const EventPopUp = () => {
         },
         { withCredentials: true }
       );
-      goalData.toDos.map(async function (todo) {
-        await axios.post("/toDos/create", {
-          goalId: newGoal.data._id,
-          toDo: todo,
-        });
+      const wholeGoal = await axios.post("/toDos/create", {
+        goalId: newGoal.data._id,
+        toDos: goalData.toDos.map((todo) =>
+          Object.assign(todo, { goalId: newGoal.data._id })
+        ),
       });
       dispatch({
         type: "CREATE",
-        payload: newGoal.data,
-        _id: newGoal.data._id,
+        payload: wholeGoal.data,
+        _id: wholeGoal.data._id,
       });
-      const getGoals = async () => {
-        try {
-          const goals = await axios.get("/goals/user");
-          dispatch({
-            type: "READ",
-            payload: goals.data,
-          });
-        } catch (error) {
-          alert(error.response.data.message);
-        }
-      };
-      getGoals();
     } else if (isUpdating) {
       const { toDos, ...data } = goalData;
+      console.log(toDos);
       const updatedGoal = await axios.put(
         `/goals/update/${dayInfo._id}`,
         {

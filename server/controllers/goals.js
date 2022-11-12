@@ -1,7 +1,7 @@
 import Goal from "../models/goals.js";
 
-async function findNextAvailableDate(date) {
-  const matchingDate = await Goal.find({ createdAt: date });
+async function findNextAvailableDate(date, req, res) {
+  const matchingDate = await Goal.find({ createdAt: date, ownerId: req.user.id });
   const formatedDate = new Date(date);
   if (matchingDate.length > 0) {
     return findNextAvailableDate(
@@ -42,7 +42,7 @@ export const getGoalDetails = async (req, res) => {
 }
 
 export const addGoal = async (req, res) => {
-  const result = findNextAvailableDate(req.body.createdAt);
+  const result = findNextAvailableDate(req.body.createdAt, req, res);
   const date = await result;
   try {
     const newGoal = await Goal.create({

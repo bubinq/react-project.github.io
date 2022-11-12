@@ -15,13 +15,12 @@ export const getGoalToDos = async (req, res) => {
 
 export const createToDo = async (req, res) => {
   try {
-    const newToDo = await toDo.create({ ...req.body });
-    const savedToDo = await newToDo.save();
+    const toDos = await toDo.insertMany(req.body.toDos);
     const currentGoal = await Goal.findByIdAndUpdate(
       req.body.goalId,
-      { $push: { toDos: savedToDo } },
+      { $push: { toDos: toDos } },
       { new: true }
-    );
+    ).populate("toDos");
     res.status(200).json(currentGoal);
   } catch (error) {
     console.log(error.message);
