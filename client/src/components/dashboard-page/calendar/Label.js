@@ -14,7 +14,7 @@ export const Label = ({ goal }) => {
             }
             <div className={goal.isExpired ? styles.completedStatus : goal.labelColor}>
                 <span>
-                    <Link to={`/goals/${goal.id}`} className={styles.goalSpan}>{goal.goal}</Link>
+                    <Link to={`/goals/${goal._id}`} className={styles.goalSpan}>{goal.goal}</Link>
                 </span>
             </div>
         </>

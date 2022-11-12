@@ -1,9 +1,10 @@
-import { useContext, useState } from "react"
+import axios from "axios"
+import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 
 import { GoalContext } from "../../../../contexts/GoalContext"
 import styles from './GoalDetails.module.css'
-import ToDoItem from "./ToDoItem"
+// import ToDoItem from "./ToDoItem"
 import { Navigation } from "../../../Navigation"
 import { CreateTodo } from "../../../../services/ToDoServices"
 
@@ -15,10 +16,19 @@ const GoalDetails = () => {
     //  filters by status
     //  creates ToDos internally
 
-    const { goals, dispatch, setToDos, toDos } = useContext(GoalContext)
+    const { dispatch, setToDos } = useContext(GoalContext)
     const { goalId } = useParams()
     const [isFiltering, setIsFiltering] = useState(false)
-    const goal = goals.find(g => g.id === goalId)
+    const [goal, setGoal] = useState([])
+
+    useEffect(() => {
+        const getDetails = async () => {
+            const goal = await axios.get(`/goals/details/${goalId}`)
+            setGoal(goal.data)
+        }
+        getDetails()
+        //eslint-disable-next-line
+    }, [])
 
 
     const submitToDo = (ev) => {
@@ -86,7 +96,7 @@ const GoalDetails = () => {
             <div className={styles.bodyLayer}>
                 <Navigation></Navigation>
                 <div className={styles.wrapper}>
-                    <h1 className={styles.header}>{goal.goal} - daily tasks</h1>
+                    <h1 className={styles.header}>{goal?.goal} - daily tasks</h1>
                     <form className={styles.mainForm} onSubmit={submitToDo}>
                         <div className={styles.inputWrapper}>
                             <input type="text" name="addNote" className={styles.inputs} placeholder="Add tasks here" />
@@ -107,10 +117,10 @@ const GoalDetails = () => {
                     </form>
                     <div className={styles.notesList}>
                         <ol className={styles.notes}>
-                            {isFiltering ?
+                            {/* {isFiltering ?
                                 toDos.map(task => <ToDoItem key={task.id} goal={goal} todo={task} setIsFiltering={setIsFiltering} />)
                                 : goal.toDos.map(task => <ToDoItem key={task.id} goal={goal} todo={task} setIsFiltering={setIsFiltering} />)
-                            }
+                            } */}
                         </ol>
                     </div>
                 </div>

@@ -16,6 +16,7 @@ export const UpdateGoal = ({ goalHandler, isUpdating, setSelectedLabel, selected
     let { dayTarget, popModalHandler } = useContext(CalendarContext)
     let { dayInfo } = useContext(GoalContext)
 
+    console.log(dayInfo.toDos);
     let notes;
 
 
@@ -34,7 +35,7 @@ export const UpdateGoal = ({ goalHandler, isUpdating, setSelectedLabel, selected
     if (dayInfo.toDos.length > 0) {
         let result = []
         notes = dayInfo.toDos.forEach(element => {
-            result.push(element.todo)
+            result.push(element.toDo)
         });
         notes = result.join('\n')
     } else {

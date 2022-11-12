@@ -68,13 +68,11 @@ export const GoalProvider = ({ children }) => {
 
     useEffect(() => {
         setGoalStorage(goals)
-        console.log(goals);
         // eslint-disable-next-line
     }, [goals, setGoalStorage])
 
 
     const selectGoalHandler = async (goal) => {
-        console.log('select Goal');
         setDayProgress([])
         setSelecetedGoal(goal)
         const q = query(dayProgressRef, where('id', "==", goal.id))

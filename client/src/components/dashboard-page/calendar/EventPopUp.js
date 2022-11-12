@@ -13,7 +13,7 @@ export const EventPopUp = () => {
   //  Tracks each goal data on related day
   //  Manages Crud Operations
 
-  const { popModalHandler } = useContext(CalendarContext);
+  const { popModalHandler, dayTarget } = useContext(CalendarContext);
   const { dispatch, setHasGoals, hasGoals, dayInfo } = useContext(GoalContext);
 
   const [isUpdating, setIsUpdating] = useState(false);
@@ -50,14 +50,34 @@ export const EventPopUp = () => {
         {
           goal: goalData.goal,
           duration: goalData.duration,
+          labelColor: goalData.labelColor,
+          createdAt: dayTarget?.$d,
         },
         { withCredentials: true }
       );
+      goalData.toDos.map(async function (todo) {
+        await axios.post("/toDos/create", {
+          goalId: newGoal.data._id,
+          toDo: todo,
+        });
+      });
       dispatch({
         type: "CREATE",
         payload: newGoal.data,
         _id: newGoal.data._id,
       });
+      const getGoals = async () => {
+        try {
+          const goals = await axios.get("/goals/user");
+          dispatch({
+            type: "READ",
+            payload: goals.data,
+          });
+        } catch (error) {
+          alert(error.response.data.message);
+        }
+      };
+      getGoals();
     } else if (isUpdating) {
       const { toDos, ...data } = goalData;
       const updatedGoal = await axios.put(
@@ -67,11 +87,28 @@ export const EventPopUp = () => {
         },
         { withCredentials: true }
       );
+      toDos.map(async function (todo) {
+        await axios.put(`/toDos/update/${dayInfo._id}`, {
+          toDo: todo,
+        });
+      });
       dispatch({
         type: "UPDATE",
         payload: updatedGoal.data,
         _id: updatedGoal.data._id,
       });
+      const getGoals = async () => {
+        try {
+          const goals = await axios.get("/goals/user");
+          dispatch({
+            type: "READ",
+            payload: goals.data,
+          });
+        } catch (error) {
+          alert(error.response.data.message);
+        }
+      };
+      getGoals();
     }
     popModalHandler();
   };

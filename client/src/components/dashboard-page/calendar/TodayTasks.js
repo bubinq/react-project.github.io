@@ -12,7 +12,7 @@ export const TodayTasks = ({ goal }) => {
         <div>
             {displayOnlyWhen &&
                 <span>
-                    <Link to={`/goals/${goal.id}`} className={styles.firstToDo}>{firstToDo.todo}</Link>
+                    <Link to={`/goals/${goal._id}`} className={styles.firstToDo}>{firstToDo.todo}</Link>
                 </span>
             }
         </div>

@@ -1,10 +1,11 @@
 import express from "express";
 
-import { addGoal, getGoals, getUserGoals, removeGoal, saveGoal, updateGoal, updateStatus } from "../controllers/goals.js";
+import { addGoal, getGoalDetails, getGoals, getUserGoals, removeGoal, saveGoal, updateGoal, updateStatus } from "../controllers/goals.js";
 import { verifyToken } from "../verifyToken.js";
 const router = express.Router();
 
 router.get("/", getGoals)
+router.get("/details/:goalId", verifyToken, getGoalDetails)
 router.get("/user", verifyToken, getUserGoals)
 router.post("/create", verifyToken, addGoal);
 router.put("/update/:goalId", verifyToken, updateGoal)

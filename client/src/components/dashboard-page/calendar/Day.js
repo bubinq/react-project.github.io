@@ -50,7 +50,7 @@ export const Day = ({ day, rowIndex }) => {
         (goal) => dayjs(goal.createdAt).format("DD MM YYYY") === daySelected
       )
     );
-
+    
     if (matchingDays.goal) {
       setDayInfo(matchingDays);
       setHasGoals(true);
