@@ -56,24 +56,20 @@ export const editToDo = async (req, res) => {
   }
 };
 
-export const editGoalToDos = async (req, res) => {
+export const deleteToDo = async (req, res) => {
   try {
-    const edited = await toDo.updateOne(
-      { goalId: req.params.goalId },
-      { $set: req.body },
-      { new: true }
-    );
-    res.status(200).json(edited);
+    await toDo.findByIdAndDelete(req.params.toDoId);
+    res.status(200).json({ message: "ToDo deleted successfully!" });
   } catch (error) {
     console.log(error.message);
     res.status(400).json({ message: error.message });
   }
 };
 
-export const deleteToDo = async (req, res) => {
+export const deleteGoalToDos = async (req, res) => {
   try {
-    await toDo.findByIdAndDelete(req.params.toDoId);
-    res.status(200).json({ message: "ToDo deleted successfully!" });
+    await toDo.deleteMany({ goalId: req.params.goalId });
+    res.status(200).json({ message: "ToDos successfully deleted!" });
   } catch (error) {
     console.log(error.message);
     res.status(400).json({ message: error.message });

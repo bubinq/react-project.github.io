@@ -80,7 +80,6 @@ export const EventPopUp = () => {
       });
     } else if (isUpdating) {
       const { toDos, ...data } = goalData;
-      console.log(toDos);
       const updatedGoal = await axios.put(
         `/goals/update/${dayInfo._id}`,
         {
@@ -88,28 +87,18 @@ export const EventPopUp = () => {
         },
         { withCredentials: true }
       );
-      toDos.map(async function (todo) {
-        await axios.put(`/toDos/update/${dayInfo._id}`, {
-          toDo: todo,
-        });
+      await axios.delete(`/toDos/deleteall/${dayInfo._id}`)
+      const wholeGoal = await axios.post("/toDos/create", {
+        goalId: updatedGoal.data._id,
+        toDos: toDos.map((todo) =>
+          Object.assign(todo, { goalId: updatedGoal.data._id })
+        ),
       });
       dispatch({
         type: "UPDATE",
-        payload: updatedGoal.data,
-        _id: updatedGoal.data._id,
+        payload: wholeGoal.data,
+        _id: wholeGoal.data._id,
       });
-      const getGoals = async () => {
-        try {
-          const goals = await axios.get("/goals/user");
-          dispatch({
-            type: "READ",
-            payload: goals.data,
-          });
-        } catch (error) {
-          alert(error.response.data.message);
-        }
-      };
-      getGoals();
     }
     popModalHandler();
   };

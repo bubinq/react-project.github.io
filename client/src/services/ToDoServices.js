@@ -1,12 +1,6 @@
 import { db } from "../firebase-config"
 import { arrayUnion, arrayRemove, updateDoc, doc } from "firebase/firestore"
 
-export const CreateTodo = async (goalId, note, id) => {
-    const currentGoal = doc(db, 'goals', goalId)
-    const result = await updateDoc(currentGoal,
-        { toDos: arrayUnion({ id: id, todo: note, isCompleted: false }) })
-    return result
-}
 
 export const CompleteToDo = async (currentGoal, todo) => {
     const result = await updateDoc(currentGoal, { toDos: arrayRemove(todo) })

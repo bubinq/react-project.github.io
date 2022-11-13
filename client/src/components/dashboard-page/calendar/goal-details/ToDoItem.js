@@ -6,14 +6,14 @@ import { db } from "../../../../firebase-config"
 import { doc } from 'firebase/firestore'
 import { editToDo, CompleteToDo, deleteToDo, finishCompleted, finishEdited } from '../../../../services/ToDoServices'
 
-const ToDoItem = ({ todo, goal, setIsFiltering }) => {
+const ToDoItem = ({ todo, goal }) => {
 
     //  Manages CRUD operations
     //  Updates status
 
     const { dispatch, toDos } = useContext(GoalContext)
 
-    const currentGoal = doc(db, 'goals', goal.id)
+    const currentGoal = doc(db, 'goals', goal._id)
 
     const [isCompleted, setIsComplete] = useState(false)
     const [isClicked, setIsClicked] = useState(false)
@@ -75,7 +75,7 @@ const ToDoItem = ({ todo, goal, setIsFiltering }) => {
                     id: goal.id,
                 })
             })
-        setIsFiltering(false)
+(false)
     }
 
     const setClickHandler = () => {
@@ -122,16 +122,16 @@ const ToDoItem = ({ todo, goal, setIsFiltering }) => {
                 })
             })
         setIsClicked(false)
-        setIsFiltering(false)
+(false)
     }
     return (
         <li className={isCompleted ? styles.completed : styles.noteItem}>
-            {todo.todo}
+            {todo.toDo}
             <div className={styles.todoWrapper}>
                 <form onSubmit={editNameHandler} className={styles.formParent}>
                     {isClicked &&
                         <>
-                            <input type='text' name='newText' className={styles.editInput} defaultValue={todo.todo}></input>
+                            <input type='text' name='newText' className={styles.editInput} defaultValue={todo.toDo}></input>
                             <button className={styles.editBtn}>
                                 <i className='material-icons'>&#xe163;</i>
                             </button>

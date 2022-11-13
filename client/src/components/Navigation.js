@@ -1,14 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./dashboard-page/Dashboard.module.css";
 import { useContext } from "react";
-import { GoalContext } from "../contexts/GoalContext";
 import axios from "axios";
 import { AuthContext } from "../contexts/authContext";
 
 export const Navigation = () => {
   const location = window.location.pathname.split("/")[1];
 
-  const { displayToday } = useContext(GoalContext);
   const { auth, setAuthUser } = useContext(AuthContext);
 
   const navigateTo = useNavigate();
@@ -42,7 +40,6 @@ export const Navigation = () => {
               <Link
                 to="/progress"
                 className={styles.navigationLinks}
-                onClick={displayToday}
               >
                 Track Progress
               </Link>

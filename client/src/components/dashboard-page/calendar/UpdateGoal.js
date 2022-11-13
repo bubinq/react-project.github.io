@@ -16,7 +16,6 @@ export const UpdateGoal = ({ goalHandler, isUpdating, setSelectedLabel, selected
     let { dayTarget, popModalHandler } = useContext(CalendarContext)
     let { dayInfo } = useContext(GoalContext)
 
-    console.log(dayInfo);
     let notes;
 
 
