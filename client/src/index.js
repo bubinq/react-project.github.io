@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import { CalendarProvider } from "./contexts/CalendarContext";
 import { GoalProvider } from "./contexts/GoalContext";
 import { AuthProvider } from "./contexts/authContext";
+import { DetailsProvider } from "./contexts/detailsContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -12,7 +13,9 @@ root.render(
     <AuthProvider>
       <GoalProvider>
         <CalendarProvider>
-          <App />
+          <DetailsProvider>
+            <App />
+          </DetailsProvider>
         </CalendarProvider>
       </GoalProvider>
     </AuthProvider>

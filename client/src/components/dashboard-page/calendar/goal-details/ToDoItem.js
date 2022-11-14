@@ -1,152 +1,108 @@
-import styles from './GoalDetails.module.css'
-import { useContext, useEffect, useState } from 'react'
-import { GoalContext } from '../../../../contexts/GoalContext'
+import styles from "./GoalDetails.module.css";
+import { useContext, useState } from "react";
 
-import { db } from "../../../../firebase-config"
-import { doc } from 'firebase/firestore'
-import { editToDo, CompleteToDo, deleteToDo, finishCompleted, finishEdited } from '../../../../services/ToDoServices'
+import axios from "axios";
+import { DetailsContext } from "../../../../contexts/detailsContext";
 
 const ToDoItem = ({ todo, goal }) => {
+  //  Manages CRUD operations
+  //  Updates status
 
-    //  Manages CRUD operations
-    //  Updates status
+  const { dispatch } = useContext(DetailsContext);
 
-    const { dispatch, toDos } = useContext(GoalContext)
+  const [isClicked, setIsClicked] = useState(false);
 
-    const currentGoal = doc(db, 'goals', goal._id)
+  const completeHandler = async () => {
+    const completedToDo = await axios.put(`/toDos/complete/${todo._id}`, {
+      goalId: goal._id,
+    });
 
-    const [isCompleted, setIsComplete] = useState(false)
-    const [isClicked, setIsClicked] = useState(false)
+    dispatch({
+      type: "READ",
+      payload: completedToDo.data,
+    });
+  };
 
-    useEffect(() => {
-        if (todo.isCompleted) {
-            setIsComplete(true)
-        } else {
-            setIsComplete(false)
-        }// eslint-disable-next-line
-    }, [toDos])
+  const deleteHandler = async (ev) => {
+    const parent = ev.target.parentNode;
+    parent.style.display = "none";
 
+    const newGoal = await axios.put(
+      `/toDos/delete/${todo._id}`,
+      { goalId: goal._id },
+      { withCredentials: true }
+    );
+    dispatch({
+      type: "READ",
+      payload: newGoal.data,
+    });
+  };
 
-    const completeHandler = () => {
-        setIsComplete(!isCompleted)
+  const setClickHandler = () => {
+    setIsClicked(!isClicked);
+  };
 
-        const completedTodo = {
-            id: todo.id,
-            todo: todo.todo,
-            isCompleted: !todo.isCompleted
-        }
-
-        CompleteToDo(currentGoal, todo)
-            .then(() => {
-                dispatch({
-                    type: "TODODELETE",
-                    payload: goal,
-                    oldToDos: goal.toDos,
-                    todo: todo,
-                    id: goal.id,
-                })
-            }).catch(err => {
-                console.log(err.message)
-            })
-        finishCompleted(currentGoal, todo)
-            .then(() => {
-                dispatch({
-                    type: 'TODOCREATE',
-                    payload: goal,
-                    toDos: completedTodo,
-                    id: goal.id
-                })
-            }).catch(err => {
-                console.log(err.message)
-            })
+  const editNameHandler = async (ev) => {
+    ev.preventDefault();
+    const data = new FormData(ev.target);
+    const newText = data.get("newText").trim();
+    if (newText === "") {
+      return;
+    }
+    const sameName = goal.toDos.find((todo) => todo.todo === newText);
+    if (sameName) {
+      alert("A to-do item with the same name already exists!");
+      ev.target.reset();
+      return;
     }
 
-    const deleteHandler = (ev) => {
-        const parent = ev.target.parentNode
-        parent.style.display = 'none'
+    const updatedGoal = await axios.put(`/toDos/edit/${todo._id}`, {
+      goalId: goal._id,
+      toDo: newText
+    });
 
-        deleteToDo(goal.id, todo)
-            .then(() => {
-                dispatch({
-                    type: "TODODELETE",
-                    payload: goal,
-                    oldToDos: goal.toDos,
-                    todo: todo,
-                    id: goal.id,
-                })
-            })
-(false)
-    }
+    dispatch({
+      type: "READ",
+      payload: updatedGoal.data,
+    });
 
-    const setClickHandler = () => {
-        setIsClicked(!isClicked);
-    }
-
-    const editNameHandler = (ev) => {
-        ev.preventDefault();
-        const data = new FormData(ev.target);
-        const newText = data.get('newText').trim();
-        if (newText === '') {
-            return;
-        }
-        const sameName = goal.toDos.find(todo => todo.todo === newText)
-        if (sameName) {
-            alert('A to-do item with the same name already exists!')
-            ev.target.reset()
-            return;
-        }
-
-        const updatedTodo = {
-            id: todo.id,
-            todo: newText,
-            isCompleted: false
-        }
-
-        editToDo(todo, currentGoal)
-            .then(() => {
-                dispatch({
-                    type: "TODODELETE",
-                    payload: goal,
-                    oldToDos: goal.toDos,
-                    todo: todo,
-                    id: goal.id,
-                })
-            })
-        finishEdited(currentGoal, todo, newText)
-            .then(() => {
-                dispatch({
-                    type: 'TODOCREATE',
-                    payload: goal,
-                    toDos: updatedTodo,
-                    id: goal.id
-                })
-            })
-        setIsClicked(false)
-(false)
-    }
-    return (
-        <li className={isCompleted ? styles.completed : styles.noteItem}>
-            {todo.toDo}
-            <div className={styles.todoWrapper}>
-                <form onSubmit={editNameHandler} className={styles.formParent}>
-                    {isClicked &&
-                        <>
-                            <input type='text' name='newText' className={styles.editInput} defaultValue={todo.toDo}></input>
-                            <button className={styles.editBtn}>
-                                <i className='material-icons'>&#xe163;</i>
-                            </button>
-                        </>
-                    }
-                    {!isCompleted &&
-                        <span className="material-symbols-outlined" onClick={setClickHandler}>edit</span>
-                    }
-
-                </form>
-                <button className={styles.completeBtn} onClick={completeHandler}>Complete</button>
-                <button className={styles.deleteBtn} onClick={deleteHandler}>Delete</button>
-            </div>
-        </li>
-
-    )
-}
+    setIsClicked(false);
+  };
+  return (
+    <li className={todo.isCompleted ? styles.completed : styles.noteItem}>
+      {todo.toDo}
+      <div className={styles.todoWrapper}>
+        <form onSubmit={editNameHandler} className={styles.formParent}>
+          {isClicked && (
+            <>
+              <input
+                type="text"
+                name="newText"
+                className={styles.editInput}
+                defaultValue={todo.toDo}
+              ></input>
+              <button className={styles.editBtn}>
+                <i className="material-icons">&#xe163;</i>
+              </button>
+            </>
+          )}
+          {!todo.isCompleted && (
+            <span
+              className="material-symbols-outlined"
+              onClick={setClickHandler}
+            >
+              edit
+            </span>
+          )}
+        </form>
+        <button className={styles.completeBtn} onClick={completeHandler}>
+          Complete
+        </button>
+        <button className={styles.deleteBtn} onClick={deleteHandler}>
+          Delete
+        </button>
+      </div>
+    </li>
+  );
+};
 export default ToDoItem;

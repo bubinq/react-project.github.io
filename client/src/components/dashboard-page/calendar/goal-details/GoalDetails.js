@@ -1,8 +1,8 @@
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import { GoalContext } from "../../../../contexts/GoalContext";
+import { DetailsContext } from "../../../../contexts/detailsContext";
 import styles from "./GoalDetails.module.css";
 import ToDoItem from "./ToDoItem";
 import { Navigation } from "../../../Navigation";
@@ -12,28 +12,27 @@ const GoalDetails = () => {
   //  filters by status
   //  creates ToDos internally
 
-  const { goals, dispatch } = useContext(GoalContext);
+  const { goalDetails, dispatch } = useContext(DetailsContext);
   const { goalId } = useParams();
 
-  const goal = goals.find((theGoal) => theGoal._id === goalId);
-  console.log(goals);
-  console.log(goal);
-
-  //   useEffect(() => {
-  //     const getDetails = async () => {
-  //       const goal = await axios.get(`/goals/details/${goalId}`);
-  //       setGoal(goal.data);
-  //     };
-  //     getDetails();
-  //     //eslint-disable-next-line
-  //   }, []);
+  useEffect(() => {
+    const getDetails = async () => {
+      const goal = await axios.get(`/goals/details/${goalId}`);
+      dispatch({
+        type: "READ",
+        payload: goal.data,
+      });
+    };
+    getDetails();
+    //eslint-disable-next-line
+  }, []);
 
   const submitToDo = async (ev) => {
     ev.preventDefault();
     const data = new FormData(ev.target);
-    const note = new Array(data.get("addNote").trim());
+    const note = data.get("addNote").trim();
 
-    const sameName = goal.toDos.find((todo) => todo.toDo === note);
+    const sameName = goalDetails.toDos.find((todo) => todo.toDo === note);
     if (sameName) {
       alert("A to-do item with the same name already exists!");
       ev.target.reset();
@@ -45,11 +44,11 @@ const GoalDetails = () => {
       return;
     }
 
-    const toDoData = axios.post(
+    const toDoData = await axios.post(
       "/toDos/create",
       {
         goalId: goalId,
-        toDos: note.map((todo) =>
+        toDos: new Array(note).map((todo) =>
           Object.assign({ toDo: todo }, { goalId: goalId })
         ),
       },
@@ -57,12 +56,37 @@ const GoalDetails = () => {
     );
 
     dispatch({
-      type: "TODOCREATE",
-      payload: goal,
-      toDos: toDoData.data,
-      id: goalId,
+      type: "READ",
+      payload: toDoData.data,
     });
     ev.target.reset();
+  };
+
+  const filterBy = async (ev) => {
+    ev.preventDefault();
+    if (ev.target.value === "Completed") {
+      const completedToDos = await axios.get(
+        `/toDos/get/completed/${goalId}`
+      );
+      dispatch({
+        type: "READTODOS",
+        payload: completedToDos.data,
+      });
+    } else if (ev.target.value === "Incompleted") {
+      const incompleted = await axios.get(
+        `/toDos/get/incompleted/${goalId}`
+      );
+      dispatch({
+        type: "READTODOS",
+        payload: incompleted.data,
+      });
+    } else {
+      const goal = await axios.get(`/goals/details/${goalId}`);
+      dispatch({
+        type: "READ",
+        payload: goal.data,
+      });
+    }
   };
 
   return (
@@ -70,7 +94,7 @@ const GoalDetails = () => {
       <div className={styles.bodyLayer}>
         <Navigation></Navigation>
         <div className={styles.wrapper}>
-          <h1 className={styles.header}>{goal?.goal} - daily tasks</h1>
+          <h1 className={styles.header}>{goalDetails?.goal} - daily tasks</h1>
           <form className={styles.mainForm} onSubmit={submitToDo}>
             <div className={styles.inputWrapper}>
               <input
@@ -86,7 +110,11 @@ const GoalDetails = () => {
             <div className={styles.dropdownWrapper}>
               <div className={styles.dropdownInnerWrapper}>
                 <span>Filter By</span>
-                <select name="filter" className={styles.filtered}>
+                <select
+                  name="filter"
+                  className={styles.filtered}
+                  onChange={filterBy}
+                >
                   <option value="All">All</option>
                   <option value="Completed">Completed</option>
                   <option value="Incompleted">Incompleted</option>
@@ -96,8 +124,8 @@ const GoalDetails = () => {
           </form>
           <div className={styles.notesList}>
             <ol className={styles.notes}>
-              {goal?.toDos.map((task) => (
-                <ToDoItem key={task._id} goal={goal} todo={task} />
+              {goalDetails?.toDos?.map((task) => (
+                <ToDoItem key={task._id} goal={goalDetails} todo={task} />
               ))}
             </ol>
           </div>

@@ -16,12 +16,12 @@ export const getGoalToDos = async (req, res) => {
 export const createToDo = async (req, res) => {
   try {
     const toDos = await toDo.insertMany(req.body.toDos);
-    const currentGoal = await Goal.findByIdAndUpdate(
+    const updatedGoal = await Goal.findByIdAndUpdate(
       req.body.goalId,
       { $push: { toDos: toDos } },
       { new: true }
     ).populate("toDos");
-    res.status(200).json(currentGoal);
+    res.status(200).json(updatedGoal);
   } catch (error) {
     console.log(error.message);
     res.status(400).json({ message: error.message });
@@ -29,13 +29,15 @@ export const createToDo = async (req, res) => {
 };
 
 export const completeToDo = async (req, res) => {
+  const searchedToDo = await toDo.findById(req.params.toDoId);
   try {
-    const completedToDo = await toDo.findByIdAndUpdate(
+    await toDo.findByIdAndUpdate(
       req.params.toDoId,
-      { $set: { isCompleted: true } },
+      { $set: { isCompleted: !searchedToDo.isCompleted } },
       { new: true }
     );
-    res.status(200).json(completedToDo);
+    const updatedGoal = await Goal.findById(req.body.goalId).populate("toDos");
+    res.status(200).json(updatedGoal);
   } catch (error) {
     console.log(error.message);
     res.status(400).json({ message: error.message });
@@ -44,12 +46,13 @@ export const completeToDo = async (req, res) => {
 
 export const editToDo = async (req, res) => {
   try {
-    const edited = await toDo.findByIdAndUpdate(
+    await toDo.findByIdAndUpdate(
       req.params.toDoId,
-      { $set: req.body },
+      { $set: { toDo: req.body.toDo } },
       { new: true }
     );
-    res.status(200).json(edited);
+    const updatedGoal = await Goal.findById(req.body.goalId).populate("toDos");
+    res.status(200).json(updatedGoal);
   } catch (error) {
     console.log(error.message);
     res.status(400).json({ message: error.message });
@@ -59,7 +62,8 @@ export const editToDo = async (req, res) => {
 export const deleteToDo = async (req, res) => {
   try {
     await toDo.findByIdAndDelete(req.params.toDoId);
-    res.status(200).json({ message: "ToDo deleted successfully!" });
+    const updatedGoal = await Goal.findById(req.body.goalId).populate("toDos");
+    res.status(200).json(updatedGoal);
   } catch (error) {
     console.log(error.message);
     res.status(400).json({ message: error.message });
@@ -70,6 +74,32 @@ export const deleteGoalToDos = async (req, res) => {
   try {
     await toDo.deleteMany({ goalId: req.params.goalId });
     res.status(200).json({ message: "ToDos successfully deleted!" });
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).json({ message: error.message });
+  }
+};
+
+export const getCompletedToDos = async (req, res) => {
+  try {
+    const completed = await toDo.find({
+      goalId: req.params.goalId,
+      isCompleted: true
+    });
+    res.status(200).json(completed);
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).json({ message: error.message });
+  }
+};
+
+export const getIncompletedToDos = async (req, res) => {
+  try {
+    const incompleted = await toDo.find({
+      goalId: req.params.goalId,
+      isCompleted: false
+    });
+    res.status(200).json(incompleted);
   } catch (error) {
     console.log(error.message);
     res.status(400).json({ message: error.message });
