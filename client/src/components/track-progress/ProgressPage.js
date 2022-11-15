@@ -10,7 +10,7 @@ import { GoalContext } from "../../contexts/GoalContext"
 
 export const ProgressPage = () => {
 
-    const { setDayProgress, resetSelectedGoal } = useContext(GoalContext)
+    const { resetSelectedGoal } = useContext(GoalContext)
     const { monthIdx } = useContext(CalendarContext)
     const [month, setMonth] = useState(displayMonth());
 
@@ -19,7 +19,6 @@ export const ProgressPage = () => {
     }, [monthIdx])
 
     useEffect(() => {
-        setDayProgress([])
         resetSelectedGoal()
         // eslint-disable-next-line
     }, [])

@@ -6,7 +6,6 @@ import { GoalContext } from '../../contexts/GoalContext';
 import { DisplayStart } from './DisplayStart';
 import { DisplayEnd } from './DisplayEnd'
 import { DisplayProgress } from './DisplayProgress';
-import { v4 as uuidv4 } from 'uuid'
 
 
 export const DayProgress = ({ day, rowIndex }) => {
@@ -45,8 +44,8 @@ export const DayProgress = ({ day, rowIndex }) => {
                     <h4 className={getClass(day)}> {day.format('DD')}</h4>
                     {selectedGoal.goal &&
                         <>
-                            {dayjs(selectedGoal.createdOn).format('DD MM YYYY') === currDay &&
-                                <DisplayStart key={selectedGoal.id} goal={selectedGoal}></DisplayStart>
+                            {dayjs(selectedGoal.createdAt).format('DD MM YYYY') === currDay &&
+                                <DisplayStart key={selectedGoal._id} goal={selectedGoal}></DisplayStart>
                             }
 
                             {!dayProgress ?
@@ -55,15 +54,15 @@ export const DayProgress = ({ day, rowIndex }) => {
                                 </>
                                 :
                                 <>
-                                    {dayProgress.map(day => dayjs(day.completedAt).format('DD MM YYYY') === currDay &&
-                                        <DisplayProgress key={uuidv4()} day={day}></DisplayProgress>
+                                    {dayProgress.map(day => dayjs(day.createdAt).format('DD MM YYYY') === currDay &&
+                                        <DisplayProgress key={day._id} day={day}></DisplayProgress>
                                     )
                                     }
                                 </>
                             }
 
-                            {dayjs(displayDuration(selectedGoal.id)[0]).format('DD MM YYYY') === currDay &&
-                                <DisplayEnd key={selectedGoal.id} goal={selectedGoal} deadline={dayjs(displayDuration(selectedGoal.id)[0])}></DisplayEnd>
+                            {dayjs(displayDuration(selectedGoal._id)[0]).format('DD MM YYYY') === currDay &&
+                                <DisplayEnd key={selectedGoal._id} goal={selectedGoal} deadline={dayjs(displayDuration(selectedGoal._id)[0])}></DisplayEnd>
                             }
                         </>
                     }

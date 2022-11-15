@@ -1,3 +1,4 @@
+import axios from "axios";
 import dayjs from "dayjs";
 import { createContext, useEffect, useReducer, useState } from "react";
 import { useSessionStorage } from "../hooks/useSessionStorage";
@@ -11,16 +12,6 @@ function goalManager(state, action) {
 
     case "CREATE":
       return [...state, { ...action.payload, _id: action._id }];
-
-    case "TODOCREATE":
-      return state.map((oldGoal) =>
-        oldGoal._id === action._id
-          ? {
-              ...action.payload,
-              toDos: [...oldGoal.toDos, action.toDos],
-            }
-          : oldGoal
-      );
 
     case "UPDATE":
       return state.map((oldGoal) =>
@@ -46,20 +37,6 @@ function goalManager(state, action) {
     case "DELETE":
       return state.filter((oldGoal) => oldGoal._id !== action._id);
 
-    case "TODODELETE":
-      return state.map((oldGoal) =>
-        oldGoal._id === action._id
-          ? {
-              ...action.payload,
-              toDos: [
-                ...action.oldToDos.filter(
-                  (oldToDo) => oldToDo._id !== action.todo._id
-                ),
-              ],
-            }
-          : oldGoal
-      );
-
     default:
       return state;
   }
@@ -79,6 +56,7 @@ export const GoalProvider = ({ children }) => {
   const [dayInfo, setDayInfo] = useState({});
   const [hasGoals, setHasGoals] = useState(false);
   const [selectedGoal, setSelecetedGoal] = useState({});
+  const [dayProgress, setDayProgress] = useState([])
 
   useEffect(() => {
     setGoalStorage(goals);
@@ -88,6 +66,12 @@ export const GoalProvider = ({ children }) => {
   const resetSelectedGoal = () => {
     setSelecetedGoal({});
   };
+
+  const selectGoalHandler = async(goal) => {
+    setSelecetedGoal(goal)
+    const progress = await axios.get(`/progress/get/${goal._id}`)
+    setDayProgress(progress.data)
+  }
 
   const displayDuration = (goalId) => {
     const searchedGoal = goals.find((target) => target._id === goalId);
@@ -107,15 +91,6 @@ export const GoalProvider = ({ children }) => {
     }
   };
 
-//   const calculatePercentage = (goal) => {
-//     const allToDos = goal.toDos.length;
-//     const oneUnit = 100 / allToDos;
-//     const unitPercentage = Math.round(
-//       goal.toDos.filter((todo) => todo.isCompleted === true).length * oneUnit
-//     );
-//     return unitPercentage;
-//   };
-
   return (
     <GoalContext.Provider
       value={{
@@ -132,6 +107,8 @@ export const GoalProvider = ({ children }) => {
         setIsLoading,
         selectedGoal,
         resetSelectedGoal,
+        selectGoalHandler,
+        dayProgress
       }}
     >
       {children}
