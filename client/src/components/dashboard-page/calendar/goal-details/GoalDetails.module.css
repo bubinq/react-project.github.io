@@ -175,3 +175,72 @@ li::before {
     border: none;
     background-color: transparent;
 }
+
+@media screen and (max-width: 574px) {
+    .wrapper {
+        margin-top: 0px;
+        width: 85%;
+        margin: 0 auto;
+    }
+    .header {
+        font-size: 1.5rem;
+    }
+    .mainForm {
+        align-items: center;
+    }
+    .inputWrapper input {
+        font-size: 1.2rem;
+    }
+    .filtered {
+        font-size: 1.1rem;
+    }
+    .addBtn {
+        left: 70%;
+        top: 20%;
+    }
+    .notes {
+        padding: 10px 0px;
+        font-size: 1.2rem;
+        margin: 0 auto;
+    }
+    .noteItem {
+        min-width: 300px;
+        letter-spacing: 1px;
+        padding-left: 4px;
+    }
+    .completeBtn {
+        min-width: 44px;
+        max-width: 80px;
+        margin-left: 0px;
+        font-size: 0.75rem;
+        font-weight: bold;
+        padding: 0px;
+    }
+    .deleteBtn {
+        min-width: 44px;
+        max-width: 80px;
+        margin-left: 0px;
+        font-size: 0.75rem; 
+        padding: 0px;
+        font-weight: bold;
+        height: 100%;
+    }
+    li::before {
+        left: -7%;
+    }
+    .editInput {
+        margin: 0;
+        max-height: 30px;
+    }
+    .editBtn {
+        top: 0%;
+        right: 15%;
+    }
+    .todoWrapper {
+        align-items: center;
+    }
+    .formParent {
+        max-height: 60px;
+        display: flex;
+    }
+}

@@ -367,6 +367,7 @@ body{
         font-size: 3rem;
     }
     .homeNav {
+        right: 5%;
         top: 0%;
     }
     .homeNav a {
@@ -441,5 +442,8 @@ body{
     }
     .authBtn {
         width: 100%;
+    }
+    .material-symbols-outlined {
+        margin: 0px 2px;
     }
 }

@@ -114,3 +114,72 @@ h5 {
 .middle {
     margin-top: 10px;
 }
+
+
+@media screen and (max-width: 574px) {
+    .headerWrapper {
+        display: block;
+    }
+    .main {
+        margin-bottom: 20px;
+    }
+    .mainHeader {
+        display: block;
+    }
+    .monthHeader {
+        align-items: center;
+    }
+    .monthHeader h1{
+        font-size: 1rem;
+        margin: 0;
+    }
+    .header {
+        justify-content: center;
+    }
+    .header nav ul {
+        padding: 0px;
+        margin-bottom: 15px;
+        margin-top: 0px;
+        text-align: center;
+    }
+    .header nav {
+        display: flex;
+        justify-content: center;
+    }
+    .welcomeLink {
+        display: block;
+        letter-spacing: 0px;
+        font-size: 1rem;
+        margin-left: 0px;
+        text-align: center;
+    }
+    .navigationLinks {
+        letter-spacing: 0px;
+        font-size: 1rem;
+        margin-left: 0px;
+        margin-right: 10px;
+    }
+    .headerArrows {
+        width: auto;
+        height: auto;
+        padding: 3px;
+    }
+    .sideBar {
+        display: none;
+    }
+    .month {
+        grid-template-rows: auto;
+    }
+    .weekRow {
+        grid-template-columns: repeat(1, 320px);
+    }
+    .progressDay {
+        min-height: 60px;
+    }
+    .eventModal {
+        left: 5%;
+        min-width: 230px;
+        max-width: fit-content;
+    }
+    
+}
