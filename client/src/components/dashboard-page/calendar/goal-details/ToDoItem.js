@@ -70,7 +70,7 @@ const ToDoItem = ({ todo, goal }) => {
   };
   return (
     <li className={todo.isCompleted ? styles.completed : styles.noteItem}>
-      {todo.toDo}
+      <span>{todo.toDo}</span>
       <div className={styles.todoWrapper}>
         <form onSubmit={editNameHandler} className={styles.formParent}>
           {isClicked && (

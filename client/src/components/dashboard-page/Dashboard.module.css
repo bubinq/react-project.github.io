@@ -6,7 +6,6 @@
 
 .mainWrapper {
   display: flex;
-  width: 100vw;
   justify-content: space-evenly;
 }
 
@@ -32,11 +31,14 @@
 
 .monthHeader {
   display: flex;
+  position: relative;
   justify-content: center;
+  caret-color: transparent;
 }
 
 .sideBar {
   display: flex;
+  margin-right: 40px;
   flex-direction: column;
   align-content: center;
 }
@@ -522,71 +524,109 @@ h5 {
   display: flex;
   flex-direction: column;
 }
+.menuWrapper {
+  display: none;
+  position: absolute;
+  z-index: 1001;
+  left: 6%;
+  cursor: pointer;
+}
+.menuWrapper div {
+  height: 2px;
+  background-color: black;
+  width: 25px;
+  margin-top: 6px;
+}
 
 @media screen and (max-width: 574px) {
-    .calendarWrapper {
-        overflow: scroll;
-    }
-    .mainWrapper {
-        margin-bottom: 20px;
-    }
-    .mainHeader {
-        display: block;
-    }
-    .monthHeader {
-        align-items: center;
-    }
-    .monthHeader h1{
-        font-size: 1rem;
-        margin: 0;
-    }
-    .header {
-        justify-content: center;
-    }
-    .header nav ul {
-        padding: 0px;
-        margin-bottom: 15px;
-        margin-top: 0px;
-        text-align: center;
-    }
-    .header nav {
-        display: flex;
-        justify-content: center;
-    }
-    .welcomeLink {
-        display: block;
-        letter-spacing: 0px;
-        font-size: 1rem;
-        margin-left: 0px;
-        text-align: center;
-    }
-    .navigationLinks {
-        letter-spacing: 0px;
-        font-size: 1rem;
-        margin-left: 0px;
-        margin-right: 10px;
-    }
-    .headerArrows {
-        width: auto;
-        height: auto;
-        padding: 3px;
-    }
-    .sideBar {
-        display: none;
-    }
-    .month {
-        grid-template-rows: auto;
-    }
-    .weekRow {
-        grid-template-columns: repeat(1, 320px);
-    }
-    .eachDay {
-        min-height: 60px;
-    }
-    .eventModal {
-        left: 5%;
-        min-width: 230px;
-        max-width: fit-content;
-    }
-    
+  .menuWrapper {
+    display: block;
+  }
+  .calendarWrapper {
+    overflow: scroll;
+  }
+  .mainWrapper {
+    margin-bottom: 20px;
+  }
+  .mainHeader {
+    display: block;
+  }
+  .monthHeader {
+    align-items: center;
+  }
+  .monthHeader h1 {
+    font-size: 1rem;
+    margin: 0;
+  }
+  .header {
+    justify-content: center;
+  }
+  .header nav ul {
+    padding: 0px;
+    margin-bottom: 15px;
+    margin-top: 0px;
+    text-align: center;
+  }
+  .header nav {
+    display: flex;
+    justify-content: center;
+  }
+  .welcomeLink {
+    display: block;
+    letter-spacing: 0px;
+    font-size: 1rem;
+    margin-left: 0px;
+    text-align: center;
+  }
+  .navigationLinks {
+    letter-spacing: 0px;
+    font-size: 1rem;
+    margin-left: 0px;
+    margin-right: 10px;
+  }
+  .headerArrows {
+    width: auto;
+    height: auto;
+    padding: 3px;
+  }
+  .sideBar {
+    margin: 0;
+    z-index: 1000;
+    background-color: white;
+    margin-top: -115px;
+    padding-top: 90px;
+  }
+  .todayTasks div {
+    display: flex;
+    max-height: 25px;
+    max-width: 64px;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .sideBar a {
+    font-size: 1rem;
+    letter-spacing: 0px;
+    padding-left: 5px;
+  }
+  .sideBar h1 {
+    font-size: 1rem;
+    text-align: center;
+  }
+  .month {
+    grid-template-rows: auto;
+  }
+  .weekRow {
+    grid-template-columns: repeat(1, 320px);
+  }
+  .eachDay {
+    min-height: 64px;
+  }
+  .eventModal {
+    left: 5%;
+    min-width: 230px;
+    max-width: fit-content;
+  }
+  .legendWrapper div {
+    margin-top: 10px;
+  }
 }

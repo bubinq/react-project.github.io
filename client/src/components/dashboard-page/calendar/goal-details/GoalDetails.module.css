@@ -204,9 +204,14 @@ li::before {
         margin: 0 auto;
     }
     .noteItem {
-        min-width: 300px;
+        max-width: 300px;
         letter-spacing: 1px;
         padding-left: 4px;
+    }
+    .noteItem span {
+        width: 55%;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
     .completeBtn {
         min-width: 44px;

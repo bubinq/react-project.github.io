@@ -1,185 +1,207 @@
 .progressWrapper {
-    overflow-x: hidden;
+  overflow-x: hidden;
 }
 
 .progressDay {
-    display: flex;
-    position: relative;
-    flex-direction: column;
-    caret-color: transparent;
-    border: 1px solid rgb(153, 153, 153);
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  caret-color: transparent;
+  border: 1px solid rgb(153, 153, 153);
 }
 
 .progressDay h4,
 h5 {
-    margin: 0;
+  margin: 0;
 }
 
 .main {
-    display: flex;
-    justify-content: space-around;
+  display: flex;
+  justify-content: space-around;
 }
 
 .notCurrentMonth {
-    font-weight: 400;
-    color: lightgray;
+  font-weight: 400;
+  color: lightgray;
 }
 
 .headerWrapper {
-    display: flex;
-    justify-content: space-around;
+  display: flex;
+  justify-content: space-around;
 }
 
 .isToday {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    border-radius: 50%;
-    background-color: rgb(45, 156, 254);
-    width: 30px;
-    height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border-radius: 50%;
+  background-color: rgb(45, 156, 254);
+  width: 30px;
+  height: 30px;
 }
 
 .sideBar {
-    display: flex;
-    flex-direction: column;
-    align-content: center;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
 }
 
 .legendWrapper {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .trackedGoal {
-    margin-top: 20px;
-    font-size: 1.2rem;
-    letter-spacing: 1.2px;
-    font-weight: 700;
-    cursor: pointer;
+  margin-top: 20px;
+  font-size: 1.2rem;
+  letter-spacing: 1.2px;
+  font-weight: 700;
+  cursor: pointer;
 }
 
-
 .red {
-    background-color: rgb(243, 31, 84);
+  background-color: rgb(243, 31, 84);
 }
 
 .purple {
-    background-color: rgb(159, 94, 255);
+  background-color: rgb(159, 94, 255);
 }
 
 .orange {
-    background-color: rgb(255, 138, 106);
+  background-color: rgb(255, 138, 106);
 }
 
 .yellow {
-    background-color: rgb(255, 232, 139);
+  background-color: rgb(255, 232, 139);
 }
 
 .green {
-    background-color: rgb(98, 252, 178);
+  background-color: rgb(98, 252, 178);
 }
 
 .blue {
-    background-color: rgb(53, 134, 255);
+  background-color: rgb(53, 134, 255);
 }
 
 .bubble {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    top: -12%;
-    border-radius: 50%;
-    font-weight: 700;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  top: -12%;
+  border-radius: 50%;
+  font-weight: 700;
 }
 .circle {
-    position: relative;
-    display: flex;
-    justify-content: center;
+  position: relative;
+  display: flex;
+  justify-content: center;
 }
 .figure {
-    position: absolute;
-    left: -18%;
-    top:-460%;
-    transform: rotate(270deg);
+  position: absolute;
+  left: -18%;
+  top: -460%;
+  transform: rotate(270deg);
 }
 .figure circle {
-    fill: transparent;
-    stroke: green;
-    stroke-width: 6;
-    transform: translate(5px, 5px);
+  fill: transparent;
+  stroke: green;
+  stroke-width: 6;
+  transform: translate(5px, 5px);
 }
 .middle {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
-
 @media screen and (max-width: 574px) {
-    .headerWrapper {
-        display: block;
-    }
-    .main {
-        margin-bottom: 20px;
-    }
-    .mainHeader {
-        display: block;
-    }
-    .monthHeader {
-        align-items: center;
-    }
-    .monthHeader h1{
-        font-size: 1rem;
-        margin: 0;
-    }
-    .header {
-        justify-content: center;
-    }
-    .header nav ul {
-        padding: 0px;
-        margin-bottom: 15px;
-        margin-top: 0px;
-        text-align: center;
-    }
-    .header nav {
-        display: flex;
-        justify-content: center;
-    }
-    .welcomeLink {
-        display: block;
-        letter-spacing: 0px;
-        font-size: 1rem;
-        margin-left: 0px;
-        text-align: center;
-    }
-    .navigationLinks {
-        letter-spacing: 0px;
-        font-size: 1rem;
-        margin-left: 0px;
-        margin-right: 10px;
-    }
-    .headerArrows {
-        width: auto;
-        height: auto;
-        padding: 3px;
-    }
-    .sideBar {
-        display: none;
-    }
-    .month {
-        grid-template-rows: auto;
-    }
-    .weekRow {
-        grid-template-columns: repeat(1, 320px);
-    }
-    .progressDay {
-        min-height: 60px;
-    }
-    .eventModal {
-        left: 5%;
-        min-width: 230px;
-        max-width: fit-content;
-    }
-    
+  .headerWrapper {
+    display: block;
+  }
+  .main {
+    margin-bottom: 20px;
+  }
+  .mainHeader {
+    display: block;
+  }
+  .monthHeader {
+    align-items: center;
+  }
+  .monthHeader h1 {
+    font-size: 1rem;
+    margin: 0;
+  }
+  .header {
+    justify-content: center;
+  }
+  .header nav ul {
+    padding: 0px;
+    margin-bottom: 15px;
+    margin-top: 0px;
+    text-align: center;
+  }
+  .header nav {
+    display: flex;
+    justify-content: center;
+  }
+  .welcomeLink {
+    display: block;
+    letter-spacing: 0px;
+    font-size: 1rem;
+    margin-left: 0px;
+    text-align: center;
+  }
+  .navigationLinks {
+    letter-spacing: 0px;
+    font-size: 1rem;
+    margin-left: 0px;
+    margin-right: 10px;
+  }
+  .headerArrows {
+    width: auto;
+    height: auto;
+    padding: 3px;
+  }
+  .sideBar {
+    margin: 0;
+    z-index: 1000;
+    background-color: white;
+    margin-top: -115px;
+    padding-top: 90px;
+  }
+  .trackedGoal {
+    margin-top: 10px;
+    letter-spacing: 1px;
+    font-size: 1rem;
+    text-align: center;
+    white-space: nowrap;
+    max-width: 100px;
+    overflow: hidden;
+  }
+  .middle {
+    margin-top: 8px;
+  }
+
+  .sideBar h1 {
+    font-size: 1rem;
+    text-align: center;
+  }
+  .month {
+    grid-template-rows: auto;
+  }
+  .weekRow {
+    grid-template-columns: repeat(1, 320px);
+  }
+  .progressDay {
+    min-height: 64px;
+  }
+  .eventModal {
+    left: 5%;
+    min-width: 230px;
+    max-width: fit-content;
+  }
+  .figure {
+    left: 15%;
+    top: -586%;
+  }
 }
