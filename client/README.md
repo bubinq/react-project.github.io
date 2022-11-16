@@ -32,7 +32,7 @@ Gives you track record of your task completion score
 # Used Tools
 
 React.js
-Firebase API/ Firebase Cloud Firestore DB
+Express/ MongoDb/ Mongoose
 Dayjs
 Framer-motion
 HTML
