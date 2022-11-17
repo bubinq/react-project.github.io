@@ -1,6 +1,6 @@
 # Link to app
 
-Here: https://react-project-api-3bb8a.web.app/
+Here: https://react-organizer-app.herokuapp.com/
 
 
 # Project Description
