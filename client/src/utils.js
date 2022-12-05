@@ -1,5 +1,5 @@
 import axios from "axios"
 
 export const axiosInstance = axios.create({
-    baseURL: "http://localhost:8000/api/"
+    baseURL: "https://fabulous-jalebi-50034b.netlify.app/"
 })
