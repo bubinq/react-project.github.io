@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { GoalContext } from "../../contexts/GoalContext";
 import styles from "./Dashboard.module.css";
 
-import axios from "axios";
+import { axiosInstance } from "../../utils";
 
 export const DashboardPopUp = ({ lastAddedGoal, setShowPopUp }) => {
   const { dispatch } = useContext(GoalContext);
@@ -11,7 +11,7 @@ export const DashboardPopUp = ({ lastAddedGoal, setShowPopUp }) => {
 
   const removeGoalHandler = async () => {
     setUpdatedChanges(true);
-    await axios.delete(`/goals/delete/${lastAddedGoal._id}`);
+    await axiosInstance.delete(`/goals/delete/${lastAddedGoal._id}`);
     dispatch({
       type: "DELETE",
       _id: lastAddedGoal._id,
@@ -22,7 +22,7 @@ export const DashboardPopUp = ({ lastAddedGoal, setShowPopUp }) => {
 
   const saveGoalHandler = async () => {
     setUpdatedChanges(true);
-    await axios.put(`goals/saveGoal/${lastAddedGoal._id}`);
+    await axiosInstance.put(`/goals/saveGoal/${lastAddedGoal._id}`);
     dispatch({
       type: "UPDATESTATUS",
       payload: lastAddedGoal,

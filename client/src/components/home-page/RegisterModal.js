@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ErrorMessage } from "./ErrorMessage";
-import axios from "axios";
+import { axiosInstance } from "../../utils";
 import { AuthContext } from "../../contexts/authContext";
 
 export const RegisterModal = ({ showModalHandler, switchHandler, form }) => {
@@ -43,7 +43,7 @@ export const RegisterModal = ({ showModalHandler, switchHandler, form }) => {
       new FormData(ev.target)
     );
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         "/auth/register",
         {
           email: email.trim(),
@@ -54,12 +54,13 @@ export const RegisterModal = ({ showModalHandler, switchHandler, form }) => {
       );
       setAuthUser(response.data.savedUser);
       if (form.goal) {
-        await axios.post(
+        await axiosInstance.post(
           "/goals/create",
           {
             goal: form.goal,
             duration: form.duration,
-            createdAt: form.createdAt
+            createdAt: form.createdAt,
+            expiresAt: form.expiresAt
           },
           { withCredentials: true }
         );

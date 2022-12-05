@@ -1,0 +1,35 @@
+.red {
+  display: flex;
+  justify-content: center;
+  background-color: rgb(243, 31, 84);
+}
+
+.purple {
+  display: flex;
+  justify-content: center;
+  background-color: rgb(159, 94, 255);
+}
+
+.orange {
+  display: flex;
+  justify-content: center;
+  background-color: rgb(255, 138, 106);
+}
+
+.yellow {
+  display: flex;
+  justify-content: center;
+  background-color: rgb(255, 232, 139);
+}
+
+.green {
+  display: flex;
+  justify-content: center;
+  background-color: rgb(98, 252, 178);
+}
+
+.blue {
+  display: flex;
+  justify-content: center;
+  background-color: rgb(53, 134, 255);
+}

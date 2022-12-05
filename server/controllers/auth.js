@@ -32,6 +32,8 @@ export const signUp = async (req, res) => {
     }
     const user = new User({ ...req.body, password: hash });
     const savedUser = await user.save();
+    const token = jwt.sign({ id: savedUser._id }, process.env.JWT_KEY);
+    res.cookie("accessToken", token, { httpOnly: true });
     res.status(201).json({success: true, savedUser});
   } catch (error) {
     if (error.code === 11000) {

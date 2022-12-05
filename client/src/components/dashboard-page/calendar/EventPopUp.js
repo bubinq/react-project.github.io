@@ -1,4 +1,5 @@
 import styles from "../Dashboard.module.css";
+import "../../../App.css";
 
 import { useContext, useState } from "react";
 import CalendarContext from "../../../contexts/CalendarContext";
@@ -7,14 +8,14 @@ import { UpdateGoal } from "./UpdateGoal";
 import { labelsArray } from "./constants/labelConst";
 import { GoalModal } from "./GoalModal";
 
-import axios from "axios";
+import { axiosInstance } from "../../../utils";
 
 export const EventPopUp = () => {
   //  Tracks each goal data on related day
   //  Manages Crud Operations
 
   const { popModalHandler, dayTarget } = useContext(CalendarContext);
-  const { dispatch, setHasGoals, hasGoals, dayInfo } = useContext(GoalContext);
+  const { dispatch, setHasGoals, hasGoals, dayInfo, displayExpireAt } = useContext(GoalContext);
 
   const [isUpdating, setIsUpdating] = useState(false);
   const [selectedLabel, setSelectedLabel] = useState(labelsArray[0]);
@@ -39,6 +40,7 @@ export const EventPopUp = () => {
               })
           : (isEmpty = true),
       labelColor: selectedLabel.color,
+      expiresAt: displayExpireAt(dayTarget?.$d, data.get("time").trim()).$d
     };
 
     if (isEmpty) {
@@ -57,17 +59,18 @@ export const EventPopUp = () => {
     }
 
     if (dayInfo.goal === "") {
-      const newGoal = await axios.post(
+      const newGoal = await axiosInstance.post(
         "/goals/create",
         {
           goal: goalData.goal,
           duration: goalData.duration,
           labelColor: goalData.labelColor,
           createdAt: dayTarget?.$d,
+          expiresAt: displayExpireAt(dayTarget?.$d, goalData.duration).$d
         },
         { withCredentials: true }
       );
-      const wholeGoal = await axios.post("/toDos/create", {
+      const wholeGoal = await axiosInstance.post("/toDos/create", {
         goalId: newGoal.data._id,
         toDos: goalData.toDos.map((todo) =>
           Object.assign(todo, { goalId: newGoal.data._id })
@@ -80,15 +83,15 @@ export const EventPopUp = () => {
       });
     } else if (isUpdating) {
       const { toDos, ...data } = goalData;
-      const updatedGoal = await axios.put(
+      const updatedGoal = await axiosInstance.put(
         `/goals/update/${dayInfo._id}`,
         {
           ...data,
         },
         { withCredentials: true }
       );
-      await axios.delete(`/toDos/deleteall/${dayInfo._id}`)
-      const wholeGoal = await axios.post("/toDos/create", {
+      await axiosInstance.delete(`/toDos/deleteall/${dayInfo._id}`)
+      const wholeGoal = await axiosInstance.post("/toDos/create", {
         goalId: updatedGoal.data._id,
         toDos: toDos.map((todo) =>
           Object.assign(todo, { goalId: updatedGoal.data._id })
@@ -114,7 +117,7 @@ export const EventPopUp = () => {
 
   const showDeleteHandler = async () => {
     if (window.confirm("Are you sure you want to delete this goal?")) {
-      await axios.delete(`/goals/delete/${dayInfo._id}`);
+      await axiosInstance.delete(`/goals/delete/${dayInfo._id}`);
       dispatch({
         type: "DELETE",
         _id: dayInfo._id,

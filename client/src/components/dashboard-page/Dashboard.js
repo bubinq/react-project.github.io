@@ -5,7 +5,7 @@ import { DashboardPopUp } from "./DashboardPopUp";
 import { motion } from "framer-motion";
 import dayjs from "dayjs";
 
-import axios from "axios";
+import { axiosInstance } from "../../utils";
 
 export const Dashboard = () => {
   //  Much like Calendar wraps the entire dashboard page
@@ -16,7 +16,8 @@ export const Dashboard = () => {
     goals,
     dispatch,
     displayDuration,
-    isLoading
+    isLoading,
+    resetSelectedGoal
   } = useContext(GoalContext);
   const [showPopUp, setShowPopUp] = useState(false);
 
@@ -24,6 +25,7 @@ export const Dashboard = () => {
   const today = new Date(dayjs().format("MM DD YYYY")).valueOf();
 
   useEffect(() => {
+    resetSelectedGoal()
     checkLastGoalValidation();
     checkGoalIsExpired();
     // eslint-disable-next-line
@@ -40,7 +42,7 @@ export const Dashboard = () => {
       const deadline = displayDuration(goal._id)[0];
       const endGoal = new Date(dayjs(deadline).format("MM DD YYYY")).valueOf();
       if (endGoal - today < 0 && !goal.isExpired) {
-        const expiredGoal = await axios.put(`/goals/updateStatus/${goal._id}`);
+        const expiredGoal = await axiosInstance.put(`/goals/updateStatus/${goal._id}`);
         dispatch({
           type: "UPDATECOMPLETE",
           payload: expiredGoal.data,
@@ -67,7 +69,7 @@ export const Dashboard = () => {
   useEffect(() => {
     const getGoals = async () => {
       try {
-        const goals = await axios.get("/goals/user");
+        const goals = await axiosInstance.get("/goals/user");
         dispatch({
           type: "READ",
           payload: goals.data,

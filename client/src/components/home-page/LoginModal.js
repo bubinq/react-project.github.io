@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ErrorMessage } from "./ErrorMessage";
 import { AuthContext } from "../../contexts/authContext";
 
-import axios from "axios";
+import { axiosInstance } from "../../utils";
 
 export const LoginModal = ({ showModalHandler, switchHandler, form }) => {
   const navigateTo = useNavigate();
@@ -43,7 +43,7 @@ export const LoginModal = ({ showModalHandler, switchHandler, form }) => {
     const { email, password } = Object.fromEntries(new FormData(ev.target));
 
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         "/auth/login",
         {
           email: email.trim(),
@@ -53,12 +53,13 @@ export const LoginModal = ({ showModalHandler, switchHandler, form }) => {
       );
       setAuthUser(response.data.details);
       if (form.goal) {
-        await axios.post(
+        await axiosInstance.post(
           "/goals/create",
           {
             goal: form.goal,
             duration: form.duration,
-            createdAt: form.createdAt
+            createdAt: form.createdAt,
+            expiresAt: form.expiresAt
           },
           { withCredentials: true }
         );

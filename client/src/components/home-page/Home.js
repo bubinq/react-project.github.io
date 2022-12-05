@@ -1,7 +1,7 @@
 import "./Home.css";
 import { showHideAnimate, headerAnimate } from "./Constants";
 import { Form } from "./Form";
-import axios from "axios";
+import { axiosInstance } from "../../utils";
 
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
@@ -38,7 +38,7 @@ export const Home = () => {
     ev.preventDefault();
 
     if (window.confirm("Are you sure you want to logout?")) {
-      await axios.get("/auth/logout", {
+      await axiosInstance.get("/auth/logout", {
         withCredentials: true,
       });
       setAuthUser(null)

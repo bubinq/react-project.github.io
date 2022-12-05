@@ -2,11 +2,12 @@ import "./Home.css";
 
 import dayjs from "dayjs";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import { stepAnimate } from "./Constants";
 import { LoginModal } from "./LoginModal";
 import { RegisterModal } from "./RegisterModal";
+import { GoalContext } from "../../contexts/GoalContext";
 
 export const Form = ({
   toggleModal,
@@ -19,6 +20,7 @@ export const Form = ({
 
   const [View, setView] = useState(() => LoginModal);
   const [form, setFormData] = useState({});
+  const {displayExpireAt} = useContext(GoalContext)
 
   const switchFormHandler = (isLogin) => {
     if (isLogin) {
@@ -36,11 +38,13 @@ export const Form = ({
     let data = new FormData(ev.target);
     const goal = data.get("goal").trim();
     const timeFrame = data.get("timeFrame").trim();
+    const today = new Date(dayjs().format('MM DD YYYY')).valueOf();
 
     const goalData = {
       goal: goal,
       duration: timeFrame,
-      createdAt: new Date(dayjs().format('MM DD YYYY')).valueOf()
+      createdAt: today,
+      expiresAt: displayExpireAt(today, timeFrame).$d,
     };
 
     setFormData({ ...goalData });

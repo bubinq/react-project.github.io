@@ -1,4 +1,4 @@
-import axios from "axios";
+import { axiosInstance } from "../../../../utils";
 import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
@@ -17,7 +17,7 @@ const GoalDetails = () => {
 
   useEffect(() => {
     const getDetails = async () => {
-      const goal = await axios.get(`/goals/details/${goalId}`);
+      const goal = await axiosInstance.get(`/goals/details/${goalId}`);
       dispatch({
         type: "READ",
         payload: goal.data,
@@ -44,7 +44,7 @@ const GoalDetails = () => {
       return;
     }
 
-    const toDoData = await axios.post(
+    const toDoData = await axiosInstance.post(
       "/toDos/create",
       {
         goalId: goalId,
@@ -65,7 +65,7 @@ const GoalDetails = () => {
   const filterBy = async (ev) => {
     ev.preventDefault();
     if (ev.target.value === "Completed") {
-      const completedToDos = await axios.get(
+      const completedToDos = await axiosInstance.get(
         `/toDos/get/completed/${goalId}`
       );
       dispatch({
@@ -73,7 +73,7 @@ const GoalDetails = () => {
         payload: completedToDos.data,
       });
     } else if (ev.target.value === "Incompleted") {
-      const incompleted = await axios.get(
+      const incompleted = await axiosInstance.get(
         `/toDos/get/incompleted/${goalId}`
       );
       dispatch({
@@ -81,7 +81,7 @@ const GoalDetails = () => {
         payload: incompleted.data,
       });
     } else {
-      const goal = await axios.get(`/goals/details/${goalId}`);
+      const goal = await axiosInstance.get(`/goals/details/${goalId}`);
       dispatch({
         type: "READ",
         payload: goal.data,

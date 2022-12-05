@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./dashboard-page/Dashboard.module.css";
 import { useContext } from "react";
-import axios from "axios";
+import { axiosInstance } from "../utils";
 import { AuthContext } from "../contexts/authContext";
 
 export const Navigation = () => {
@@ -16,7 +16,7 @@ export const Navigation = () => {
 
     if (window.confirm("Are you sure you want to logout?")) {
       try {
-        await axios.get("/auth/logout", { withCredentials: true });
+        await axiosInstance.get("/auth/logout", { withCredentials: true });
         setAuthUser(null)
         sessionStorage.clear();
         navigateTo("/", { replace: true });

@@ -1,4 +1,4 @@
-import axios from "axios";
+import { axiosInstance } from "../utils";
 import dayjs from "dayjs";
 import { createContext, useEffect, useReducer, useState } from "react";
 import { useSessionStorage } from "../hooks/useSessionStorage";
@@ -69,7 +69,7 @@ export const GoalProvider = ({ children }) => {
 
   const selectGoalHandler = async(goal) => {
     setSelecetedGoal(goal)
-    const progress = await axios.get(`/progress/get/${goal._id}`)
+    const progress = await axiosInstance.get(`/progress/get/${goal._id}`)
     setDayProgress(progress.data)
   }
 
@@ -91,6 +91,17 @@ export const GoalProvider = ({ children }) => {
     }
   };
 
+  const displayExpireAt = (createdAt, duration) => {
+    const goalEndPoints = {
+      "1 Week": dayjs(createdAt).add(7, "day"),
+      "1 Month": dayjs(createdAt).add(1, "M"),
+      "3 Months": dayjs(createdAt).add(3, "M"),
+      "6 Months": dayjs(createdAt).add(6, "M"),
+      "1 Year": dayjs(createdAt).add(1, "y"),
+    };
+    return goalEndPoints[duration]
+  }
+
   return (
     <GoalContext.Provider
       value={{
@@ -108,7 +119,8 @@ export const GoalProvider = ({ children }) => {
         selectedGoal,
         resetSelectedGoal,
         selectGoalHandler,
-        dayProgress
+        dayProgress,
+        displayExpireAt
       }}
     >
       {children}

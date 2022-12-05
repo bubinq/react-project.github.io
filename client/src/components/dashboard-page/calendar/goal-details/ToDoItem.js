@@ -1,7 +1,7 @@
 import styles from "./GoalDetails.module.css";
 import { useContext, useState } from "react";
 
-import axios from "axios";
+import { axiosInstance } from "../../../../utils";
 import { DetailsContext } from "../../../../contexts/detailsContext";
 
 const ToDoItem = ({ todo, goal }) => {
@@ -13,7 +13,7 @@ const ToDoItem = ({ todo, goal }) => {
   const [isClicked, setIsClicked] = useState(false);
 
   const completeHandler = async () => {
-    const completedToDo = await axios.put(`/toDos/complete/${todo._id}`, {
+    const completedToDo = await axiosInstance.put(`/toDos/complete/${todo._id}`, {
       goalId: goal._id,
     });
 
@@ -27,7 +27,7 @@ const ToDoItem = ({ todo, goal }) => {
     const parent = ev.target.parentNode;
     parent.style.display = "none";
 
-    const newGoal = await axios.put(
+    const newGoal = await axiosInstance.put(
       `/toDos/delete/${todo._id}`,
       { goalId: goal._id },
       { withCredentials: true }
@@ -56,7 +56,7 @@ const ToDoItem = ({ todo, goal }) => {
       return;
     }
 
-    const updatedGoal = await axios.put(`/toDos/edit/${todo._id}`, {
+    const updatedGoal = await axiosInstance.put(`/toDos/edit/${todo._id}`, {
       goalId: goal._id,
       toDo: newText
     });

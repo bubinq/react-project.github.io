@@ -12,7 +12,7 @@ export const TrackedGoal = ({ goal }) => {
     setShowModal(false);
     setTimeout(() => {
         let el = document.getElementsByTagName("svg")[0];
-        el.scrollIntoView({behavior: "smooth"})
+        el?.scrollIntoView({behavior: "smooth"})
     },300)
   }
 

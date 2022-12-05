@@ -1,4 +1,5 @@
 import { useContext } from "react"
+import "../../../App.css";
 import dayjs from "dayjs"
 import styles from '../Dashboard.module.css'
 import CalendarContext from "../../../contexts/CalendarContext"

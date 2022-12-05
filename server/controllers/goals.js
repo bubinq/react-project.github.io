@@ -56,6 +56,7 @@ export const addGoal = async (req, res) => {
       labelColor: req.body.labelColor,
       ownerId: req.user.id,
       createdAt: date,
+      expiresAt: req.body.expiresAt,
     });
     const savedGoal = await newGoal.save();
     res.status(201).json(savedGoal);

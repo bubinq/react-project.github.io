@@ -1,4 +1,4 @@
-import axios from "axios";
+import { axiosInstance } from "../../utils";
 import { useContext, useEffect } from "react";
 import { GoalContext } from "../../contexts/GoalContext";
 import styles from "./ProgressPage.module.css";
@@ -9,7 +9,7 @@ export const EachGoal = () => {
 
   useEffect(() => {
     const loadGoals = async () => {
-      const response = await axios.get("/goals/user");
+      const response = await axiosInstance.get("/goals/user");
       dispatch({
         type: "READ",
         payload: response.data,
